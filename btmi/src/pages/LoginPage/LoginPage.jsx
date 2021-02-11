@@ -1,4 +1,17 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import { userActions } from '../../_actions';
+import {Form, Input} from 'antd'
+
+
 class LoginPage extends React.Component {
+
+    layout = {
+        labelCol: { span: 8 },
+        wrapperCol: { span: 8 },
+    };
     constructor(props) {
         super(props);
 
@@ -28,11 +41,12 @@ class LoginPage extends React.Component {
         }
     }
 
+
     render() {
         const {loggingIn} = this.props;
         const{username, password, submitted} = this.state;
         return(
-            <div "col-md-6 col-md-ofset-3">
+            <div className="col-md-6 col-md-ofset-3">
                 <h2>Login</h2>
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group' + (submitted && !username ? 'has-error' : '')}>
