@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { userActions } from '../../_actions';
-import {Form, Input} from 'antd'
+//import {Form, Input} from 'antd'
 
 
 class LoginPage extends React.Component {
