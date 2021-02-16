@@ -3,6 +3,8 @@ import { userService } from '../services';
 import { alertActions } from './';
 import { history } from '../helpers';
 
+let messageLength = 2;
+
 export const userActions = {
     login,
     logout,
@@ -19,6 +21,7 @@ function login(username, password) {
             },
             error => {
                 dispatch(failure(error.toString()))
+                dispatch(alertActions.error(error.toString(), messageLength))
             }
         );
     };
@@ -37,11 +40,11 @@ function register(user) {
                 user => {
                     dispatch(success());
                     history.push('/login');
-                    //dispatch(alertActions.success('Registration successful'));
+                    dispatch(alertActions.success('Registration successful', messageLength));
                 },
                 error => {
                     dispatch(failure(error.toString()));
-                    //dispatch(alertActions.error(error.toString()));
+                    dispatch(alertActions.error(error.toString(), messageLength));
                 }
             );
     };
