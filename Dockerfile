@@ -1,9 +1,9 @@
 #Builder Stage
 FROM node:current-alpine as builder
 
-COPY /package.json /package-lock.json ./
+COPY /package.json /yarn.lock ./
 
-RUN npm install
+RUN yarn install
 RUN mkdir /agora
 RUN mv ./node_modules/ ./agora
 
@@ -13,7 +13,7 @@ COPY . .
 
 WORKDIR btmi
 
-RUN npm run build
+RUN yarn run build
 
 # Configure NGINX Web Server
 
