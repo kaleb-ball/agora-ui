@@ -11,4 +11,6 @@ if (hostname === 'prod.agora.io') {
     host = process.env.REACT_APP_BACKEND_HOST || 'http://localhost:8080';
 }
 
+
+export const OAUTH_CALLBACK = `${host}/callback`
 export const API_ROOT = `${host}/${version}`;

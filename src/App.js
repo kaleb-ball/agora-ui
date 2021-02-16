@@ -1,7 +1,7 @@
 import './App.less';
 import {Button} from "antd";
 import {Route, Router, Switch} from "react-router-dom";
-import {history} from "./_helpers";
+import {history} from "./helpers";
 import {LoginPage} from "./pages/LoginPage";
 import {RegisterPage} from "./pages/RegisterPage";
 import {ServiceAuthPage} from "./pages/ServiceAuthPage";
