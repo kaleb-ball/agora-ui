@@ -1,7 +1,8 @@
 import React from "react";
 import {connect} from "react-redux";
 import {userActions} from "../../actions";
-import {Link} from "react-router-dom";
+import {Button, Col, Form, Input, Row, Card} from "antd";
+import {history} from "../../helpers";
 
 class RegisterPage extends React.Component {
 
@@ -21,7 +22,7 @@ class RegisterPage extends React.Component {
     }
 
     handleChange(event) {
-
+        console.log("change")
         const {name, value} = event.target;
         const {user} = this.state;
         this.setState({
@@ -33,54 +34,67 @@ class RegisterPage extends React.Component {
     }
 
     handleSubmit(e) {
-        e.preventDefault();
-
+        //e.preventDefault();
+        console.log('submit')
         this.setState({submitted : true})
         const { user } = this.state;
         if(user.firstname && user.lastname && user.username && user.password) {
             this.props.register(user);
+        } else {
+            return false
         }
     }
     render() {
         const { registering  } = this.props;
         const { user, submitted } = this.state;
-        return (<div className="col-md-6 col-md-offset-3">
-                <h2>Register</h2>
-                <form name="form" onSubmit={this.handleSubmit}>
-                    <div className={'form-group' + (submitted && !user.firstname ? ' has-error' : '')}>
-                        <label htmlFor="firstname">First Name</label>
-                        <input type="text" className="form-control" name="firstname" value={user.firstname} onChange={this.handleChange} />
-                        {submitted && !user.firstname &&
-                        <div className="help-block">First Name is required</div>
-                        }
-                    </div>
-                    <div className={'form-group' + (submitted && !user.lastname ? ' has-error' : '')}>
-                        <label htmlFor="lastname">Last Name</label>
-                        <input type="text" className="form-control" name="lastname" value={user.lastname} onChange={this.handleChange} />
-                        {submitted && !user.lastname &&
-                        <div className="help-block">Last Name is required</div>
-                        }
-                    </div>
-                    <div className={'form-group' + (submitted && !user.username ? ' has-error' : '')}>
-                        <label htmlFor="username">Username</label>
-                        <input type="text" className="form-control" name="username" value={user.username} onChange={this.handleChange} />
-                        {submitted && !user.username &&
-                        <div className="help-block">Username is required</div>
-                        }
-                    </div>
-                    <div className={'form-group' + (submitted && !user.password ? ' has-error' : '')}>
-                        <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" name="password" value={user.password} onChange={this.handleChange} />
-                        {submitted && !user.password &&
-                        <div className="help-block">Password is required</div>
-                        }
-                    </div>
-                    <div className="form-group">
-                        <button className="btn btn-primary">Register</button>
-                        <Link to="/login" className="btn btn-link">Cancel</Link>
-                    </div>
-                </form>
-            </div>
+        return (
+            <Row type="flex" justify="center" align="middle" style={{minHeight: '100vh'}}>
+                <Col span={12} style={{maxWidth: '400px'}}>
+                    <Card title = "Register">
+                        <Form size="large" onFinish={this.handleSubmit}>
+                            <Form.Item
+                                label="First Name"
+                                name="firstname"
+                                rules={[{ required: true, message: 'Enter your last name' }]}
+                            >
+                                <Input name="firstname" onChange={this.handleChange}/>
+                            </Form.Item>
+                            <Form.Item
+                                label="Last Name"
+                                name="lastname"
+                                rules={[{ required: true, message: 'Enter your first name' }]}
+                            >
+                                <Input name="lastname" onChange={this.handleChange}/>
+                            </Form.Item>
+                            <Form.Item
+                                label="Username"
+                                name="username"
+                                rules={[{ required: true, message: 'Enter your username' }]}
+                            >
+                                <Input name="username" onChange={this.handleChange}/>
+                            </Form.Item>
+                            <Form.Item
+                                label="Password"
+                                rules={[{ required: true, message: 'Enter your password' }]}
+                                name="password"
+                            >
+                                <Input.Password name="password" onChange={this.handleChange}  visibilityToggle/>
+                            </Form.Item>
+                            <Form.Item style={{float: 'right'}}>
+                                <Button type="ghost" htmlType="button" style={{margin: '8px'}}
+                                        onClick={() => {
+                                            history.push('/login')
+                                        }}>
+                                    Cancel
+                                </Button>
+                                <Button type="primary" htmlType="submit">
+                                    Submit
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                    </Card>
+                </Col>
+            </Row>
         )
     }
 
