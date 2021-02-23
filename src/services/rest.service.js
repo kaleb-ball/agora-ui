@@ -1,5 +1,4 @@
-import { API_ROOT} from "../helpers/api-root-config";
-import {authHeader} from "../helpers/auth-header";
+import {authHeader} from "../helpers";
 import {userService} from "./user.service";
 import axios from "axios";
 
@@ -22,28 +21,23 @@ function get(endpoint, param, authenticated) {
 
 function post(endpoint, payload, authenticated) {
     config = {
-        // method: 'POST',
         headers : addHeaders(authenticated, true)
-        //body: JSON.stringify(payload)
     }
     return axios.post(endpoint, JSON.stringify(payload), config)
-    //return fetch(`${API_ROOT}/${endpoint}`, requestOptions).then(handleResponse);
 }
 
 function put(endpoint, payload, authenticated) {
     config = {
-        // method: 'PUT',
         headers : addHeaders(authenticated, true),
-        //body: JSON.stringify(payload)
     }
+    return axios.put(endpoint, payload, config)
 }
 
 function _delete(endpoint, param, authenticated) {
     config = {
-        // method : 'DELETE',
         headers : addHeaders(authenticated, false)
     };
-    //return fetch(`${API_ROOT}/${endpoint}/${param}`, requestOptions).then(handleResponse);
+    return axios.delete(endpoint, config)
 }
 
 function addHeaders(authenticated, json) {

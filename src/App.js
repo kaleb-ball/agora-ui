@@ -4,6 +4,7 @@ import {history} from "./helpers";
 import {LoginPage} from "./pages/LoginPage";
 import {RegisterPage} from "./pages/RegisterPage";
 import {OAuthPage, ZoomRedirectPage} from "./pages/OAuthPage";
+import { HomePage } from "./pages/HomePage";
 import React from "react";
 import {alertActions} from "./actions";
 import {connect} from "react-redux";
@@ -31,6 +32,7 @@ class App extends React.Component {
                         <Route path="/register" component={RegisterPage}/>
                         <Route path="/oauth" component={OAuthPage}/>
                         <Route path="/redirect" component={ZoomRedirectPage}/>
+                        <Route path="/home" component={HomePage}/>
                         <Route path="/" component={LoginPage}/>
                     </Switch>
                 </Router>
