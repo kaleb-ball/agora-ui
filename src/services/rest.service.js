@@ -1,5 +1,5 @@
-import { API_ROOT } from "../_helpers/api-config";
-import {authHeader} from "../_helpers/auth-header";
+import { API_ROOT } from "../helpers/api-config";
+import {authHeader} from "../helpers/auth-header";
 import {userService} from "./user.service";
 
 export const restService = {
