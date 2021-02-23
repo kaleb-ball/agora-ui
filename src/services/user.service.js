@@ -32,7 +32,5 @@ function register(user) {
         Password : user.password
     }
 
-    return restService.post("user", payload, false).then(data => {
-
-    })
+    return restService.post("user", payload, false)
 }
