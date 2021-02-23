@@ -3,12 +3,10 @@ import {Route, Router, Switch} from "react-router-dom";
 import {history} from "./helpers";
 import {LoginPage} from "./pages/LoginPage";
 import {RegisterPage} from "./pages/RegisterPage";
-import {ServiceAuthPage} from "./pages/ServiceAuthPage";
+import {OAuthPage, ZoomRedirectPage} from "./pages/OAuthPage";
 import React from "react";
 import {alertActions} from "./actions";
 import {connect} from "react-redux";
-import {Layout, Menu} from "antd";
-import {Header} from "antd/lib/layout/layout";
 import Navbar from "./components/navbar/navbar";
 
 class App extends React.Component {
@@ -31,7 +29,8 @@ class App extends React.Component {
                     <Switch>
                         <Route path="/login" component={LoginPage}/>
                         <Route path="/register" component={RegisterPage}/>
-                        <Route path="/serviceAuth" component={ServiceAuthPage}/>
+                        <Route path="/oauth" component={OAuthPage}/>
+                        <Route path="/redirect" component={ZoomRedirectPage}/>
                         <Route path="/" component={LoginPage}/>
                     </Switch>
                 </Router>
