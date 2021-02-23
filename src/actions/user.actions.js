@@ -1,9 +1,8 @@
-import { userConstants } from '../constants';
+import {alertConstants, userConstants} from '../constants';
 import { userService } from '../services';
 import { alertActions } from './';
 import { history } from '../helpers';
 
-let messageLength = 2;
 
 export const userActions = {
     login,
@@ -17,11 +16,11 @@ function login(username, password) {
         userService.login(username, password).then(
             user => {
                 dispatch(success(user));
-                history.push('/serviceAuth');
+                history.push('/oauth');
             },
             error => {
                 dispatch(failure(error.toString()))
-                dispatch(alertActions.error(error.toString(), messageLength))
+                dispatch(alertActions.error(error.response.data.error.toString(), alertConstants.ALERT_LENGTH))
             }
         );
     };
@@ -40,11 +39,11 @@ function register(user) {
                 user => {
                     dispatch(success());
                     history.push('/login');
-                    dispatch(alertActions.success('Registration successful', messageLength));
+                    dispatch(alertActions.success('Registration successful', alertConstants.ALERT_LENGTH));
                 },
                 error => {
                     dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString(), messageLength));
+                    dispatch(alertActions.error(error.response.data.error.toString(), alertConstants.ALERT_LENGTH));
                 }
             );
     };
