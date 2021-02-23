@@ -38,3 +38,7 @@ packages/react-devtools-extensions/.tempUserDataDir
 packages/react-devtools-inline/dist
 packages/react-devtools-shell/dist
 packages/react-devtools-scheduling-profiler/dist
+
+dev-proxy/ssl/*.key
+dev-proxy/ssl/*.crt
+dev-proxy/ssl/*.csr

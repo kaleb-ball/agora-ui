@@ -1,17 +1,13 @@
 #Builder Stage
 FROM node:current-alpine as builder
 
-COPY /package.json /yarn.lock ./
-
-RUN yarn install
-RUN mkdir /agora
-RUN mv ./node_modules/ ./agora
-
 WORKDIR /agora
 
-COPY . .
+COPY /package.json /yarn.lock /agora/
 
-WORKDIR btmi
+RUN yarn install
+
+COPY ./ /agora/
 
 RUN yarn run build
 
@@ -20,8 +16,10 @@ RUN yarn run build
 FROM nginx:alpine
 
 RUN rm -rf /usr/share/nginx/html/*
+RUN rm -rf /etc/nginx/conf.d/default.conf
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 
-COPY --from=builder agora/public /usr/share/nginx/html
+COPY --from=builder /agora/build/ /usr/share/nginx/html/agora/
 
 EXPOSE 80
 
