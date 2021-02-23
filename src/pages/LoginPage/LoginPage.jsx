@@ -69,7 +69,7 @@ class LoginPage extends React.Component {
                                         }}>
                                     Register
                                 </Button>
-                                <Button type="primary" htmlType="submit">
+                                <Button type="primary" htmlType="submit" >
                                     Submit
                                 </Button>
                             </Form.Item>

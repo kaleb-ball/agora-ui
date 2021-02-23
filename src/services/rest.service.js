@@ -1,6 +1,6 @@
-import { API_ROOT } from "../helpers/api-config";
-import {authHeader} from "../helpers/auth-header";
+import {authHeader} from "../helpers";
 import {userService} from "./user.service";
+import axios from "axios";
 
 export const restService = {
     get,
@@ -9,48 +9,43 @@ export const restService = {
     delete : _delete
 };
 
-let requestOptions;
+let config
 
 function get(endpoint, param, authenticated) {
-    requestOptions = {
-        method : 'GET',
-        headers : headers(authenticated, false)
+    let headers = addHeaders(authenticated, false)
+    const config = {
+        headers : {...headers}
     };
-    return fetch(`${API_ROOT}/${endpoint}/${param}`, requestOptions).then(handleResponse);
+    return axios.get(endpoint, config)
 }
 
 function post(endpoint, payload, authenticated) {
-    requestOptions = {
-        method: 'POST',
-        headers : headers(authenticated, true),
-        body: JSON.stringify(payload)
+    config = {
+        headers : addHeaders(authenticated, true)
     }
-    return fetch(`${API_ROOT}/${endpoint}`, requestOptions).then(handleResponse);
+    return axios.post(endpoint, JSON.stringify(payload), config)
 }
 
-function put (endpoint, payload, authenticated) {
-    requestOptions = {
-        method: 'PUT',
-        headers : headers(authenticated, true),
-        body: JSON.stringify(payload)
+function put(endpoint, payload, authenticated) {
+    config = {
+        headers : addHeaders(authenticated, true),
     }
-    return fetch(`${API_ROOT}/${endpoint}`, requestOptions).then(handleResponse);
+    return axios.put(endpoint, payload, config)
 }
 
 function _delete(endpoint, param, authenticated) {
-    requestOptions = {
-        method : 'DELETE',
-        headers : headers(authenticated, false)
+    config = {
+        headers : addHeaders(authenticated, false)
     };
-    return fetch(`${API_ROOT}/${endpoint}/${param}`, requestOptions).then(handleResponse);
+    return axios.delete(endpoint, config)
 }
 
-function headers(authenticated, json) {
+function addHeaders(authenticated, json) {
     let headers = ''
     if (json && authenticated) {
         headers = {...authHeader(), 'Content-Type': 'application/json'}
     } else if (authenticated) {
-        headers = authHeader()
+        headers = {...authHeader()}
     } else if (json) {
         headers = {'Content-Type': 'application/json'}
     }

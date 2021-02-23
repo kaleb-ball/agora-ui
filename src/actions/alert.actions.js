@@ -12,7 +12,6 @@ function success(content, length) {
         message : content,
         duration : length
     }
-    message.success(content, length)
     notification.success(config)
     return { type: alertConstants.SUCCESS, message };
 }
@@ -22,9 +21,6 @@ function error(content, length ) {
         message : content,
         duration : length
     }
-
-    message.error(content, length )
-
     notification.error(config)
     return { type: alertConstants.ERROR, message };
 }
