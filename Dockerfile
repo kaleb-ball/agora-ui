@@ -5,13 +5,12 @@ COPY /package.json /yarn.lock ./
 
 RUN yarn install
 RUN mkdir /agora
-RUN mv ./node_modules/ ./agora
 
 WORKDIR /agora
 
 COPY . .
 
-WORKDIR btmi
+WORKDIR agora-ui
 
 RUN yarn run build
 
