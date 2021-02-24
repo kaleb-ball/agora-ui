@@ -10,7 +10,7 @@ import React from "react";
 import {alertActions} from "./actions";
 import {connect} from "react-redux";
 import Navbar from "./components/navbar/navbar";
-import {PrivateRoute} from "./components";
+import {PrivateRoute, BaseRouteWrapper} from "./components";
 
 class App extends React.Component {
 
@@ -34,11 +34,11 @@ class App extends React.Component {
                         <Route path="/register" component={RegisterPage}/>
                         <PrivateRoute path="/oauth" component={OAuthPage}/>
                         <PrivateRoute path="/redirect" component={ZoomRedirectPage}/>
-                        <Route path="/home" component={HomePage}/>
+                        <PrivateRoute path="/home" component={HomePage}/>
                         <Route path="/401" component={Exception401Page} />
                         <Route path="/404" component={Exception404Page}/>
                         <Route path="/500" component={Exception500Page}/>
-                        <Route exact path="/" component={LoginPage}/>
+                        <Route exact path="/" component={BaseRouteWrapper}/>
                         <Redirect to="/404"/>
                     </Switch>
                 </Router>

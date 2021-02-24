@@ -15,8 +15,12 @@ axios.defaults.responseType = "json"
 axios.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
-    if (error.response.status === 500) {
+    if (!error.response) {
+        error = {
+            response : { data : { error : "Failed to Connect to the server" } } }
+
         history.push("/500")
+        return Promise.reject(error)
     }
     return Promise.reject(error);
 });
