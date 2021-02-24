@@ -9,6 +9,7 @@ import React from "react";
 import {alertActions} from "./actions";
 import {connect} from "react-redux";
 import Navbar from "./components/navbar/navbar";
+import {AuthPage} from "./pages/AuthPage";
 
 class App extends React.Component {
 
@@ -28,6 +29,7 @@ class App extends React.Component {
                 <Navbar/>
                 <Router history={history}>
                     <Switch>
+                        <Route path="/auth" component={AuthPage}/>
                         <Route path="/login" component={LoginPage}/>
                         <Route path="/register" component={RegisterPage}/>
                         <Route path="/oauth" component={OAuthPage}/>
