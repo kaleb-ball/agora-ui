@@ -4,14 +4,14 @@ import {connect} from "react-redux";
 import Exception from "../../components/exception/exception";
 import {Link} from "react-router-dom";
 
-class Exception404Page extends React.Component {
+class Exception401Page extends React.Component {
     render() {
         return(
             <Exception
-                type="404"
-                title={404}
+                type="401"
+                title={401}
                 backText="Go Back"
-                desc="Page Not Found"
+                desc="Unauthorized"
             />
         )};
 }
@@ -22,5 +22,5 @@ function mapState(state) {
 
 const actionCreators = { }
 
-const connectedHomePage = connect(mapState, actionCreators)(Exception404Page);
-export { connectedHomePage as Exception404Page };
+const connectedPage = connect(mapState, actionCreators)(Exception401Page);
+export { connectedPage as Exception401Page };

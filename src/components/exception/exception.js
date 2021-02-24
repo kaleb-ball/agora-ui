@@ -1,9 +1,8 @@
 import React, { createElement } from 'react';
-import {Button, Col, Image, Row} from 'antd';
+import {Button} from 'antd';
 import styles from '../../App.less';
 import "./exception.css"
-import Gopher from "../../assets/gopher.jpg"
-import config from './typeConfig';
+import {history} from "../../helpers";
 
 class Exception extends React.PureComponent {
 
@@ -14,27 +13,24 @@ class Exception extends React.PureComponent {
 
     render() {
         const {
-            className,
             backText,
-            linkElement = 'a',
-            type,
             title,
-            desc,
-            img,
-            actions,
-            ...rest
+            desc
         } = this.props;
-        const pageType = type in config ? type : '404';
 
         return (
             <div className="exception">
                 <div className="imgBlock">
                     <div className="imgEle"/>
                 </div>
-                <div className={styles.content}>
+                <div className="content">
                     <h1>{title}</h1>
-                    <div className="desc">Page Not Found</div>
-                    <Button type="primary">{backText}</Button>
+                    <div className="desc">{desc}</div>
+                    <Button
+                        type="primary"
+                        onClick={() => {history.push("/")}}>
+                        {backText}
+                    </Button>
                 </div>
             </div>
         );
