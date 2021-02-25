@@ -1,4 +1,4 @@
-import {Row, Spin} from "antd";
+import {Row} from "antd";
 import {oauthActions} from "../../actions/oauth.actions";
 import {connect} from "react-redux";
 import * as React from "react";

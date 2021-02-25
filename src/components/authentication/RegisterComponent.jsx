@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import {userActions} from "../../actions";
-import {Button, Col, Form, Input, Row, Card} from "antd";
+import {Button, Form, Input} from "antd";
 import {history} from "../../helpers";
 
 class RegisterComponent extends React.Component {

@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Button, Card, Col, Layout, Row, Space} from "antd";
+import {Button, Row, Space} from "antd";
 import {oauthConstants} from "../../constants";
 import {oauthActions} from "../../actions/oauth.actions";
 

@@ -2,8 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { userActions } from '../../actions';
-import {Button, Card, Col, Form, Input, Row} from 'antd'
-import {history} from "../../helpers";
+import {Button, Form, Input} from 'antd'
 
 
 class LoginComponent extends React.Component {

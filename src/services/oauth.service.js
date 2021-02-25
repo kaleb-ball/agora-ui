@@ -1,7 +1,4 @@
 import { restService } from "./rest.service";
-import { oauthConstants } from "../constants";
-import {alertActions} from "../actions";
-import {OAUTH_CALLBACK} from "../helpers/api-root-config";
 
 export const oauthService = {
     getUrl,

@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { userActions } from '../../actions';
-import {Button, Card, Col, Form, Input, Row} from 'antd'
-import {history} from "../../helpers";
+import {Card, Col, Row} from 'antd'
 import {LoginComponent, RegisterComponent} from "../../components/authentication";
 
 const tabList = [
