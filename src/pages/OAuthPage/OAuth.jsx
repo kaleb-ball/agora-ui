@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {Button, Row, Space} from "antd";
 import {oauthConstants} from "../../constants";
 import {oauthActions} from "../../actions/oauth.actions";
+import {CheckCircleTwoTone} from "@ant-design/icons";
 
 class OAuthPage extends React.Component {
 
@@ -29,14 +30,18 @@ class OAuthPage extends React.Component {
           <div >
               <Row type="flex" justify="center" align="middle" style={{minHeight: '75vh'}}>
                       <Space direction="vertical" size="large">
-                          <Button
-                              type="primary"
-                              shape="round"
-                              style={{background: "#2D8CFF"}}
-                              size="large"
-                              onClick={this.onZoomClick}>
-                              Authorize with Zoom
-                          </Button>
+                          <Row>
+                              <Button
+                                  type="primary"
+                                  shape="round"
+                                  style={{background: "#2D8CFF"}}
+                                  size="large"
+                                  onClick={this.onZoomClick}>
+                                  Authorize with Zoom
+                              </Button>
+                              <CheckCircleTwoTone twoToneColor="#52c41a" />
+                          </Row>
+
                           <Button
                               shape="round"
                               style={{background: "#464EB8", color:"white", borderColor:"white"}}

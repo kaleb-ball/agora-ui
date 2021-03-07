@@ -1,13 +1,15 @@
 import './App.less';
-import {Route, Router, Switch} from "react-router-dom";
+import {Redirect, Route, Router, Switch} from "react-router-dom";
 import {history} from "./helpers";
 import {OAuthPage, ZoomRedirectPage} from "./pages/OAuthPage";
 import { HomePage } from "./pages/HomePage";
+import { Exception404Page, Exception500Page, Exception401Page } from "./pages/ExceptionPages/index";
 import React from "react";
 import {alertActions} from "./actions";
 import {connect} from "react-redux";
 import Navbar from "./components/navbar/navbar";
 import {AuthPage} from "./pages/AuthPage";
+import {PrivateRoute, BaseRouteWrapper} from "./components";
 
 class App extends React.Component {
 
@@ -19,7 +21,6 @@ class App extends React.Component {
         });
 
     }
-
 
     render() {
         return (
