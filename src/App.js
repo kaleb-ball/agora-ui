@@ -28,11 +28,16 @@ class App extends React.Component {
                 <Navbar/>
                 <Router history={history}>
                     <Switch>
-                        <Route path="/auth" component={AuthPage}/>
-                        <Route path="/oauth" component={OAuthPage}/>
-                        <Route path="/redirect" component={ZoomRedirectPage}/>
-                        <Route path="/home" component={HomePage}/>
-                        <Route path="/" component={AuthPage}/>
+                        <Route exact path="/login" component={LoginPage}/>
+                        <Route exact path="/register" component={RegisterPage}/>
+                        <PrivateRoute exact path="/oauth" component={OAuthPage}/>
+                        <PrivateRoute exact path="/redirect" component={ZoomRedirectPage}/>
+                        <PrivateRoute exact path="/home" component={HomePage}/>
+                        <Route exact path="/401" component={Exception401Page} />
+                        <Route exact path="/404" component={Exception404Page}/>
+                        <Route exact path="/500" component={Exception500Page}/>
+                        <Route exact path="/" component={BaseRouteWrapper}/>
+                        <Redirect to="/404"/>
                     </Switch>
                 </Router>
             </div>
