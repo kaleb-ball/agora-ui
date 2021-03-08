@@ -28,8 +28,7 @@ class App extends React.Component {
                 <Navbar/>
                 <Router history={history}>
                     <Switch>
-                        <Route exact path="/login" component={LoginPage}/>
-                        <Route exact path="/register" component={RegisterPage}/>
+                        <Route exact path="/auth" component={AuthPage}/>
                         <PrivateRoute exact path="/oauth" component={OAuthPage}/>
                         <PrivateRoute exact path="/redirect" component={ZoomRedirectPage}/>
                         <PrivateRoute exact path="/home" component={HomePage}/>

@@ -1,4 +1,5 @@
 import { restService } from "./rest.service";
+import {oauthConstants} from "../constants";
 
 export const oauthService = {
     getUrl,
@@ -31,7 +32,11 @@ async function isAuthenticated() {
             if (res.status === 200) {
                 authenticated = true;
             }
-    })
+    }).catch(
+        () => {
+            authenticated = false;
+        }
+    )
     return authenticated
 }
 

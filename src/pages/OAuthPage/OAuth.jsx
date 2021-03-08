@@ -39,7 +39,7 @@ class OAuthPage extends React.Component {
                                   onClick={this.onZoomClick}>
                                   Authorize with Zoom
                               </Button>
-                              <CheckCircleTwoTone twoToneColor="#52c41a" />
+                              {/*<CheckCircleTwoTone twoToneColor="#52c41a" />*/}
                           </Row>
 
                           <Button

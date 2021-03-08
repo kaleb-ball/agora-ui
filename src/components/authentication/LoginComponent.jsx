@@ -23,13 +23,11 @@ class LoginComponent extends React.Component {
     }
 
     handleChange(e) {
-        console.log("Change")
         const {name, value } = e.target
         this.setState({[name] : value})
     }
 
     handleSubmit(e){
-        console.log("Submit")
         this.setState({submitted : true});
         const {username, password} = this.state;
         if (username && password) {
