@@ -6,6 +6,6 @@ export const BaseRouteWrapper = () => (
     <Route render={props => (
         localStorage.getItem('user')
             ? <HomePage />
-            : <Redirect to={{ pathname: '/login'}} />
+            : <Redirect to={{ pathname: '/auth'}} />
     )} />
 )

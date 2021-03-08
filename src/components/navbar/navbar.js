@@ -1,7 +1,8 @@
 import './navbar.less'
-import { Menu} from "antd";
+import {Button, Menu} from "antd";
 import * as React from "react";
 import {Header} from "antd/es/layout/layout";
+import {LogoutButton} from "./LogoutButton";
 
 class Navbar extends React.Component {
     render() {
@@ -17,6 +18,9 @@ class Navbar extends React.Component {
                     <Menu.Item key="2">nav 2</Menu.Item>
                     <Menu.Item key="3">nav 3</Menu.Item>
                 </Menu>
+                <div style={{float: "right", paddingRight : 75}}>
+                    <LogoutButton/>
+                </div>
             </Header>
         );
     };
