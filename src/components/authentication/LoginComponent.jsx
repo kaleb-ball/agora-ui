@@ -23,7 +23,7 @@ class LoginComponent extends React.Component {
     }
 
     handleChange(e) {
-        const {name, value } = e.target
+        const {name, value} = e.target
         this.setState({[name] : value})
     }
 
@@ -38,8 +38,6 @@ class LoginComponent extends React.Component {
 
     }
     render() {
-        const {loggingIn} = this.props;
-        const{username, password, submitted} = this.state;
         return (
             <Form size="large" onFinish={this.handleSubmit}>
                 <Form.Item
@@ -64,7 +62,7 @@ class LoginComponent extends React.Component {
             </Form>
         )
     }
-};
+}
 
 function mapState(state) {
     const { loggingIn } = state.authentication;
