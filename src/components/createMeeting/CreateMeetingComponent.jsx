@@ -22,11 +22,11 @@ class CreateMeetingComponent extends React.Component {
         }
 
         this.handleChange = this.handleChange.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleCreate = this.handleCreate.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
         this.handleDataChange = this.handleDataChange.bind(this)
         this.show = this.show.bind(this)
-        this.formRef = React.createRef()
+        this.createMeetingFormRef = React.createRef()
 
     }
 
@@ -36,7 +36,7 @@ class CreateMeetingComponent extends React.Component {
     }
 
 
-    handleSubmit(){
+    handleCreate(){
         this.setState({submitted : true});
         const {title, description, date, time, length, unit} = this.state;
 
@@ -66,7 +66,7 @@ class CreateMeetingComponent extends React.Component {
             length : '',
             unit : ''
         })
-        this.formRef.current.resetFields();
+        this.createMeetingFormRef.current.resetFields();
     }
 
     handleDataChange(name, data) {
@@ -96,12 +96,12 @@ class CreateMeetingComponent extends React.Component {
                            }}>
                                Cancel
                            </Button>,
-                           <Button type="primary" form="form" key="submit" htmlType="submit">
-                               Submit
+                           <Button type="primary" form="meetingForm" key="submit" htmlType="submit">
+                               Create
                            </Button>
                        ]}
                 >
-                    <Form ref={this.formRef} id="form" size="large" onFinish={this.handleSubmit} >
+                    <Form ref={this.createMeetingFormRef} id="meetingForm" size="large" onFinish={() => this.handleCreate()} >
                         <Form.Item
                             label="Title"
                             name="title"
@@ -171,12 +171,12 @@ class CreateMeetingComponent extends React.Component {
 }
 
 function mapState(state) {
-
+    return {}
 }
 
 const actionCreators = {
     createMeeting : meetingActions.createMeeting
 };
 
-const connectedComponent = connect(mapState, actionCreators)(CreateMeetingComponent);
-export { connectedComponent as CreateMeetingComponent };
+const connectedCreateMeetingComponent = connect(mapState, actionCreators)(CreateMeetingComponent);
+export { connectedCreateMeetingComponent as CreateMeetingComponent };
