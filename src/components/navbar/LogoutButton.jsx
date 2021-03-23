@@ -7,10 +7,6 @@ import {Button} from 'antd'
 
 class LogoutButton extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     logout() {
         this.props.logout()
     }
