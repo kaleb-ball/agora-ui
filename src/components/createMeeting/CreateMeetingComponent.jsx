@@ -97,7 +97,7 @@ class CreateMeetingComponent extends React.Component {
                                Cancel
                            </Button>,
                            <Button type="primary" form="form" key="submit" htmlType="submit">
-                               Submit
+                               Create
                            </Button>
                        ]}
                 >
