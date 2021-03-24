@@ -2,7 +2,6 @@ import React from "react";
 import {connect} from "react-redux";
 import {userActions} from "../../actions";
 import {Button, Form, Input} from "antd";
-import {history} from "../../helpers";
 
 class RegisterComponent extends React.Component {
 
@@ -39,13 +38,12 @@ class RegisterComponent extends React.Component {
         const { user } = this.state;
         if(user.firstname && user.lastname && user.username && user.password) {
             this.props.register(user);
+            this.props.switchTab()
         } else {
             return false
         }
     }
     render() {
-        const { registering  } = this.props;
-        const { user, submitted } = this.state;
         return (
             <Form size="large" onFinish={this.handleSubmit}>
                 <Form.Item
@@ -79,7 +77,7 @@ class RegisterComponent extends React.Component {
                 <Form.Item style={{float: 'right'}}>
                     <Button type="ghost" htmlType="button" style={{margin: '8px'}}
                             onClick={() => {
-                                history.push('/login')
+                                this.props.switchTab()
                             }}>
                         Cancel
                     </Button>
@@ -95,14 +93,10 @@ class RegisterComponent extends React.Component {
 
 }
 
-function mapState(state) {
-    const { registering } = state.registration;
-    return { registering };
-}
 
 const actionCreators = {
     register: userActions.register
 }
 
-const connectedPage = connect(mapState, actionCreators)(RegisterComponent);
+const connectedPage = connect(null, actionCreators)(RegisterComponent);
 export { connectedPage as RegisterComponent };
