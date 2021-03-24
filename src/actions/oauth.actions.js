@@ -14,14 +14,13 @@ function getAuthorization(serviceName) {
         dispatch(request())
         oauthService.getUrl(serviceName).then(
             url => {
-                console.log(localStorage.getItem("nonce"))
                 window.location.href = url;
+                dispatch(success())
             },
             error => {
                 dispatch(failure(error.toString()))
                 dispatch(alertActions.error("Authorization with " +
-                    serviceName.charAt(0).toUpperCase() + serviceName.slice(1) + '' +
-                    " not available", alertConstants.ALERT_LENGTH))
+                    serviceName.charAt(0).toUpperCase() + serviceName.slice(1) + '' + " not available", alertConstants.ALERT_LENGTH))
             })
     }
     function request() { return {type: oauthConstants.AUTHORIZATION_REQUEST} }
@@ -36,6 +35,7 @@ function getAccessToken(serviceName, state, code) {
             oauthService.getAccessToken(serviceName, code).then(
                 res => {
                     dispatch(alertActions.success("Successfully Linked Account", alertConstants.ALERT_LENGTH))
+                    dispatch(success())
                     history.push("/home")
                 })
                 .catch(
