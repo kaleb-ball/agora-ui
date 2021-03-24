@@ -17,12 +17,12 @@ function getAuthorization(serviceName) {
                 dispatch(success())
                 console.log(localStorage.getItem("nonce"))
                 window.location.href = url;
+                dispatch(success())
             },
             error => {
                 dispatch(failure(error.toString()))
                 dispatch(alertActions.error("Authorization with " +
-                    serviceName.charAt(0).toUpperCase() + serviceName.slice(1) + '' +
-                    " not available", alertConstants.ALERT_LENGTH))
+                    serviceName.charAt(0).toUpperCase() + serviceName.slice(1) + '' + " not available", alertConstants.ALERT_LENGTH))
             })
     }
     function request() { return {type: oauthConstants.AUTHORIZATION_REQUEST} }
@@ -38,6 +38,7 @@ function getAccessToken(serviceName, state, code) {
                 res => {
                     dispatch(success())
                     dispatch(alertActions.success("Successfully Linked Account", alertConstants.ALERT_LENGTH))
+                    dispatch(success())
                     history.push("/home")
                 })
                 .catch(

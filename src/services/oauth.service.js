@@ -8,7 +8,7 @@ export const oauthService = {
     isAuthenticated
 }
 
-const endpointBase = "platform"
+const endpointBase = "platforms"
 
 function getUrl(name) {
     return restService.get(endpointBase, '', true).then(
