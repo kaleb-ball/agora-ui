@@ -18,6 +18,8 @@ class RegisterComponent extends React.Component {
         };
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.createRegisterForm = React.createRef()
+
     }
 
     handleChange(event) {
@@ -39,13 +41,14 @@ class RegisterComponent extends React.Component {
         if(user.firstname && user.lastname && user.username && user.password) {
             this.props.register(user);
             this.props.switchTab()
+            this.createRegisterForm.current.resetFields();
         } else {
             return false
         }
     }
     render() {
         return (
-            <Form size="large" onFinish={this.handleSubmit}>
+            <Form ref={this.createRegisterForm} size="large" onFinish={this.handleSubmit}>
                 <Form.Item
                     label="First Name"
                     name="firstname"

@@ -23,7 +23,7 @@ class LoginComponent extends React.Component {
     }
 
     handleChange(e) {
-        const {name, value } = e.target
+        const {name, value} = e.target
         this.setState({[name] : value})
     }
 
@@ -62,7 +62,7 @@ class LoginComponent extends React.Component {
             </Form>
         )
     }
-};
+}
 
 function mapState(state) {
     const { loggingIn } = state.authentication;
