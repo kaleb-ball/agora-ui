@@ -1,6 +1,5 @@
-import React, { createElement } from 'react';
+import React  from 'react';
 import {Button} from 'antd';
-import styles from '../../App.less';
 import "./exception.css"
 import {history} from "../../helpers";
 

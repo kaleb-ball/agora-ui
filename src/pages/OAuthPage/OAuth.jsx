@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import {Button, Row, Space} from "antd";
 import {oauthConstants} from "../../constants";
 import {oauthActions} from "../../actions/oauth.actions";
-import {CheckCircleTwoTone} from "@ant-design/icons";
 
 class OAuthPage extends React.Component {
 

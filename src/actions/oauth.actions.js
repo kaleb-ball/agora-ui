@@ -14,6 +14,8 @@ function getAuthorization(serviceName) {
         dispatch(request())
         oauthService.getUrl(serviceName).then(
             url => {
+                dispatch(success())
+                console.log(localStorage.getItem("nonce"))
                 window.location.href = url;
                 dispatch(success())
             },
@@ -34,6 +36,7 @@ function getAccessToken(serviceName, state, code) {
         if (state === localStorage.getItem("nonce")) {
             oauthService.getAccessToken(serviceName, code).then(
                 res => {
+                    dispatch(success())
                     dispatch(alertActions.success("Successfully Linked Account", alertConstants.ALERT_LENGTH))
                     dispatch(success())
                     history.push("/home")

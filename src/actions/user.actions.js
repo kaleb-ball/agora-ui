@@ -1,4 +1,4 @@
-import {alertConstants, oauthConstants, userConstants} from '../constants';
+import {alertConstants, userConstants} from '../constants';
 import {oauthService, userService} from '../services';
 import { alertActions } from './';
 import { history } from '../helpers';

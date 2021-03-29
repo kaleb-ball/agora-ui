@@ -1,6 +1,5 @@
 import './navbar.less'
-import { Menu} from "antd";
-import logo from "./logo.png"
+import {Menu} from "antd";
 import * as React from "react";
 import {Header} from "antd/es/layout/layout";
 import {LogoutButton} from "./LogoutButton";
