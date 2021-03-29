@@ -1,5 +1,5 @@
 import {oauthService} from "../services";
-import {alertConstants, oauthConstants, userConstants} from "../constants";
+import {alertConstants, oauthConstants} from "../constants";
 import {alertActions} from "./alert.actions";
 import {history} from "../helpers";
 
@@ -14,14 +14,15 @@ function getAuthorization(serviceName) {
         dispatch(request())
         oauthService.getUrl(serviceName).then(
             url => {
+                dispatch(success())
                 console.log(localStorage.getItem("nonce"))
                 window.location.href = url;
+                dispatch(success())
             },
             error => {
                 dispatch(failure(error.toString()))
                 dispatch(alertActions.error("Authorization with " +
-                    serviceName.charAt(0).toUpperCase() + serviceName.slice(1) + '' +
-                    " not available", alertConstants.ALERT_LENGTH))
+                    serviceName.charAt(0).toUpperCase() + serviceName.slice(1) + '' + " not available", alertConstants.ALERT_LENGTH))
             })
     }
     function request() { return {type: oauthConstants.AUTHORIZATION_REQUEST} }
@@ -35,7 +36,9 @@ function getAccessToken(serviceName, state, code) {
         if (state === localStorage.getItem("nonce")) {
             oauthService.getAccessToken(serviceName, code).then(
                 res => {
+                    dispatch(success())
                     dispatch(alertActions.success("Successfully Linked Account", alertConstants.ALERT_LENGTH))
+                    dispatch(success())
                     history.push("/home")
                 })
                 .catch(

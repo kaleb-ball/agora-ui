@@ -1,5 +1,5 @@
 import {alertConstants, userConstants} from '../constants';
-import { userService } from '../services';
+import {oauthService, userService} from '../services';
 import { alertActions } from './';
 import { history } from '../helpers';
 
@@ -16,7 +16,15 @@ function login(username, password) {
         userService.login(username, password).then(
             user => {
                 dispatch(success(user));
-                history.push('/oauth');
+                oauthService.isAuthenticated().then(
+                    res => {
+                        if (res) {
+                            history.push("/home")
+                        } else {
+                            history.push("/oauth")
+                        }
+                    }
+                )
             },
             error => {
                 dispatch(failure(error.toString()))
@@ -38,7 +46,7 @@ function register(user) {
             .then(
                 user => {
                     dispatch(success());
-                    history.push('/login');
+                    history.push('/auth');
                     dispatch(alertActions.success('Registration successful', alertConstants.ALERT_LENGTH));
                 },
                 error => {
@@ -55,5 +63,6 @@ function register(user) {
 
 function logout() {
     userService.logout();
+    history.push("/auth")
     return { type : userConstants.LOGOUT }
 }

@@ -1,14 +1,15 @@
 import './App.less';
-import {Route, Router, Switch} from "react-router-dom";
+import {Redirect, Route, Router, Switch} from "react-router-dom";
 import {history} from "./helpers";
-import {LoginPage} from "./pages/LoginPage";
-import {RegisterPage} from "./pages/RegisterPage";
 import {OAuthPage, ZoomRedirectPage} from "./pages/OAuthPage";
 import { HomePage } from "./pages/HomePage";
+import { Exception404Page, Exception500Page, Exception401Page } from "./pages/ExceptionPages/index";
 import React from "react";
 import {alertActions} from "./actions";
 import {connect} from "react-redux";
 import Navbar from "./components/navbar/navbar";
+import {AuthPage} from "./pages/AuthPage";
+import {PrivateRoute, BaseRouteWrapper} from "./components";
 
 class App extends React.Component {
 
@@ -21,19 +22,21 @@ class App extends React.Component {
 
     }
 
-
     render() {
         return (
             <div>
                 <Navbar/>
                 <Router history={history}>
                     <Switch>
-                        <Route path="/login" component={LoginPage}/>
-                        <Route path="/register" component={RegisterPage}/>
-                        <Route path="/oauth" component={OAuthPage}/>
-                        <Route path="/redirect" component={ZoomRedirectPage}/>
-                        <Route path="/home" component={HomePage}/>
-                        <Route path="/" component={LoginPage}/>
+                        <Route exact path="/auth" component={AuthPage}/>
+                        <PrivateRoute exact path="/oauth" component={OAuthPage}/>
+                        <PrivateRoute exact path="/redirect" component={ZoomRedirectPage}/>
+                        <PrivateRoute exact path="/home" component={HomePage}/>
+                        <Route exact path="/401" component={Exception401Page} />
+                        <Route exact path="/404" component={Exception404Page}/>
+                        <Route exact path="/500" component={Exception500Page}/>
+                        <Route exact path="/" component={BaseRouteWrapper}/>
+                        <Redirect to="/404"/>
                     </Switch>
                 </Router>
             </div>
