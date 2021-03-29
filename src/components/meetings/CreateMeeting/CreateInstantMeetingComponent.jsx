@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import {Button, Form, Input, Modal} from 'antd'
-import {meetingActions} from "../../actions";
+import {meetingActions} from "../../../actions";
 class CreateInstantMeetingComponent extends React.Component {
 
 
@@ -65,7 +65,7 @@ class CreateInstantMeetingComponent extends React.Component {
         return (
             <div>
                 <Button type="primary" onClick={() => this.show()}>
-                    Create Instant Meeting
+                    Start Meeting
                 </Button>
                 <Modal title="Create Meeting" visible={visible} okText="Create" onCancel={() => this.handleCancel()}
                        footer={[
