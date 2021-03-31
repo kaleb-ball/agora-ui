@@ -30,12 +30,10 @@ axios.interceptors.response.use(function (response) {
     return Promise.reject(error);
 });
 axios.interceptors.request.use(async (config) => {
-    let expireAt = fromUnixTime(Date.parse(JSON.parse(localStorage.getItem('expiresAt'))))
-    if (differenceInMinutes(new Date(), expireAt) < 5 && config.url !== "auth" && config.url !== "auth/refresh") {
+    let expireAt = localStorage.getItem('expiresAt') ? fromUnixTime(JSON.parse(localStorage.getItem('expiresAt'))) : null
+    if (expireAt && differenceInMinutes(expireAt, Date.now()) < 1 && config.headers.Authorization && !config.url.startsWith("auth")) {
           await userService.refresh().then(
-            (res) => {
-                config.headers.Authorization = authHeader().Authorization;
-            }
+            (res) => { config.headers.Authorization = authHeader().Authorization}
         ).catch(
             (error) => {
                 userService.logout();

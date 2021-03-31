@@ -1,6 +1,5 @@
 import { restService } from "./rest.service";
 import jwtDecode from "jwt-decode";
-import {fromUnixTime} from "date-fns"
 import { history } from '../helpers';
 
 export const userService = {
@@ -50,6 +49,6 @@ function refresh() {
 
 function setToken(res) {
     localStorage.setItem('user', JSON.stringify(res));
-    const expiresAt = fromUnixTime(jwtDecode(res.data.token).exp)
+    const expiresAt = jwtDecode(res.data.token).exp;
     localStorage.setItem('expiresAt', JSON.stringify(expiresAt))
 }
