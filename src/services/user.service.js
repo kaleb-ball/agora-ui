@@ -1,12 +1,16 @@
 import { restService } from "./rest.service";
+import jwtDecode from "jwt-decode";
+import {fromUnixTime} from "date-fns"
+import { history } from '../helpers';
 
 export const userService = {
     login,
     logout,
-    register
+    register,
+    refresh
 }
 
-let baseEndpoint = "auth"
+let endpointBase = "auth"
 
 function login(username, password) {
     let payload = {
@@ -15,15 +19,15 @@ function login(username, password) {
             Password : password
         }
     }
-    return restService.post(baseEndpoint, payload, false).then(user => {
-        localStorage.setItem('user', JSON.stringify(user));
-        return user;
+    return restService.post(endpointBase, payload, false).then(res => {
+        setToken(res)
     })
 }
 
 function logout() {
     localStorage.removeItem('user');
-    return restService.delete(baseEndpoint, true)
+    history.push("auth")
+    return restService.delete(endpointBase, true)
 }
 
 
@@ -34,6 +38,18 @@ function register(user) {
         Username : user.username,
         Password : user.password
     }
-
     return restService.post("users", payload, false)
+}
+
+function refresh() {
+    let endpoint = endpointBase + '/refresh'
+    return restService.post(endpoint, {}, true).then(
+        (res)=> { setToken(res)}
+    ).catch(()=> { return Promise.reject("Session expired. Please login again.")})
+}
+
+function setToken(res) {
+    localStorage.setItem('user', JSON.stringify(res));
+    const expiresAt = fromUnixTime(jwtDecode(res.data.token).exp)
+    localStorage.setItem('expiresAt', JSON.stringify(expiresAt))
 }

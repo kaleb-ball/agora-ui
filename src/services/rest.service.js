@@ -33,7 +33,7 @@ function put(endpoint, payload, authenticated) {
     return axios.put(endpoint, payload, config)
 }
 
-function _delete(endpoint, authenticated) {
+function _delete(endpoint, authenticated, param = {}) {
     config = {
         headers : addHeaders(authenticated, false)
     };
