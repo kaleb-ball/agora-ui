@@ -62,9 +62,7 @@ function register(user) {
 }
 
 function logout() {
-    return dispatch => {
-        dispatch(logout())
-        userService.logout()
-    }
-    function logout() {return {type : userConstants.LOGOUT}}
+    userService.logout();
+    history.push("/auth")
+    return { type : userConstants.LOGOUT }
 }

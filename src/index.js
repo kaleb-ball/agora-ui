@@ -4,46 +4,26 @@ import './index.css';
 import { App }  from './App'
 import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
-import {authHeader, history, store} from "./helpers";
+import {history, store} from "./helpers";
 import axios from "axios";
 import {API_ROOT } from './helpers/api-root-config'
-import { differenceInMinutes } from 'date-fns'
-import {userService} from "./services";
-import {fromUnixTime} from 'date-fns'
-import {alertActions} from "./actions";
-import {alertConstants} from "./constants";
-
 
 axios.defaults.baseURL = `${API_ROOT}`
 axios.defaults.responseType = "json"
-axios.defaults.withCredentials = true;
 
 
 axios.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
     if (!error.response) {
-        error = { response : { data : { error : "Failed to connect to the server" } } }
+        error = {
+            response : { data : { error : "Failed to Connect to the server" } } }
+
         history.push("/500")
         return Promise.reject(error)
     }
     return Promise.reject(error);
 });
-axios.interceptors.request.use(async (config) => {
-    let expireAt = localStorage.getItem('expiresAt') ? fromUnixTime(JSON.parse(localStorage.getItem('expiresAt'))) : null
-    if (expireAt && differenceInMinutes(expireAt, Date.now()) < 1 && config.headers.Authorization && !config.url.startsWith("auth")) {
-          await userService.refresh().then(
-            (res) => { config.headers.Authorization = authHeader().Authorization}
-        ).catch(
-            (error) => {
-                userService.logout();
-                alertActions.error(error, alertConstants.ALERT_LENGTH)
-                return Promise.reject();
-        })
-    }
-
-    return config
-})
 
 ReactDOM.render(
     <Provider store={store}>

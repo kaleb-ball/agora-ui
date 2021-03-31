@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import {Button, Col, DatePicker, Form, Input, InputNumber, Modal, Radio, Row, TimePicker} from 'antd'
+import {Button, Col, DatePicker, Form, Input, InputNumber, message, Modal, Radio, Row, TimePicker} from 'antd'
 import {meetingActions} from "../../../actions";
 import { isPast, isToday } from 'date-fns';
 
