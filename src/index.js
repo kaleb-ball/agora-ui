@@ -9,12 +9,10 @@ import axios from "axios";
 import {API_ROOT } from './helpers/api-root-config'
 import { differenceInMinutes } from 'date-fns'
 import {userService} from "./services";
-import * as json from "@babel/core";
 import {fromUnixTime} from 'date-fns'
 import {alertActions} from "./actions";
 import {alertConstants} from "./constants";
 
-const cancelTokenSource = axios.CancelToken.source()
 
 axios.defaults.baseURL = `${API_ROOT}`
 axios.defaults.responseType = "json"
