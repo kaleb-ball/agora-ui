@@ -22,7 +22,7 @@ function getAuthorization(serviceName) {
             error => {
                 dispatch(failure(error.toString()))
                 dispatch(alertActions.error("Authorization with " +
-                    serviceName.charAt(0).toUpperCase() + serviceName.slice(1) + '' + " not available", alertConstants.ALERT_LENGTH))
+                    serviceName.charAt(0).toUpperCase() + serviceName.slice(1) + " not available", alertConstants.ALERT_LENGTH))
             })
     }
     function request() { return {type: oauthConstants.AUTHORIZATION_REQUEST} }
