@@ -9,7 +9,8 @@ class Navbar extends React.Component {
         return(
             <Header style={{ position: 'fixed', zIndex: 1, width: '100%', background: '#fff' }}>
                 <div className="logo">
-                    <a href="/">Agora</a>
+                    {/*<img src={logo}/>*/}
+                    <a>Agora</a>
                 </div>
                 <Menu
                     theme="light"
