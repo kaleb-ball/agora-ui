@@ -21,7 +21,6 @@ class AuthPage extends React.Component {
     }
 
     switchTab() {
-        console.log("switch")
         this.setState({key : 'login'})
     }
 
