@@ -6,6 +6,8 @@ export const userService = {
     register
 }
 
+let baseEndpoint = "auth"
+
 function login(username, password) {
     let payload = {
         credentials : {
@@ -13,7 +15,7 @@ function login(username, password) {
             Password : password
         }
     }
-    return restService.post("auth", payload, false).then(user => {
+    return restService.post(baseEndpoint, payload, false).then(user => {
         localStorage.setItem('user', JSON.stringify(user));
         return user;
     })
@@ -21,6 +23,7 @@ function login(username, password) {
 
 function logout() {
     localStorage.removeItem('user');
+    return restService.delete(baseEndpoint, true)
 }
 
 

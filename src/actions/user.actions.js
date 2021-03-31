@@ -62,7 +62,11 @@ function register(user) {
 }
 
 function logout() {
-    userService.logout();
-    history.push("/auth")
-    return { type : userConstants.LOGOUT }
+    return dispatch => {
+        dispatch(logout())
+        userService.logout().catch(()=> { dispatch(alertActions.error('Something went wrong'), alertConstants.ALERT_LENGTH)});
+        history.push("/auth")
+    }
+    function logout() {return {type : userConstants.LOGOUT}}
+
 }
