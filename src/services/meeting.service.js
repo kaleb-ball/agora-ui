@@ -7,24 +7,24 @@ export const meetingService = {
     getMeeting
 }
 
-const endpointBase = 'users/me/platforms/'
+const endpointBase = 'users/me/platforms'
 
-function createMeeting(data, instant, provider = oauthConstants.ZOOM) {
-    let endpoint = `${endpointBase}/${provider}/meetings`
+function createMeeting(data, platform = oauthConstants.PLATFORM_NAMES.ZOOM, instant) {
+    const endpoint = getEndpoint(platform)
     const params = {
         type : instant ? 1 : 2
     }
     return restService.post(endpoint, true, data, params);
 }
 
-async function getAllMeetings(provider= oauthConstants.ZOOM) {
+async function getAllMeetings(platform= oauthConstants.PLATFORM_NAMES.ZOOM) {
     let meetings = [];
     await getPagedMeetings(null);
     return meetings;
 
      async function getPagedMeetings(page) {
         let newMeetings
-        let endpoint = `${endpointBase}/${provider}/meetings`;
+        const endpoint = getEndpoint(platform)
         const params = {
             page_size : 50,
             next_page : page ? page : ''
@@ -36,10 +36,15 @@ async function getAllMeetings(provider= oauthConstants.ZOOM) {
 }
 
 
-function getMeeting(id, provider = oauthConstants.ZOOM) {
-    let endpoint = `${endpointBase}/${provider}/meetings`
+function getMeeting(id, platform = oauthConstants.PLATFORM_NAMES.ZOOM) {
+    const endpoint = getEndpoint(platform);
     const params = {
         ID : id
     }
     return restService.get(endpoint,true, params)
+}
+
+
+function getEndpoint(platform) {
+   return `${endpointBase}/${platform}/meetings`;
 }

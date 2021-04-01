@@ -9,11 +9,11 @@ export const meetingActions = {
     startMeeting
 }
 
-function createMeeting(data) {
+function createMeeting(data, platform) {
     return dispatch => {
         dispatch(request());
-        meetingService.createMeeting(data, false).then(
-            (meeting) => {
+        meetingService.createMeeting(data, platform, false).then(
+            () => {
                 dispatch(success());
                 dispatch(alertActions.success("Successfully Created a Meeting"))
             },
@@ -27,10 +27,10 @@ function createMeeting(data) {
     function failure() { return {type: meetingConstants.CREATE_FAILURE} }
 }
 
-function createInstantMeeting(data) {
+function createInstantMeeting(data, platform) {
     return dispatch => {
         dispatch(request());
-        meetingService.createMeeting(data, true).then(
+        meetingService.createMeeting(data, platform, true).then(
             (body) => {
                 dispatch(success());
                 openStartUrl(body)

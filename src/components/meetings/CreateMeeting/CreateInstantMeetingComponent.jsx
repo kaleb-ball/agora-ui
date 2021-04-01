@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import {Button, Form, Input, Modal} from 'antd'
+import {Button, Form, Input, Modal, Select} from 'antd'
 import {meetingActions} from "../../../actions";
+import {oauthConstants} from "../../../constants";
 class CreateInstantMeetingComponent extends React.Component {
 
 
@@ -12,13 +13,16 @@ class CreateInstantMeetingComponent extends React.Component {
         this.state = {
             visible : false,
             submitted : false,
+            platform : '',
             title : '',
             description : '',
+            platforms : oauthConstants.PLATFORM_VALUES
         }
 
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
+        this.handleDataChange = this.handleDataChange.bind(this)
         this.show = this.show.bind(this)
         this.createInstantMeetingFormRef = React.createRef()
 
@@ -29,17 +33,28 @@ class CreateInstantMeetingComponent extends React.Component {
         this.setState({[name] : value})
     }
 
+    handleDataChange(name, data) {
+        this.setState({
+            [name] : data
+        })
+    }
+
 
     handleSubmit(){
         this.setState({submitted : true});
-        const {title, description} = this.state;
+        const {title, description, platform} = this.state;
 
-        let data = {
-            title : title,
-            description : description,
+        if (platform) {
+            let data = {
+                title : title,
+                description : description,
+            }
+            this.props.createInstantMeeting(data, platform)
+            this.handleCancel();
+        } else {
+            return false;
         }
-        this.props.createInstantMeeting(data)
-        this.handleCancel();
+
 
     }
 
@@ -61,7 +76,7 @@ class CreateInstantMeetingComponent extends React.Component {
 
 
     render() {
-        const visible = this.state.visible;
+        const {visible, platforms} = this.state;
         return (
             <div>
                 <Button type="primary" onClick={() => this.show()}>
@@ -80,6 +95,19 @@ class CreateInstantMeetingComponent extends React.Component {
                        ]}
                 >
                     <Form ref={this.createInstantMeetingFormRef} id="instantForm" size="large" onFinish={() => this.handleSubmit()} >
+                        <Form.Item
+                            label="Platform"
+                            name="platform"
+                            rules={[{ required: true, message: 'Enter a platform' }]}
+                        >
+                            <Select
+                                //defaultValue='zoom'
+                                style={{maxWidth:"25%", textTransform: "capitalize"}}
+                                onChange={(name) => this.handleDataChange("platform", name)}
+                            >
+                                {platforms.map(platform => ( <Select.Option key={platform} style={{textTransform : "capitalize"}} disabled={platform === 'teams'}>{platform}</Select.Option>))}
+                            </Select>
+                        </Form.Item>
                         <Form.Item
                             label="Title"
                             name="title"

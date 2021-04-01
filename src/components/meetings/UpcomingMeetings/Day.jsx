@@ -44,7 +44,7 @@ class UpcomingMeetingComponent extends React.Component {
                         >
                             <Skeleton loading={false}>
                                 <List.Item.Meta
-                                    avatar={<Avatar style={{ color: '#E7F1FD', backgroundColor: '#2681F2' }}>Z</Avatar>}
+                                    avatar={<Avatar style={{ color: '#E7F1FD', backgroundColor: '#2681F2' }}>Zoom</Avatar>}
                                     title={item.title}
                                     description={item.description}
                                 />

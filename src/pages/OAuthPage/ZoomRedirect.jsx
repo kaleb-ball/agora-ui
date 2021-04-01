@@ -10,7 +10,7 @@ class ZoomRedirectPage extends React.Component {
         super(props);
 
         const query = new URLSearchParams(this.props.location.search);
-        this.props.access(oauthConstants.ZOOM, query.get('state'), query.get('code'))
+        this.props.access(oauthConstants.PLATFORM_NAMES.ZOOM, query.get('state'), query.get('code'))
     }
 
     componentDidMount() {

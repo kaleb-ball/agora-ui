@@ -15,9 +15,9 @@ class OAuthPage extends React.Component {
     }
 
 
-    onZoomClick(e) { this.handleClick(oauthConstants.ZOOM) }
+    onZoomClick(e) { this.handleClick(oauthConstants.PLATFORM_NAMES.ZOOM) }
 
-    onTeamsClick(e) { this.handleClick(oauthConstants.TEAMS) }
+    onTeamsClick(e) { this.handleClick(oauthConstants.PLATFORM_NAMES.TEAMS) }
 
     handleClick(serviceName) {
         this.props.authorization(serviceName)

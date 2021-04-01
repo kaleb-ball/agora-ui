@@ -31,7 +31,7 @@ function getAccessToken(provider , code) {
 
 async function isAuthenticated() {
     let authenticated = false;
-    await oauthService.platformAuthenticated(oauthConstants.ZOOM).then(
+    await oauthService.platformAuthenticated(oauthConstants.PLATFORM_NAMES.ZOOM).then(
         (res) => {
             if (res.status === 200) {
                 authenticated = true;

@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import {Button, Col, DatePicker, Form, Input, InputNumber, Modal, Radio, Row, TimePicker} from 'antd'
+import {Button, Col, DatePicker, Form, Input, InputNumber, Modal, Radio, Row, Select, TimePicker} from 'antd'
 import {meetingActions} from "../../../actions";
 import { isPast, isToday } from 'date-fns';
+import {oauthConstants} from "../../../constants";
 
 class CreateMeetingComponent extends React.Component {
 
@@ -14,12 +15,15 @@ class CreateMeetingComponent extends React.Component {
         this.state = {
             visible : false,
             submitted : false,
+            //Add default platform
+            platform : '',
             title : '',
             description : '',
             date : '',
             time : '',
             length : '',
-            unit : ''
+            unit : '',
+            platforms: oauthConstants.PLATFORM_VALUES
 
         }
 
@@ -39,9 +43,9 @@ class CreateMeetingComponent extends React.Component {
 
     handleCreate(){
         this.setState({submitted : true});
-        const {title, description, date, time, length, unit} = this.state;
+        const {platform, title, description, date, time, length, unit} = this.state;
 
-        if (title && description && date && time &&  length && unit) {
+        if (platform && title && description && date && time &&  length && unit) {
 
             //Add logic for Teams
             let data = {
@@ -50,7 +54,7 @@ class CreateMeetingComponent extends React.Component {
                 start_time : new Date(date + ' ' + time).toISOString(),
                 duration : length + unit
             }
-            this.props.createMeeting(data)
+            this.props.createMeeting(data, platform)
             this.handleCancel();
             setTimeout(()=> {
                 this.props.getMeetings()
@@ -97,25 +101,34 @@ class CreateMeetingComponent extends React.Component {
 
 
     render() {
-        const visible = this.state.visible;
+        const {visible, platforms} = this.state;
         return (
             <div>
+
+
                 <Button type="primary" onClick={() => this.show()}>
                     Create Meeting
                 </Button>
                 <Modal title="Create Meeting" visible={visible} okText="Create" onCancel={() => this.handleCancel()}
                        footer={[
-                           <Button key="cancel" onClick={() => {
-                               this.handleCancel();
-                           }}>
-                               Cancel
-                           </Button>,
-                           <Button type="primary" form="meetingForm" key="submit" htmlType="submit">
-                               Create
-                           </Button>
+                           <Button key="cancel" onClick={() => { this.handleCancel(); }}> Cancel </Button>,
+                           <Button type="primary" form="meetingForm" key="submit" htmlType="submit"> Create</Button>
                        ]}
                 >
-                    <Form ref={this.createMeetingFormRef} id="meetingForm" size="large" onFinish={() => this.handleCreate()} >
+                    <Form ref={this.createMeetingFormRef} id="meetingForm" size="large" onFinish={() => this.handleCreate()} labelAlign="right" >
+                        <Form.Item
+                            label="Platform"
+                            name="platform"
+                            rules={[{ required: true, message: 'Enter a platform' }]}
+                        >
+                            <Select
+                                //defaultValue='zoom'
+                                style={{maxWidth:"25%", textTransform: "capitalize"}}
+                                onChange={(name) => this.handleDataChange("platform", name)}
+                            >
+                                {platforms.map(platform => ( <Select.Option key={platform} style={{textTransform : "capitalize"}} disabled={platform === 'teams'}>{platform}</Select.Option>))}
+                            </Select>
+                        </Form.Item>
                         <Form.Item
                             label="Title"
                             name="title"
