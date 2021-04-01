@@ -1,5 +1,5 @@
 import { restService } from "./rest.service";
-import {oauthConstants} from "../constants";
+import {platformConstants} from "../constants/platformConstants";
 
 export const oauthService = {
     getUrl,
@@ -30,9 +30,10 @@ function getAccessToken(platform , code) {
 
 }
 
+//Remove
 async function isAuthorized() {
     let authenticated = false;
-    await oauthService.platformAuthenticated(oauthConstants.PLATFORM_NAMES.ZOOM).then(
+    await oauthService.platformAuthenticated(platformConstants.PLATFORM_NAMES.ZOOM).then(
         (res) => {
             if (res.status === 200) {
                 authenticated = true;

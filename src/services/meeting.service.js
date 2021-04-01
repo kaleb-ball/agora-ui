@@ -9,7 +9,7 @@ export const meetingService = {
 
 const endpointBase = 'users/me/platforms'
 
-function createMeeting(data, platform = oauthConstants.PLATFORM_NAMES.ZOOM, instant) {
+function createMeeting(data, platform, instant) {
     const endpoint = getEndpoint(platform)
     const params = {
         type : instant ? 1 : 2
@@ -17,7 +17,7 @@ function createMeeting(data, platform = oauthConstants.PLATFORM_NAMES.ZOOM, inst
     return restService.post(endpoint, true, data, params);
 }
 
-async function getAllMeetings(platform= oauthConstants.PLATFORM_NAMES.ZOOM) {
+async function getAllMeetings(platform) {
     let meetings = [];
     await getPagedMeetings(null);
     return meetings;

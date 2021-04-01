@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {Button, Col, DatePicker, Form, Input, InputNumber, Modal, Radio, Row, Select, TimePicker} from 'antd'
 import {meetingActions} from "../../../../actions";
 import { isPast, isToday } from 'date-fns';
-import {oauthConstants} from "../../../../constants";
+import {platformConstants} from "../../../../constants/platformConstants";
 
 class CreateMeetingComponent extends React.Component {
 
@@ -15,7 +15,6 @@ class CreateMeetingComponent extends React.Component {
         this.state = {
             visible : false,
             submitted : false,
-            //Add default platform
             platform : '',
             title : '',
             description : '',
@@ -23,7 +22,7 @@ class CreateMeetingComponent extends React.Component {
             time : '',
             length : '',
             unit : '',
-            platforms: oauthConstants.PLATFORM_VALUES
+            platforms: platformConstants.PLATFORM_VALUES
 
         }
 

@@ -1,8 +1,8 @@
 import React from "react";
 import {connect} from "react-redux";
 import {oauthActions} from "../../actions/oauth.actions";
-import {oauthConstants} from "../../constants";
 import {Row, Spin} from "antd";
+import {platformConstants} from "../../constants/platformConstants";
 
 class ZoomRedirectPage extends React.Component {
 
@@ -10,7 +10,7 @@ class ZoomRedirectPage extends React.Component {
         super(props);
 
         const query = new URLSearchParams(this.props.location.search);
-        this.props.access(oauthConstants.PLATFORM_NAMES.ZOOM, query.get('state'), query.get('code'))
+        this.props.access(platformConstants.PLATFORM_NAMES.ZOOM, query.get('state'), query.get('code'))
     }
 
     componentDidMount() {

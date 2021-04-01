@@ -5,7 +5,7 @@ import Avatar from "antd/es/avatar/avatar";
 import {meetingActions} from "../../../actions";
 import './DayComponent/DayComponent.css'
 import {ExclamationCircleTwoTone, MoreOutlined} from "@ant-design/icons";
-import {oauthConstants} from "../../../constants";
+import {platform_color, platform_name} from "../../../constants/platformConstants";
 
 
 class MeetingComponent extends React.Component {
@@ -21,11 +21,7 @@ class MeetingComponent extends React.Component {
     }
 
     avatar(platform) {
-        if (oauthConstants.PLATFORM_NAMES.ZOOM === platform) {
-            return <Avatar style={{ color: '#E7F1FD', backgroundColor: '#2681F2', fontSize:"x-large"}}>Z</Avatar>
-        } else if (oauthConstants.PLATFORM_NAMES.TEAMS === platform) {
-            return <Avatar style={{ color: '#E7F1FD', backgroundColor: '#464EB8', fontSize:"x-large" }}>T</Avatar>
-        }
+        return <Avatar style={{ color: '#E7F1FD', backgroundColor: platform_color(platform), fontSize:"x-large"}}>{platform_name(platform).charAt(0)}</Avatar>
     }
 
 

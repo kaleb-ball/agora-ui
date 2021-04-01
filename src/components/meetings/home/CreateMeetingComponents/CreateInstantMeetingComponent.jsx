@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import {Button, Form, Input, Modal, Select} from 'antd'
 import {meetingActions} from "../../../../actions";
-import {oauthConstants} from "../../../../constants";
+import {platformConstants} from "../../../../constants/platformConstants";
 class CreateInstantMeetingComponent extends React.Component {
 
 
@@ -16,7 +16,7 @@ class CreateInstantMeetingComponent extends React.Component {
             platform : '',
             title : '',
             description : '',
-            platforms : oauthConstants.PLATFORM_VALUES
+            platforms : platformConstants.PLATFORM_VALUES
         }
 
         this.handleChange = this.handleChange.bind(this)

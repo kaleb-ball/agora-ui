@@ -1,14 +1,5 @@
 export const oauthConstants = {
 
-    PLATFORM_VALUES: [
-      'zoom', 'teams'
-    ],
-
-    PLATFORM_NAMES : {
-        ZOOM : 'zoom',
-        TEAMS : 'teams',
-    },
-
     AUTHORIZATION_REQUEST :  'OAUTH_AUTHORIZATION_REQUEST',
     AUTHORIZATION_SUCCESS : 'OAUTH_AUTHORIZATION_SUCCESS',
     AUTHORIZATION_FAILURE : 'OAUTH_AUTHORIZATION_FAILURE',

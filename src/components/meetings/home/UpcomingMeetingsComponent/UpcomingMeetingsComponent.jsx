@@ -59,7 +59,6 @@ class UpcomingMeetingComponent extends React.Component {
     }
 
     reload() {
-        console.log("reload")
         this.props.getMeetings();
     }
 
