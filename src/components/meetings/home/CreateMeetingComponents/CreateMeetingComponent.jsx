@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import {Button, Col, DatePicker, Form, Input, InputNumber, Modal, Radio, Row, Select, TimePicker} from 'antd'
-import {meetingActions} from "../../../actions";
+import {meetingActions} from "../../../../actions";
 import { isPast, isToday } from 'date-fns';
-import {oauthConstants} from "../../../constants";
+import {oauthConstants} from "../../../../constants";
 
 class CreateMeetingComponent extends React.Component {
 

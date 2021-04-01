@@ -21,8 +21,7 @@ function getAuthorization(serviceName) {
             },
             error => {
                 dispatch(failure(error.toString()))
-                dispatch(alertActions.error("Authorization with " +
-                    serviceName.charAt(0).toUpperCase() + serviceName.slice(1) + " not available"))
+                dispatch(alertActions.error("Authorization with platform not available"))
             })
     }
     function request() { return {type: oauthConstants.AUTHORIZATION_REQUEST} }

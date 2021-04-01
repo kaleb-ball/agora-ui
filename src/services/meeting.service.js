@@ -31,7 +31,7 @@ async function getAllMeetings(platform= oauthConstants.PLATFORM_NAMES.ZOOM) {
         }
         await restService.get(endpoint, true, params).then((res)=> {newMeetings = res;});
         meetings = meetings.concat(newMeetings.data.meetings)
-        return newMeetings.data.next_page_token ? await getPagedMeetings(newMeetings.data.next_page_token) : meetings;
+        return newMeetings.data.next_page_token ? await getPagedMeetings(newMeetings.data.next_page_token) : addPlatform(meetings, platform);
      }
 }
 
@@ -47,4 +47,8 @@ function getMeeting(id, platform = oauthConstants.PLATFORM_NAMES.ZOOM) {
 
 function getEndpoint(platform) {
    return `${endpointBase}/${platform}/meetings`;
+}
+
+function addPlatform(meetings, platform) {
+    meetings.forEach(meeting => meeting.platform = platform)
 }

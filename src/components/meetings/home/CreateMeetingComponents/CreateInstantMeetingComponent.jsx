@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import {Button, Form, Input, Modal, Select} from 'antd'
-import {meetingActions} from "../../../actions";
-import {oauthConstants} from "../../../constants";
+import {meetingActions} from "../../../../actions";
+import {oauthConstants} from "../../../../constants";
 class CreateInstantMeetingComponent extends React.Component {
 
 

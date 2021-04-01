@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 
 import {Button, Card} from 'antd'
 import { Tabs } from 'antd';
-import {DayComponent} from "./Day";
-import {meetingActions} from "../../../actions";
+import {DayComponent} from "../../common/DayComponent/DayComponent";
+import {meetingActions} from "../../../../actions";
 import { add, addDays, isPast } from 'date-fns'
 import {ReloadOutlined} from "@ant-design/icons";
 
