@@ -11,7 +11,8 @@ export const oauthService = {
 const endpointBase = "platforms"
 
 function getUrl(name) {
-    return restService.get(endpointBase, '', true).then(
+    const endpoint = `${endpointBase}`
+    return restService.get(endpoint, true).then(
         (res)=> {
             return res.data.filter(x => x.name === name)[0].redirect_url.toString() + "&state=" + getState();
         }, (err) => {
@@ -19,9 +20,12 @@ function getUrl(name) {
         })
 }
 
-function getAccessToken(name, code) {
-    let endpoint = endpointBase + "/" + name + "/auth?code=" + code;
-    return restService.post(endpoint, null, true)
+function getAccessToken(provider , code) {
+    const endpoint = `${endpointBase}/${provider}`
+    const params = {
+        code : code
+    }
+    return restService.post(endpoint, true, params)
 
 }
 
@@ -40,9 +44,9 @@ async function isAuthenticated() {
     return authenticated
 }
 
-function platformAuthenticated(name) {
-    let endpoint = endpointBase + '/' + name + '/auth';
-    return restService.get(endpoint, "", true)
+function platformAuthenticated(provider) {
+    const endpoint = `${endpointBase}/${provider}/auth`
+    return restService.get(endpoint, true)
 
 }
 
@@ -53,9 +57,9 @@ function getState() {
 
 function generateNonce(length) {
     localStorage.removeItem("nonce")
-    var nonce = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for(var i = 0; i < length; i++) {
+    let nonce = "";
+    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for(let i = 0; i < length; i++) {
         nonce += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     localStorage.setItem("nonce", nonce)
