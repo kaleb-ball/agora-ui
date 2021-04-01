@@ -1,6 +1,6 @@
 import {meetingService} from "../services";
 import {alertActions} from "./alert.actions";
-import {alertConstants, meetingConstants} from "../constants";
+import {meetingConstants} from "../constants";
 
 export const meetingActions = {
     createMeeting,
@@ -15,11 +15,11 @@ function createMeeting(data) {
         meetingService.createMeeting(data, false).then(
             (meeting) => {
                 dispatch(success());
-                dispatch(alertActions.success("Successfully Created a Meeting"), alertConstants.ALERT_LENGTH)
+                dispatch(alertActions.success("Successfully Created a Meeting"))
             },
             (error)=>{
                 dispatch(failure())
-                dispatch(alertActions.error(error.response.data.error.toString(), alertConstants.ALERT_LENGTH))
+                dispatch(alertActions.error(error.response.data.error.toString()))
             })
     }
     function request() { return {type: meetingConstants.CREATE_REQUEST} }
@@ -37,7 +37,7 @@ function createInstantMeeting(data) {
             },
             (error)=>{
                 dispatch(failure())
-                dispatch(alertActions.error(error.response.data.error.toString(), alertConstants.ALERT_LENGTH))
+                dispatch(alertActions.error(error.response.data.error.toString()))
             })
     }
     function request() { return {type: meetingConstants.CREATE_REQUEST} }
@@ -55,7 +55,7 @@ function getMeetings() {
         ).catch(
             (err)=> {
                 dispatch(failure())
-                dispatch(alertActions.error("There was an error getting meetings", alertConstants.ALERT_LENGTH))
+                dispatch(alertActions.error("There was an error getting meetings"))
             }
         )
     }
@@ -75,7 +75,7 @@ function startMeeting(id) {
         ).catch(
             (error) => {
                 dispatch(failure());
-                dispatch(alertActions.error(error.response.data.error.toString()), alertConstants.ALERT_LENGTH)
+                dispatch(alertActions.error(error.response.data.error.toString()))
             }
         )
     }

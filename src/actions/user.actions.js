@@ -28,7 +28,7 @@ function login(username, password) {
             },
             error => {
                 dispatch(failure(error.toString()))
-                dispatch(alertActions.error(error.response.data.error.toString(), alertConstants.ALERT_LENGTH))
+                dispatch(alertActions.error(error.response.data.error.toString()))
             }
         );
     };
@@ -47,11 +47,11 @@ function register(user) {
                 user => {
                     dispatch(success());
                     history.push('/auth');
-                    dispatch(alertActions.success('Registration successful', alertConstants.ALERT_LENGTH));
+                    dispatch(alertActions.success('Registration successful', alertConstants));
                 },
                 error => {
                     dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.response.data.error.toString(), alertConstants.ALERT_LENGTH));
+                    dispatch(alertActions.error(error.response.data.error.toString(), alertConstants));
                 }
             );
     };
