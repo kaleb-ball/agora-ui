@@ -5,7 +5,8 @@ export const oauthService = {
     getUrl,
     getAccessToken,
     platformAuthenticated,
-    isAuthenticated
+    isAuthorized,
+    authenticatedPlatforms
 }
 
 const endpointBase = "platforms"
@@ -20,16 +21,16 @@ function getUrl(name) {
         })
 }
 
-function getAccessToken(provider , code) {
-    const endpoint = `${endpointBase}/${provider}`
+function getAccessToken(platform , code) {
+    const endpoint = `${endpointBase}/${platform}/auth`
     const params = {
         code : code
     }
-    return restService.post(endpoint, true, params)
+    return restService.post(endpoint, true, {}, params)
 
 }
 
-async function isAuthenticated() {
+async function isAuthorized() {
     let authenticated = false;
     await oauthService.platformAuthenticated(oauthConstants.PLATFORM_NAMES.ZOOM).then(
         (res) => {
@@ -44,6 +45,26 @@ async function isAuthenticated() {
     return authenticated
 }
 
+/*async function isAuthorized() {
+    authenticatedPlatforms()
+    if (!localStorage.getItem('authenticatedPlatforms')) authenticatedPlatforms();
+    return JSON.parse(localStorage.getItem('authenticatedPlatforms')).platforms.length >= 1;
+}*/
+
+function authenticatedPlatforms() {
+    //implement
+    const platforms =
+        {
+            platforms : [
+                'zoom'
+            ]
+        }
+    localStorage.setItem('authenticatedPlatforms', JSON.stringify(platforms))
+    return platforms
+}
+
+
+//Remove
 function platformAuthenticated(provider) {
     const endpoint = `${endpointBase}/${provider}/auth`
     return restService.get(endpoint, true)

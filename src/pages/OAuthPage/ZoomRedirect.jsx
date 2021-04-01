@@ -24,7 +24,7 @@ class ZoomRedirectPage extends React.Component {
     render() {
         return(
             <Row type="flex" justify="center" align="middle" style={{minHeight: '100vh'}}>
-                <Spin size="large"></Spin>
+                <Spin size="large"/>
             </Row>
         )
     }

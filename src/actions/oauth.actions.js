@@ -37,8 +37,7 @@ function getAccessToken(serviceName, state, code) {
                 res => {
                     dispatch(success())
                     dispatch(alertActions.success("Successfully Linked Account"))
-                    dispatch(success())
-                    history.push("/home")
+                    history.push("/oauth")
                 })
                 .catch(
                     error =>{

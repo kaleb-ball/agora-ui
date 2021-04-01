@@ -27,6 +27,7 @@ function login(username, password) {
 function logout() {
     const endpoint = `${endpointBase}`
     localStorage.removeItem('user');
+    localStorage.removeItem('authenticatedPlatforms')
     history.push("auth")
     return restService.delete(endpoint, true)
 }
