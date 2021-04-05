@@ -3,27 +3,20 @@ import {connect} from "react-redux";
 import {Button, Col, Row, Space} from "antd";
 import {oauthActions} from "../../actions/oauth.actions";
 import {
-    number_of_platforms,
     platform_color,
     platform_name,
     platform_value,
     platformConstants
 } from "../../constants/platformConstants";
-import {oauthService} from "../../services";
 import {history} from "../../helpers";
-
 
 class OAuthPage extends React.Component {
 
-    constructor(props) {
+     constructor(props) {
         super(props);
-        oauthService.authenticatedPlatforms();
-        this.authenticatedPlatforms = localStorage.getItem('authenticatedPlatforms') ? JSON.parse(localStorage.getItem('authenticatedPlatforms')).platforms : []
 
-        if (this.authenticatedPlatforms.length === number_of_platforms()) {
-            history.push("/")
-        }
-
+        this.props.checkAuthorization();
+        if (this.props.allAuthorized) history.push("/")
         this.handleClick = this.handleClick.bind(this)
         this.isCallback = this.isCallback.bind(this)
     }
@@ -32,14 +25,17 @@ class OAuthPage extends React.Component {
         this.props.authorization(serviceName)
     }
 
+
+
    isCallback() {
-        if (this.authenticatedPlatforms.length >= 1) {
+        if (this.props.platforms.length >= 1) {
             return <Button size="large" style={{float: 'right'}} href="/" type="link">Continue</Button>
         }
    }
 
    button(platform) {
-       if (this.authenticatedPlatforms.includes(platform)) {
+
+       if (this.props.platforms.filter(x=> x.name === platform).length >= 1) {
            return(
                <div>
                    <Space align="center">
@@ -64,7 +60,7 @@ class OAuthPage extends React.Component {
 
 
    render() {
-        let continueButton = this.isCallback()
+        const continueButton = this.isCallback()
         return (
            <div>
                <Row type="flex" justify="center" align="middle" style={{minHeight: '35vh'}}>
@@ -84,11 +80,15 @@ class OAuthPage extends React.Component {
 }
 
 function mapState(state) {
-   return {}
+   return {
+       platforms : state.checkAuthorization.platforms,
+       allAuthorized: state.checkAuthorization.allAuthorized
+   }
 }
 
 const actionCreators = {
-    authorization : oauthActions.getAuthorization
+    authorization : oauthActions.getAuthorization,
+    checkAuthorization : oauthActions.checkAuthorization
 }
 
 const connectedRegisterPage = connect(mapState, actionCreators)(OAuthPage);

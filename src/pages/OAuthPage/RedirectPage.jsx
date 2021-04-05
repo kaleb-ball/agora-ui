@@ -2,15 +2,15 @@ import React from "react";
 import {connect} from "react-redux";
 import {oauthActions} from "../../actions/oauth.actions";
 import {Row, Spin} from "antd";
-import {platformConstants} from "../../constants/platformConstants";
 
-class ZoomRedirectPage extends React.Component {
+class RedirectPage extends React.Component {
 
     constructor(props) {
         super(props);
 
         const query = new URLSearchParams(this.props.location.search);
-        this.props.access(platformConstants.PLATFORM_NAMES.ZOOM, query.get('state'), query.get('code'))
+        const platform = this.props.location.pathname.replace("/redirect/", "")
+        this.props.access(platform, query.get('state'), query.get('code'))
     }
 
     componentDidMount() {
@@ -39,5 +39,5 @@ const actionCreators = {
     access : oauthActions.getAccessToken
 }
 
-const connectedRedirectPage = connect(mapState, actionCreators)(ZoomRedirectPage);
-export { connectedRedirectPage as ZoomRedirectPage };
+const connectedPage = connect(mapState, actionCreators)(RedirectPage);
+export { connectedPage as RedirectPage };

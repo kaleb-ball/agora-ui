@@ -6,6 +6,7 @@ import {history} from "../helpers";
 export const oauthActions = {
     getAuthorization,
     getAccessToken,
+    checkAuthorization,
     revokeAccess
 }
 
@@ -56,6 +57,21 @@ function getAccessToken(serviceName, state, code) {
     function failure() { return {type: oauthConstants.ACCESS_FAILURE} }
 }
 
+function checkAuthorization() {
+    return dispatch => {
+        oauthService.authenticatedPlatforms().then(
+            (platforms) => {
+                dispatch(success(platforms))
+            }
+        ).catch(
+            (err) => {
+                dispatch(alertActions.error("Something went wrong"))
+            }
+        )
+    }
+
+    function success(platforms) { return {type: oauthConstants.CHECK_AUTHORIZATION, platforms} }
+}
 function revokeAccess(serviceName) {
 
 }

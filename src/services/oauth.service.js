@@ -4,7 +4,6 @@ import {platformConstants} from "../constants/platformConstants";
 export const oauthService = {
     getUrl,
     getAccessToken,
-    platformAuthenticated,
     isAuthorized,
     authenticatedPlatforms
 }
@@ -30,48 +29,21 @@ function getAccessToken(platform , code) {
 
 }
 
-//Remove
 async function isAuthorized() {
-    let authenticated = false;
-    await oauthService.platformAuthenticated(platformConstants.PLATFORM_NAMES.ZOOM).then(
+    const platforms = await authenticatedPlatforms()
+    return platforms.length >= 1;
+}
+
+async function authenticatedPlatforms() {
+    let platforms = [];
+    const endpoint = `users/me/${endpointBase}`
+    await restService.get(endpoint, true).then(
         (res) => {
-            if (res.status === 200) {
-                authenticated = true;
-            }
-    }).catch(
-        () => {
-            authenticated = false;
-        }
-    )
-    return authenticated
-}
-
-/*async function isAuthorized() {
-    authenticatedPlatforms()
-    if (!localStorage.getItem('authenticatedPlatforms')) authenticatedPlatforms();
-    return JSON.parse(localStorage.getItem('authenticatedPlatforms')).platforms.length >= 1;
-}*/
-
-function authenticatedPlatforms() {
-    //implement
-    const platforms =
-        {
-            platforms : [
-                'zoom'
-            ]
-        }
+            platforms = res.data ? res.data : []
+    })
     localStorage.setItem('authenticatedPlatforms', JSON.stringify(platforms))
-    return platforms
+    return platforms;
 }
-
-
-//Remove
-function platformAuthenticated(provider) {
-    const endpoint = `${endpointBase}/${provider}/auth`
-    return restService.get(endpoint, true)
-
-}
-
 
 function getState() {
     return generateNonce(64)

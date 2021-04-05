@@ -1,2 +1,2 @@
 export * from './OAuthPage'
-export * from './ZoomRedirect'
+export * from './RedirectPage'
