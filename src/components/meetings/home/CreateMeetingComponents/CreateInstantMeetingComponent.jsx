@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import {Button, Form, Input, Modal, Select} from 'antd'
+import {Button, Form, Input, Modal} from 'antd'
 import {meetingActions} from "../../../../actions";
-import {platformConstants} from "../../../../constants/platformConstants";
+import {SelectPlatformComponent} from "../../../platform/SelectPlatformComponent";
+
 class CreateInstantMeetingComponent extends React.Component {
-
-
     constructor(props) {
         super(props);
 
@@ -16,7 +15,6 @@ class CreateInstantMeetingComponent extends React.Component {
             platform : '',
             title : '',
             description : '',
-            platforms : platformConstants.PLATFORM_VALUES
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -76,7 +74,7 @@ class CreateInstantMeetingComponent extends React.Component {
 
 
     render() {
-        const {visible, platforms} = this.state;
+        const {visible} = this.state;
         return (
             <div>
                 <Button type="primary" onClick={() => this.show()}>
@@ -98,15 +96,8 @@ class CreateInstantMeetingComponent extends React.Component {
                         <Form.Item
                             label="Platform"
                             name="platform"
-                            rules={[{ required: true, message: 'Enter a platform' }]}
                         >
-                            <Select
-                                //defaultValue='zoom'
-                                style={{maxWidth:"25%", textTransform: "capitalize"}}
-                                onChange={(name) => this.handleDataChange("platform", name)}
-                            >
-                                {platforms.map(platform => ( <Select.Option key={platform} style={{textTransform : "capitalize"}} disabled={platform === 'teams'}>{platform}</Select.Option>))}
-                            </Select>
+                            <SelectPlatformComponent onSelect={this.handleDataChange}/>
                         </Form.Item>
                         <Form.Item
                             label="Title"

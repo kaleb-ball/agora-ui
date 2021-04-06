@@ -16,7 +16,6 @@ class OAuthPage extends React.Component {
         super(props);
 
         this.props.checkAuthorization();
-        if (this.props.allAuthorized) history.push("/")
         this.handleClick = this.handleClick.bind(this)
         this.isCallback = this.isCallback.bind(this)
     }
@@ -61,6 +60,7 @@ class OAuthPage extends React.Component {
 
    render() {
         const continueButton = this.isCallback()
+        if (this.props.allAuthorized) history.push("/")
         return (
            <div>
                <Row type="flex" justify="center" align="middle" style={{minHeight: '35vh'}}>

@@ -1,5 +1,4 @@
 import { restService } from "./rest.service";
-import {platformConstants} from "../constants/platformConstants";
 
 export const oauthService = {
     getUrl,

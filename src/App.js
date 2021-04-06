@@ -10,7 +10,6 @@ import {connect} from "react-redux";
 import Navbar from "./components/navbar/navbar";
 import {AuthPage} from "./pages/AuthPage";
 import {PrivateRoute, BaseRouteWrapper} from "./components";
-import {platformConstants} from "./constants/platformConstants";
 import {RedirectPage} from "./pages/OAuthPage";
 
 class App extends React.Component {

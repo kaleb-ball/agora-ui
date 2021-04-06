@@ -1,14 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import {Button, Col, DatePicker, Form, Input, InputNumber, Modal, Radio, Row, Select, TimePicker} from 'antd'
+import {Button, Col, DatePicker, Form, Input, InputNumber, Modal, Radio, Row, TimePicker} from 'antd'
 import {meetingActions} from "../../../../actions";
 import { isPast, isToday } from 'date-fns';
-import {platformConstants} from "../../../../constants/platformConstants";
+import {SelectPlatformComponent} from "../../../platform/SelectPlatformComponent";
 
 class CreateMeetingComponent extends React.Component {
-
-
     constructor(props) {
         super(props);
 
@@ -21,9 +19,7 @@ class CreateMeetingComponent extends React.Component {
             date : '',
             time : '',
             length : '',
-            unit : '',
-            platforms: platformConstants.PLATFORM_VALUES
-
+            unit : ''
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -46,7 +42,6 @@ class CreateMeetingComponent extends React.Component {
 
         if (platform && title && description && date && time &&  length && unit) {
 
-            //Add logic for Teams
             let data = {
                 title : title,
                 description : description,
@@ -97,14 +92,10 @@ class CreateMeetingComponent extends React.Component {
         return false;
     }
 
-
-
     render() {
-        const {visible, platforms} = this.state;
+        const {visible} = this.state;
         return (
             <div>
-
-
                 <Button type="primary" onClick={() => this.show()}>
                     Create Meeting
                 </Button>
@@ -118,15 +109,8 @@ class CreateMeetingComponent extends React.Component {
                         <Form.Item
                             label="Platform"
                             name="platform"
-                            rules={[{ required: true, message: 'Enter a platform' }]}
                         >
-                            <Select
-                                //defaultValue='zoom'
-                                style={{maxWidth:"25%", textTransform: "capitalize"}}
-                                onChange={(name) => this.handleDataChange("platform", name)}
-                            >
-                                {platforms.map(platform => ( <Select.Option key={platform} style={{textTransform : "capitalize"}} disabled={platform === 'teams'}>{platform}</Select.Option>))}
-                            </Select>
+                            <SelectPlatformComponent onSelect={this.handleDataChange}/>
                         </Form.Item>
                         <Form.Item
                             label="Title"

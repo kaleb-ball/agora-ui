@@ -38,3 +38,9 @@ export function platform_value(name) {
 export function number_of_platforms() {
     return platforms.length;
 }
+
+export function get_values() {
+    let values = []
+    platforms.forEach(platform => values.push(platform.value));
+    return values;
+}
