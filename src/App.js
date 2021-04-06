@@ -7,7 +7,7 @@ import { Exception404Page, Exception500Page, Exception401Page } from "./pages/Ex
 import React from "react";
 import {alertActions} from "./actions";
 import {connect} from "react-redux";
-import Navbar from "./components/navbar/navbar";
+import { NavbarComponent } from "./components/navbar/NavbarComponent";
 import {AuthPage} from "./pages/AuthPage";
 import {PrivateRoute, BaseRouteWrapper} from "./components";
 import {RedirectPage} from "./pages/OAuthPage";
@@ -26,7 +26,7 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <Navbar/>
+                <NavbarComponent/>
                 <Router history={history}>
                     <Switch>
                         <Route exact path="/auth" component={AuthPage}/>
