@@ -47,12 +47,12 @@ async function getPlatformMeetings(platform) {
 }
 
 
-function getMeeting(id, platform = oauthConstants.PLATFORM_NAMES.ZOOM) {
-    const endpoint = getEndpoint(platform);
+function getMeeting(id, platform) {
+    const endpoint = `${getEndpoint(platform)}/${id}`;
     const params = {
         ID : id
     }
-    return restService.get(endpoint,true, params)
+    return restService.get(endpoint,true)
 }
 
 

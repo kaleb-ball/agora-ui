@@ -64,10 +64,10 @@ function getMeetings(platforms= {}) {
     function failure() { return {type: meetingConstants.GET_MEETINGS_FAILURE} }
 }
 
-function startMeeting(id) {
+function startMeeting(id, platform) {
     return dispatch => {
         dispatch(request());
-        meetingService.getMeeting(id).then(
+        meetingService.getMeeting(id, platform).then(
             (body) => {
                 dispatch(success())
                 openStartUrl(body)

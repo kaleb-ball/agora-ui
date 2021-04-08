@@ -67,7 +67,8 @@ class UpcomingMeetingComponent extends React.Component {
     render() {
         let meetings = this.props.meetings;
         let loading = this.props.requesting;
-        if (meetings !== undefined && meetings.length > 0) {
+        if (meetings && meetings.length > 0) {
+            meetings = meetings.filter(x=>x!== null)
             this.addDatesToMeetings(meetings)
             meetings.sort((a,b)=>a.start_time.getTime()-b.start_time.getTime());
         }

@@ -13,8 +13,5 @@ module.exports = {
                 },
             },
         },
-    ],
-    externals: {
-        host : 'https://'
-    }
+    ]
 };

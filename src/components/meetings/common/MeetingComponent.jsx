@@ -16,8 +16,8 @@ class MeetingComponent extends React.Component {
         this.avatar = this.avatar.bind(this)
     }
 
-    startMeeting(id) {
-        if (id) this.props.startMeeting(id);
+    startMeeting(id, platform) {
+        if (id && platform) this.props.startMeeting(id, platform);
     }
 
     avatar(platform) {
@@ -30,7 +30,7 @@ class MeetingComponent extends React.Component {
         return (
             <List.Item
                 actions={[
-                    <Button onClick={() => this.startMeeting(meeting.id)} type="primary" ghost>Start</Button>,
+                    <Button onClick={() => this.startMeeting(meeting.id, meeting.platform)} type="primary" ghost>Start</Button>,
                     <Popconfirm title="Are You Sure？" okText="Yes" okType="danger" cancelText="No" icon={<ExclamationCircleTwoTone twoToneColor="#f5222d"/>}>
                         <Button type="danger" ghost>Delete</Button>
                     </Popconfirm>,

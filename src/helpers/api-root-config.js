@@ -1,6 +1,3 @@
-let host = process.env.REACT_APP_SERVER_URL;
-const version = 'v1';
-
-
-export const OAUTH_CALLBACK = `${host}/callback`
+const host = process.env.REACT_APP_API_URL;
+const version = process.env.REACT_APP_API_VERSION;
 export const API_ROOT = `${host}/${version}`;
