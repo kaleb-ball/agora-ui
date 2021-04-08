@@ -1,15 +1,3 @@
-export const platformConstants = {
-    PLATFORM_VALUES: [
-        'zoom', 'teams'
-    ],
-
-    PLATFORM_NAMES : {
-        ZOOM : 'zoom',
-        TEAMS : 'teams',
-    }
-
-}
-
 const platforms = [
     {
         name: 'Zoom',
@@ -17,9 +5,9 @@ const platforms = [
         color: '#2681F2'
     },
     {
-        name : 'Teams',
-        value : 'teams',
-        color : '#464EB8'
+        name : 'WebEx',
+        value : 'webex',
+        color : '#009EDC'
     }
 ]
 
@@ -43,4 +31,8 @@ export function get_values() {
     let values = []
     platforms.forEach(platform => values.push(platform.value));
     return values;
+}
+
+export function get_authenticated_platforms() {
+    return localStorage.getItem('authenticatedPlatforms') ? JSON.parse(localStorage.getItem('authenticatedPlatforms')) : []
 }

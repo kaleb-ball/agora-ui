@@ -17,12 +17,23 @@ function createMeeting(data, platform, instant) {
     return restService.post(endpoint, true, data, params);
 }
 
-async function getAllMeetings(platform) {
+async function getAllMeetings(platforms) {
+    let meetings = [];
+    const platformsMap = platforms.map(x => x.name)
+    for (const platform of platformsMap.keys()) {
+        let platformMeetings = await getPlatformMeetings(platformsMap[platform])
+        meetings = meetings.concat(platformMeetings)
+    }
+    return meetings;
+}
+
+
+async function getPlatformMeetings(platform) {
     let meetings = [];
     await getPagedMeetings(null);
     return meetings;
 
-     async function getPagedMeetings(page) {
+    async function getPagedMeetings(page) {
         let newMeetings
         const endpoint = getEndpoint(platform)
         const params = {
@@ -32,7 +43,7 @@ async function getAllMeetings(platform) {
         await restService.get(endpoint, true, params).then((res)=> {newMeetings = res;});
         meetings = meetings.concat(newMeetings.data.meetings)
         return newMeetings.data.next_page_token ? await getPagedMeetings(newMeetings.data.next_page_token) : addPlatform(meetings, platform);
-     }
+    }
 }
 
 
@@ -50,5 +61,5 @@ function getEndpoint(platform) {
 }
 
 function addPlatform(meetings, platform) {
-    meetings.forEach(meeting => meeting.platform = platform)
+    meetings.forEach(meeting => {if (meeting) meeting.platform = platform})
 }

@@ -3,19 +3,18 @@ import { connect } from 'react-redux';
 
 import { Select} from 'antd'
 import { isPast } from 'date-fns';
-import {get_values} from "../../constants/platformConstants";
+import {get_authenticated_platforms, get_values} from "../../constants/platformConstants";
 
 class SelectPlatformComponent extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            platforms: get_values(),
-            authenticatedPlatforms : localStorage.getItem('authenticatedPlatforms') ? JSON.parse(localStorage.getItem('authenticatedPlatforms')) : []
+            platforms: get_values().sort(),
+            authenticatedPlatforms : get_authenticated_platforms()
         }
 
         this.props.onSelect("platform", this.state.authenticatedPlatforms[0].name)
-
 
         this.handleChange = this.handleChange.bind(this)
         this.handleDataChange = this.handleDataChange.bind(this)
@@ -51,7 +50,7 @@ class SelectPlatformComponent extends React.Component {
         const {platforms, authenticatedPlatforms} = this.state;
         return (
             <Select
-                style={{maxWidth:"25%", textTransform: "capitalize"}}
+                style={{ textTransform: "capitalize"}}
                 onChange={(name) => this.props.onSelect("platform", name)}
                 defaultValue={authenticatedPlatforms[0].name}
             >

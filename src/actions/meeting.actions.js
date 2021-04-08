@@ -1,7 +1,6 @@
 import {meetingService} from "../services";
 import {alertActions} from "./alert.actions";
 import {meetingConstants} from "../constants";
-import {platformConstants} from "../constants/platformConstants";
 
 export const meetingActions = {
     createMeeting,
@@ -46,10 +45,10 @@ function createInstantMeeting(data, platform) {
     function failure() { return {type: meetingConstants.CREATE_FAILURE} }
 }
 
-function getMeetings() {
+function getMeetings(platforms= {}) {
     return dispatch => {
         dispatch(request());
-        meetingService.getAllMeetings(platformConstants.PLATFORM_NAMES.ZOOM).then(
+        meetingService.getAllMeetings(platforms).then(
             (res)=> {
                 dispatch(success(res))
             }

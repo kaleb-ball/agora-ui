@@ -5,6 +5,7 @@ import {Button, Col, DatePicker, Form, Input, InputNumber, Modal, Radio, Row, Ti
 import {meetingActions} from "../../../../actions";
 import { isPast, isToday } from 'date-fns';
 import {SelectPlatformComponent} from "../../../platform/SelectPlatformComponent";
+import {get_authenticated_platforms} from "../../../../constants/platformConstants";
 
 class CreateMeetingComponent extends React.Component {
     constructor(props) {
@@ -19,7 +20,8 @@ class CreateMeetingComponent extends React.Component {
             date : '',
             time : '',
             length : '',
-            unit : ''
+            unit : '',
+            authenticatedPlatforms : get_authenticated_platforms()
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -51,7 +53,7 @@ class CreateMeetingComponent extends React.Component {
             this.props.createMeeting(data, platform)
             this.handleCancel();
             setTimeout(()=> {
-                this.props.getMeetings()
+                this.props.getMeetings(this.state.authenticatedPlatforms)
             },1000);
         } else {
             return false;

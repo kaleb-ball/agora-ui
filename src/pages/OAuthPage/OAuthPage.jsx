@@ -3,10 +3,10 @@ import {connect} from "react-redux";
 import {Button, Col, Row, Space} from "antd";
 import {oauthActions} from "../../actions/oauth.actions";
 import {
+    get_values,
     platform_color,
     platform_name,
     platform_value,
-    platformConstants
 } from "../../constants/platformConstants";
 import {history} from "../../helpers";
 
@@ -24,17 +24,14 @@ class OAuthPage extends React.Component {
         this.props.authorization(serviceName)
     }
 
-
-
    isCallback() {
-        if (this.props.platforms.length >= 1) {
+        if (this.props.authenticatedPlatforms.length >= 1) {
             return <Button size="large" style={{float: 'right'}} href="/" type="link">Continue</Button>
         }
    }
 
    button(platform) {
-
-       if (this.props.platforms.filter(x=> x.name === platform).length >= 1) {
+       if (this.props.authenticatedPlatforms.filter(x=> x.name === platform).length >= 1) {
            return(
                <div>
                    <Space align="center">
@@ -56,24 +53,22 @@ class OAuthPage extends React.Component {
        }
    }
 
-
-
    render() {
         const continueButton = this.isCallback()
         if (this.props.allAuthorized) history.push("/")
+        const platforms = get_values();
+        let oauthButtons = platforms.map(platform=>this.button(platform))
         return (
            <div>
                <Row type="flex" justify="center" align="middle" style={{minHeight: '35vh'}}>
                    <Space direction="vertical" size="large" align="center">
-                       {this.button(platformConstants.PLATFORM_NAMES.ZOOM)}
-                       {this.button(platformConstants.PLATFORM_NAMES.TEAMS)}
+                    {oauthButtons}
                    </Space>
                </Row>
                <Col span={12} push={6}>
                    {continueButton}
                </Col>
            </div>
-
         );
    }
 
@@ -81,7 +76,7 @@ class OAuthPage extends React.Component {
 
 function mapState(state) {
    return {
-       platforms : state.checkAuthorization.platforms,
+       authenticatedPlatforms : state.checkAuthorization.platforms,
        allAuthorized: state.checkAuthorization.allAuthorized
    }
 }
