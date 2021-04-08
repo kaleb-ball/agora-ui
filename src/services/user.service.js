@@ -26,7 +26,7 @@ function login(username, password) {
 
 function logout() {
     const endpoint = `${endpointBase}`
-    localStorage.removeItem('user');
+    localStorage.removeItem('auth-token');
     localStorage.removeItem('authenticatedPlatforms')
     history.push("auth")
     return restService.delete(endpoint, true)
@@ -51,7 +51,7 @@ function refresh() {
 }
 
 function setToken(res) {
-    localStorage.setItem('user', JSON.stringify(res));
+    localStorage.setItem('auth-token', JSON.stringify(res.data.token));
     const expiresAt = jwtDecode(res.data.token).exp;
     localStorage.setItem('expiresAt', JSON.stringify(expiresAt))
 }

@@ -27,7 +27,7 @@ function post(endpoint, authenticated, payload = {}, params = {}) {
     return axios.post(endpoint, JSON.stringify(payload), config)
 }
 
-function put(endpoint, authenticated, payload, params = {}) {
+function put(endpoint, authenticated, payload = {} , params = {}) {
     config = {
         headers : addHeaders(authenticated, true),
         params : params

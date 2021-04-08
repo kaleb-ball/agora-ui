@@ -16,7 +16,6 @@ function getAuthorization(serviceName) {
         oauthService.getUrl(serviceName).then(
             url => {
                 dispatch(success())
-                console.log(localStorage.getItem("nonce"))
                 window.location.href = url;
                 dispatch(success())
             },
