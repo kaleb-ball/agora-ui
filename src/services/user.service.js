@@ -1,15 +1,10 @@
 import { restService } from "./rest.service";
-import jwtDecode from "jwt-decode";
-import { history } from '../helpers';
 
 export const userService = {
     login,
     logout,
-    register,
-    refresh
+    register
 }
-
-let endpointBase = "auth"
 
 function login(username, password) {
     const endpoint = `${endpointBase}`
