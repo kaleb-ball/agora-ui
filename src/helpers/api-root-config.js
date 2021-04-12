@@ -1,16 +1,3 @@
-let host;
-const version = 'v1';
-
-const hostname = window && window.location.hostname;
-
-if (hostname === 'prod.agora.io') {
-    //host = 'https://api.prod.io'
-} else if (hostname === 'dev.agora.io') {
-    //host = 'https://api.agora.io'
-} else {
-    host = process.env.REACT_APP_BACKEND_HOST || 'http://localhost:8080';
-}
-
-
-export const OAUTH_CALLBACK = `${host}/callback`
+const host = process.env.REACT_APP_API_URL;
+const version = process.env.REACT_APP_API_VERSION;
 export const API_ROOT = `${host}/${version}`;

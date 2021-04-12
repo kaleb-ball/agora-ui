@@ -16,7 +16,7 @@ function login(username, password) {
         userService.login(username, password).then(
             user => {
                 dispatch(success(user));
-                oauthService.isAuthenticated().then(
+                oauthService.isAuthorized().then(
                     res => {
                         if (res) {
                             history.push("/home")
@@ -28,11 +28,10 @@ function login(username, password) {
             },
             error => {
                 dispatch(failure(error.toString()))
-                dispatch(alertActions.error(error.response.data.error.toString(), alertConstants.ALERT_LENGTH))
+                dispatch(alertActions.error(error.response.data.error.toString()))
             }
         );
     };
-
     function request(user) { return {type: userConstants.LOGIN_REQUEST, user} }
     function success(user) { return {type: userConstants.LOGIN_SUCCESS, user} }
     function failure(error) { return {type: userConstants.LOGIN_FAILURE, error} }
@@ -47,11 +46,11 @@ function register(user) {
                 user => {
                     dispatch(success());
                     history.push('/auth');
-                    dispatch(alertActions.success('Registration successful', alertConstants.ALERT_LENGTH));
+                    dispatch(alertActions.success('Registration successful', alertConstants));
                 },
                 error => {
                     dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.response.data.error.toString(), alertConstants.ALERT_LENGTH));
+                    dispatch(alertActions.error(error.response.data.error.toString(), alertConstants));
                 }
             );
     };

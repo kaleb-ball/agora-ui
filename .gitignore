@@ -42,3 +42,5 @@ packages/react-devtools-scheduling-profiler/dist
 dev-proxy/ssl/*.key
 dev-proxy/ssl/*.crt
 dev-proxy/ssl/*.csr
+
+.env.*

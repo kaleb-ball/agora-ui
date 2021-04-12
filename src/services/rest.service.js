@@ -11,31 +11,35 @@ export const restService = {
 
 let config
 
-function get(endpoint, param, authenticated) {
+function get(endpoint, authenticated, params = {}) {
     let headers = addHeaders(authenticated, false)
     const config = {
-        headers : {...headers}
+        headers : {...headers},
+        params : {}
     };
     return axios.get(endpoint, config)
 }
 
-function post(endpoint, payload, authenticated) {
+function post(endpoint, authenticated, payload = {}, params = {}) {
     config = {
-        headers : addHeaders(authenticated, true)
+        headers : addHeaders(authenticated, true),
+        params : params
     }
     return axios.post(endpoint, JSON.stringify(payload), config)
 }
 
-function put(endpoint, payload, authenticated) {
+function put(endpoint, authenticated, payload = {} , params = {}) {
     config = {
         headers : addHeaders(authenticated, true),
+        params : params
     }
     return axios.put(endpoint, payload, config)
 }
 
-function _delete(endpoint, param, authenticated) {
+function _delete(endpoint, authenticated, params = {}) {
     config = {
-        headers : addHeaders(authenticated, false)
+        headers : addHeaders(authenticated, false),
+        params : params
     };
     return axios.delete(endpoint, config)
 }

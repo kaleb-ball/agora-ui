@@ -7,6 +7,11 @@ import {Provider} from "react-redux";
 import {history, store} from "./helpers";
 import axios from "axios";
 import {API_ROOT } from './helpers/api-root-config'
+import { differenceInMinutes } from 'date-fns'
+import {userService} from "./services";
+import {fromUnixTime} from 'date-fns'
+import {alertActions} from "./actions";
+
 
 axios.defaults.baseURL = `${API_ROOT}`
 axios.defaults.responseType = "json"
@@ -24,6 +29,21 @@ axios.interceptors.response.use(function (response) {
     }
     return Promise.reject(error);
 });
+axios.interceptors.request.use(async (config) => {
+    let expireAt = localStorage.getItem('expiresAt') ? fromUnixTime(JSON.parse(localStorage.getItem('expiresAt'))) : null
+    if (expireAt && differenceInMinutes(expireAt, Date.now()) < 1 && config.headers.Authorization && !config.url.startsWith("auth")) {
+          await userService.refresh().then(
+            (res) => { config.headers.Authorization = authHeader().Authorization}
+        ).catch(
+            (error) => {
+                userService.logout();
+                alertActions.error(error)
+                return Promise.reject();
+        })
+    }
+
+    return config
+})
 
 ReactDOM.render(
     <Provider store={store}>
