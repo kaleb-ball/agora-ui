@@ -11,7 +11,6 @@ import { differenceInMinutes } from 'date-fns'
 import {userService} from "./services";
 import {fromUnixTime} from 'date-fns'
 import {alertActions} from "./actions";
-import {alertConstants} from "./constants";
 
 
 axios.defaults.baseURL = `${API_ROOT}`
@@ -37,7 +36,7 @@ axios.interceptors.request.use(async (config) => {
         ).catch(
             (error) => {
                 userService.logout();
-                alertActions.error(error, alertConstants.ALERT_LENGTH)
+                alertActions.error(error)
                 return Promise.reject();
         })
     }

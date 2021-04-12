@@ -1,17 +1,17 @@
 import { restService } from "./rest.service";
-import {oauthConstants} from "../constants";
 
 export const oauthService = {
     getUrl,
     getAccessToken,
-    platformAuthenticated,
-    isAuthenticated
+    isAuthorized,
+    authenticatedPlatforms
 }
 
 const endpointBase = "platforms"
 
 function getUrl(name) {
-    return restService.get(endpointBase, '', true).then(
+    const endpoint = `${endpointBase}`
+    return restService.get(endpoint, true).then(
         (res)=> {
             return res.data.filter(x => x.name === name)[0].redirect_url.toString() + "&state=" + getState();
         }, (err) => {
@@ -19,33 +19,30 @@ function getUrl(name) {
         })
 }
 
-function getAccessToken(name, code) {
-    let endpoint = endpointBase + "/" + name + "/auth?code=" + code;
-    return restService.post(endpoint, null, true)
+function getAccessToken(platform , code) {
+    const endpoint = `${endpointBase}/${platform}/auth`
+    const params = {
+        code : code
+    }
+    return restService.post(endpoint, true, {}, params)
 
 }
 
-async function isAuthenticated() {
-    let authenticated = false;
-    await oauthService.platformAuthenticated(oauthConstants.ZOOM).then(
+async function isAuthorized() {
+    const platforms = await authenticatedPlatforms()
+    return platforms.length >= 1;
+}
+
+async function authenticatedPlatforms() {
+    let platforms = [];
+    const endpoint = `users/me/${endpointBase}`
+    await restService.get(endpoint, true).then(
         (res) => {
-            if (res.status === 200) {
-                authenticated = true;
-            }
-    }).catch(
-        () => {
-            authenticated = false;
-        }
-    )
-    return authenticated
+            platforms = res.data ? res.data : []
+    })
+    localStorage.setItem('authenticatedPlatforms', JSON.stringify(platforms))
+    return platforms;
 }
-
-function platformAuthenticated(name) {
-    let endpoint = endpointBase + '/' + name + '/auth';
-    return restService.get(endpoint, "", true)
-
-}
-
 
 function getState() {
     return generateNonce(64)
@@ -53,9 +50,9 @@ function getState() {
 
 function generateNonce(length) {
     localStorage.removeItem("nonce")
-    var nonce = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for(var i = 0; i < length; i++) {
+    let nonce = "";
+    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for(let i = 0; i < length; i++) {
         nonce += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     localStorage.setItem("nonce", nonce)

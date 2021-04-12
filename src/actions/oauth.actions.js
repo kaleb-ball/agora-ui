@@ -1,11 +1,12 @@
 import {oauthService} from "../services";
-import {alertConstants, oauthConstants} from "../constants";
+import {oauthConstants} from "../constants";
 import {alertActions} from "./alert.actions";
 import {history} from "../helpers";
 
 export const oauthActions = {
     getAuthorization,
     getAccessToken,
+    checkAuthorization,
     revokeAccess
 }
 
@@ -15,14 +16,12 @@ function getAuthorization(serviceName) {
         oauthService.getUrl(serviceName).then(
             url => {
                 dispatch(success())
-                console.log(localStorage.getItem("nonce"))
                 window.location.href = url;
                 dispatch(success())
             },
             error => {
                 dispatch(failure(error.toString()))
-                dispatch(alertActions.error("Authorization with " +
-                    serviceName.charAt(0).toUpperCase() + serviceName.slice(1) + " not available", alertConstants.ALERT_LENGTH))
+                dispatch(alertActions.error("Authorization with platform not available"))
             })
     }
     function request() { return {type: oauthConstants.AUTHORIZATION_REQUEST} }
@@ -37,19 +36,18 @@ function getAccessToken(serviceName, state, code) {
             oauthService.getAccessToken(serviceName, code).then(
                 res => {
                     dispatch(success())
-                    dispatch(alertActions.success("Successfully Linked Account", alertConstants.ALERT_LENGTH))
-                    dispatch(success())
-                    history.push("/home")
+                    dispatch(alertActions.success("Successfully Linked Account"))
+                    history.push("/oauth")
                 })
                 .catch(
                     error =>{
                         dispatch(failure())
-                        dispatch(alertActions.error(error.response.data.error.toString(), alertConstants.ALERT_LENGTH))
+                        dispatch(alertActions.error(error.response.data.error.toString()))
                         history.push("/login")
             })
         } else {
             dispatch(failure());
-            dispatch(alertActions.error("Something went wrong. Please try again."), alertConstants.ALERT_LENGTH)
+            dispatch(alertActions.error("Something went wrong. Please try again."))
             history.push("/login")
         }
     }
@@ -58,6 +56,21 @@ function getAccessToken(serviceName, state, code) {
     function failure() { return {type: oauthConstants.ACCESS_FAILURE} }
 }
 
+function checkAuthorization() {
+    return dispatch => {
+        oauthService.authenticatedPlatforms().then(
+            (platforms) => {
+                dispatch(success(platforms))
+            }
+        ).catch(
+            (err) => {
+                dispatch(alertActions.error("Something went wrong"))
+            }
+        )
+    }
+
+    function success(platforms) { return {type: oauthConstants.CHECK_AUTHORIZATION, platforms} }
+}
 function revokeAccess(serviceName) {
 
 }

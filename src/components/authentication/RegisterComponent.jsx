@@ -23,7 +23,6 @@ class RegisterComponent extends React.Component {
     }
 
     handleChange(event) {
-        console.log("change")
         const {name, value} = event.target;
         const {user} = this.state;
         this.setState({
@@ -35,7 +34,6 @@ class RegisterComponent extends React.Component {
     }
 
     handleSubmit(e) {
-        console.log('submit')
         this.setState({submitted : true})
         const { user } = this.state;
         if(user.firstname && user.lastname && user.username && user.password) {

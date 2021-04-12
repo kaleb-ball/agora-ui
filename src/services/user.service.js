@@ -12,43 +12,46 @@ export const userService = {
 let endpointBase = "auth"
 
 function login(username, password) {
-    let payload = {
+    const endpoint = `${endpointBase}`
+    const data = {
         credentials : {
             Username: username,
             Password : password
         }
     }
-    return restService.post(endpointBase, payload, false).then(res => {
+    return restService.post(endpoint, false, data).then(res => {
         setToken(res)
     })
 }
 
 function logout() {
-    localStorage.removeItem('user');
+    const endpoint = `${endpointBase}`
+    localStorage.removeItem('auth-token');
+    localStorage.removeItem('authenticatedPlatforms')
     history.push("auth")
-    return restService.delete(endpointBase, true)
+    return restService.delete(endpoint, true)
 }
 
 
 function register(user) {
-    let payload = {
+    const data = {
         Firstname : user.firstname,
         Lastname : user.lastname,
         Username : user.username,
         Password : user.password
     }
-    return restService.post("users", payload, false)
+    return restService.post("users", false, data)
 }
 
 function refresh() {
-    let endpoint = endpointBase + '/refresh'
-    return restService.post(endpoint, {}, true).then(
+    let endpoint = `${endpointBase}/refresh`
+    return restService.post(endpoint, true).then(
         (res)=> { setToken(res)}
     ).catch(()=> { return Promise.reject("Session expired. Please login again.")})
 }
 
 function setToken(res) {
-    localStorage.setItem('user', JSON.stringify(res));
+    localStorage.setItem('auth-token', JSON.stringify(res.data.token));
     const expiresAt = jwtDecode(res.data.token).exp;
     localStorage.setItem('expiresAt', JSON.stringify(expiresAt))
 }

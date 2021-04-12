@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 
 import {Button, Card} from 'antd'
 import { Tabs } from 'antd';
-import {DayComponent} from "./Day";
-import {meetingActions} from "../../../actions";
+import {DayComponent} from "../../common/DayComponent/DayComponent";
+import {meetingActions} from "../../../../actions";
 import { add, addDays, isPast } from 'date-fns'
 import {ReloadOutlined} from "@ant-design/icons";
+import {get_authenticated_platforms} from "../../../../constants/platformConstants";
 
 const { TabPane } = Tabs;
 
@@ -16,13 +17,14 @@ class UpcomingMeetingComponent extends React.Component {
         super(props);
 
         this.state = {
-            key: '1'
+            key: '1',
+            authenticatedPlatforms : get_authenticated_platforms()
         };
 
         this.onChange = this.onChange.bind(this)
         this.switchTab = this.switchTab.bind(this)
 
-        this.props.getMeetings()
+        this.props.getMeetings(this.state.authenticatedPlatforms)
 
     }
 
@@ -59,14 +61,17 @@ class UpcomingMeetingComponent extends React.Component {
     }
 
     reload() {
-        console.log("reload")
-        this.props.getMeetings();
+        this.props.getMeetings(this.state.authenticatedPlatforms);
     }
 
     render() {
         let meetings = this.props.meetings;
         let loading = this.props.requesting;
-        if (meetings !== undefined && meetings.length > 0) this.addDatesToMeetings(meetings)
+        if (meetings && meetings.length > 0) {
+            meetings = meetings.filter(x=>x!== null)
+            this.addDatesToMeetings(meetings)
+            meetings.sort((a,b)=>a.start_time.getTime()-b.start_time.getTime());
+        }
         return (
             <Card style={{marginTop : "50px"}}>
                 <Button size="small" icon={<ReloadOutlined />} style={{float:"right"}} onClick={()=>this.reload()}/>

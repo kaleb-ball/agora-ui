@@ -2,25 +2,26 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import {Button, Col, DatePicker, Form, Input, InputNumber, Modal, Radio, Row, TimePicker} from 'antd'
-import {meetingActions} from "../../../actions";
+import {meetingActions} from "../../../../actions";
 import { isPast, isToday } from 'date-fns';
+import {SelectPlatformComponent} from "../../../platform/SelectPlatformComponent";
+import {get_authenticated_platforms} from "../../../../constants/platformConstants";
 
 class CreateMeetingComponent extends React.Component {
-
-
     constructor(props) {
         super(props);
 
         this.state = {
             visible : false,
             submitted : false,
+            platform : '',
             title : '',
             description : '',
             date : '',
             time : '',
             length : '',
-            unit : ''
-
+            unit : '',
+            authenticatedPlatforms : get_authenticated_platforms()
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -39,21 +40,20 @@ class CreateMeetingComponent extends React.Component {
 
     handleCreate(){
         this.setState({submitted : true});
-        const {title, description, date, time, length, unit} = this.state;
+        const {platform, title, description, date, time, length, unit} = this.state;
 
-        if (title && description && date && time &&  length && unit) {
+        if (platform && title && description && date && time &&  length && unit) {
 
-            //Add logic for Teams
             let data = {
                 title : title,
                 description : description,
                 start_time : new Date(date + ' ' + time).toISOString(),
                 duration : length + unit
             }
-            this.props.createMeeting(data)
+            this.props.createMeeting(data, platform)
             this.handleCancel();
             setTimeout(()=> {
-                this.props.getMeetings()
+                this.props.getMeetings(this.state.authenticatedPlatforms)
             },1000);
         } else {
             return false;
@@ -94,10 +94,8 @@ class CreateMeetingComponent extends React.Component {
         return false;
     }
 
-
-
     render() {
-        const visible = this.state.visible;
+        const {visible} = this.state;
         return (
             <div>
                 <Button type="primary" onClick={() => this.show()}>
@@ -105,17 +103,17 @@ class CreateMeetingComponent extends React.Component {
                 </Button>
                 <Modal title="Create Meeting" visible={visible} okText="Create" onCancel={() => this.handleCancel()}
                        footer={[
-                           <Button key="cancel" onClick={() => {
-                               this.handleCancel();
-                           }}>
-                               Cancel
-                           </Button>,
-                           <Button type="primary" form="meetingForm" key="submit" htmlType="submit">
-                               Create
-                           </Button>
+                           <Button key="cancel" onClick={() => { this.handleCancel(); }}> Cancel </Button>,
+                           <Button type="primary" form="meetingForm" key="submit" htmlType="submit"> Create</Button>
                        ]}
                 >
-                    <Form ref={this.createMeetingFormRef} id="meetingForm" size="large" onFinish={() => this.handleCreate()} >
+                    <Form ref={this.createMeetingFormRef} id="meetingForm" size="large" onFinish={() => this.handleCreate()} labelAlign="right" >
+                        <Form.Item
+                            label="Platform"
+                            name="platform"
+                        >
+                            <SelectPlatformComponent onSelect={this.handleDataChange}/>
+                        </Form.Item>
                         <Form.Item
                             label="Title"
                             name="title"

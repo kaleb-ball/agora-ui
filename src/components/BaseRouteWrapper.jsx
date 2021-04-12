@@ -4,7 +4,7 @@ import {HomePage} from "../pages/HomePage";
 
 export const BaseRouteWrapper = () => (
     <Route render={props => (
-        localStorage.getItem('user')
+        localStorage.getItem('auth-token')
             ? <HomePage />
             : <Redirect to={{ pathname: '/auth'}} />
     )} />

@@ -1,6 +1,6 @@
 import {meetingService} from "../services";
 import {alertActions} from "./alert.actions";
-import {alertConstants, meetingConstants} from "../constants";
+import {meetingConstants} from "../constants";
 
 export const meetingActions = {
     createMeeting,
@@ -9,17 +9,17 @@ export const meetingActions = {
     startMeeting
 }
 
-function createMeeting(data) {
+function createMeeting(data, platform) {
     return dispatch => {
         dispatch(request());
-        meetingService.createMeeting(data, false).then(
-            (meeting) => {
+        meetingService.createMeeting(data, platform, false).then(
+            () => {
                 dispatch(success());
-                dispatch(alertActions.success("Successfully Created a Meeting"), alertConstants.ALERT_LENGTH)
+                dispatch(alertActions.success("Successfully Created a Meeting"))
             },
             (error)=>{
                 dispatch(failure())
-                dispatch(alertActions.error(error.response.data.error.toString(), alertConstants.ALERT_LENGTH))
+                dispatch(alertActions.error(error.response.data.error.toString()))
             })
     }
     function request() { return {type: meetingConstants.CREATE_REQUEST} }
@@ -27,17 +27,17 @@ function createMeeting(data) {
     function failure() { return {type: meetingConstants.CREATE_FAILURE} }
 }
 
-function createInstantMeeting(data) {
+function createInstantMeeting(data, platform) {
     return dispatch => {
         dispatch(request());
-        meetingService.createMeeting(data, true).then(
+        meetingService.createMeeting(data, platform, true).then(
             (body) => {
                 dispatch(success());
                 openStartUrl(body)
             },
             (error)=>{
                 dispatch(failure())
-                dispatch(alertActions.error(error.response.data.error.toString(), alertConstants.ALERT_LENGTH))
+                dispatch(alertActions.error(error.response.data.error.toString()))
             })
     }
     function request() { return {type: meetingConstants.CREATE_REQUEST} }
@@ -45,17 +45,17 @@ function createInstantMeeting(data) {
     function failure() { return {type: meetingConstants.CREATE_FAILURE} }
 }
 
-function getMeetings() {
+function getMeetings(platforms= {}) {
     return dispatch => {
         dispatch(request());
-        meetingService.getAllMeetings().then(
+        meetingService.getAllMeetings(platforms).then(
             (res)=> {
                 dispatch(success(res))
             }
         ).catch(
             (err)=> {
                 dispatch(failure())
-                dispatch(alertActions.error("There was an error getting meetings", alertConstants.ALERT_LENGTH))
+                dispatch(alertActions.error("There was an error getting meetings"))
             }
         )
     }
@@ -64,10 +64,10 @@ function getMeetings() {
     function failure() { return {type: meetingConstants.GET_MEETINGS_FAILURE} }
 }
 
-function startMeeting(id) {
+function startMeeting(id, platform) {
     return dispatch => {
         dispatch(request());
-        meetingService.getMeeting(id).then(
+        meetingService.getMeeting(id, platform).then(
             (body) => {
                 dispatch(success())
                 openStartUrl(body)
@@ -75,7 +75,7 @@ function startMeeting(id) {
         ).catch(
             (error) => {
                 dispatch(failure());
-                dispatch(alertActions.error(error.response.data.error.toString()), alertConstants.ALERT_LENGTH)
+                dispatch(alertActions.error(error.response.data.error.toString()))
             }
         )
     }

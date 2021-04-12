@@ -2,9 +2,9 @@ import {Col, Row, Space} from "antd";
 import {oauthActions} from "../../actions/oauth.actions";
 import {connect} from "react-redux";
 import * as React from "react";
-import {CreateMeetingComponent} from "../../components/meetings/CreateMeeting/CreateMeetingComponent";
-import {CreateInstantMeetingComponent} from "../../components/meetings/CreateMeeting/CreateInstantMeetingComponent";
-import {UpcomingMeetingComponent} from "../../components/meetings/UpcomingMeetings/UpcomingMeetings";
+import {CreateMeetingComponent} from "../../components/meetings/home/CreateMeetingComponents/CreateMeetingComponent";
+import {CreateInstantMeetingComponent} from "../../components/meetings/home/CreateMeetingComponents/CreateInstantMeetingComponent";
+import {UpcomingMeetingComponent} from "../../components/meetings/home/UpcomingMeetingsComponent/UpcomingMeetingsComponent";
 import {meetingActions} from "../../actions";
 
 class  HomePage extends React.Component {
