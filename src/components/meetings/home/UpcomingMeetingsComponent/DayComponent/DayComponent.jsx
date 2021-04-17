@@ -1,8 +1,8 @@
 import React from "react";
 import {connect} from "react-redux";
 import {Card, Divider, List} from "antd";
-import { dateHelper } from "../../../../helpers"
-import {meetingActions} from "../../../../actions";
+import { dateHelper } from "../../../../../helpers"
+import {meetingActions} from "../../../../../actions";
 import './DayComponent.css'
 import {MeetingComponent} from "../MeetingComponent";
 

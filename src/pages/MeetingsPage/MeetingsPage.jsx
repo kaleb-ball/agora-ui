@@ -1,4 +1,4 @@
-import {Button, Col, DatePicker, Divider, Mentions, Radio, Row, Space} from "antd";
+import {Button, Card, Col, Collapse, DatePicker, Divider, Mentions, Radio, Row, Space} from "antd";
 import {oauthActions} from "../../actions/oauth.actions";
 import {connect} from "react-redux";
 import * as React from "react";
@@ -6,22 +6,35 @@ import {meetingActions} from "../../actions";
 import Search from "antd/es/input/Search";
 import {SelectPlatformComponent} from "../../components/platform/SelectPlatformComponent";
 import { isFuture, isPast, isBefore, isAfter } from 'date-fns'
+import {filterMeetingsByDate, filterMeetingsByDateRange, removeTime} from "../../helpers/meetings-util";
+import CollapsePanel from "antd/es/collapse/CollapsePanel";
+import {get_authenticated_platforms} from "../../constants/platformConstants";
+import {SearchMeetingsList} from "../../components/meetings/search/SearchMeeetingsList";
 
 const { RangePicker } = DatePicker
+
+class Panel extends React.Component {
+    render() {
+        return null;
+    }
+}
 
 class MeetingsPage extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
+            authenticatedPlatforms : get_authenticated_platforms(),
             platform : '',
+            date : '',
             startDate: '',
             endDate: '',
             dateType : '',
             timePeriod : '',
             search : ''
         }
+
+        this.props.getMeetings(this.state.authenticatedPlatforms)
 
         this.handleChange = this.handleChange.bind(this)
         this.handleDataChange = this.handleDataChange.bind(this)
@@ -30,9 +43,18 @@ class MeetingsPage extends React.Component {
 
     datePicker() {
         if (this.state.dateType === 'day') {
-            return <DatePicker disabledDate={this.disabledDate}/>
+            return <DatePicker onChange={(date, dateString)=> {this.handleDataChange("date", date)}} disabledDate={this.disabledDate}/>
         } else if (this.state.dateType === 'range') {
-            return <RangePicker disabledDate={this.disabledDate}/>
+            return <RangePicker onChange={(dates, dateStrings)=> {
+                if (dates) {
+                    this.handleDataChange("startDate", dates[0])
+                    this.handleDataChange("endDate", dates[1])
+                } else {
+                    this.handleDataChange("startDate", '')
+                    this.handleDataChange("endDate", '')
+                }
+
+            }} disabledDate={this.disabledDate}/>
         }
     }
 
@@ -56,18 +78,20 @@ class MeetingsPage extends React.Component {
     }
 
     filter(meetings) {
-        const {platform, startDate, endDate, search} = this.state
-        if (platform) meetings = meetings.filter(meeting => meeting.platform === platform)
-        if (startDate) meetings = meetings.filter(meeting => isAfter(meeting.date, startDate))
-        if (endDate) meetings = meetings.filter(meeting => isBefore(meeting.date, endDate))
+        const {platform, startDate, endDate, date, search} = this.state
+        if (!meetings) return meetings
+        if (platform && platform !== 'all') meetings = meetings.filter(meeting => meeting.platform === platform)
+        if (date) meetings = filterMeetingsByDate(meetings, new Date(date))
+        if (startDate && endDate) meetings = filterMeetingsByDateRange(meetings, removeTime(startDate), removeTime(endDate))
         if (search) meetings = meetings.filter(meeting => meeting.title.includes(search) || meeting.description.includes(search))
         return meetings
     }
 
     render() {
         const datePicker = this.datePicker()
-        let {meetings} = this.props
+        let { meetings, requesting } = this.props
         meetings = this.filter(meetings)
+        console.log(meetings)
         return(
             <div>
                 <Row type="flex" justify="center" style={{paddingTop: '100px'}}>
@@ -78,7 +102,14 @@ class MeetingsPage extends React.Component {
                             <Radio.Button value="upcoming">Upcoming</Radio.Button>
                             <Radio.Button value="previous">Previous</Radio.Button>
                         </Radio.Group>
-                        <Radio.Group name="dateType" onChange={this.handleChange}>
+                        <Radio.Group name="dateType" onChange={
+                            (e) => {
+                                this.handleChange(e)
+                                this.handleDataChange('date', '')
+                                this.handleDataChange("startDate", '')
+                                this.handleDataChange('endDate', '')
+                            }
+                        }>
                             <Radio.Button value="day">Day</Radio.Button>
                             <Radio.Button value="range">Range</Radio.Button>
                         </Radio.Group>
@@ -101,17 +132,25 @@ class MeetingsPage extends React.Component {
                     </Space>
                 </Row>
                 <Divider />
+                <Row type="flex" justify="center" style={{paddingTop: '25px'}}>
+                    <Col>
+                        <SearchMeetingsList loading={requesting} meetings={meetings}/>
+
+                    </Col>
+                </Row>
             </div>
         )
     }
 }
 
 function mapState(state) {
-    return {}
+    return {
+        requesting : state.getMeetings.requestingMeetings,
+        meetings : state.getMeetings.meetings
+    }
 }
 
 const actionCreators = {
-    authorization : oauthActions.getAuthorization,
     getMeetings : meetingActions.getMeetings
 }
 

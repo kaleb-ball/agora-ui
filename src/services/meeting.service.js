@@ -1,5 +1,6 @@
 import {restService} from "./rest.service";
 import {oauthConstants} from "../constants";
+import {add} from "date-fns";
 
 export const meetingService = {
     createMeeting,
@@ -24,6 +25,7 @@ async function getAllMeetings(platforms) {
         let platformMeetings = await getPlatformMeetings(platformsMap[platform])
         meetings = meetings.concat(platformMeetings)
     }
+    meetings = removeNull(meetings);
     return meetings;
 }
 
@@ -42,7 +44,7 @@ async function getPlatformMeetings(platform) {
         }
         await restService.get(endpoint, true, params).then((res)=> {newMeetings = res;});
         meetings = meetings.concat(newMeetings.data.meetings)
-        return newMeetings.data.next_page_token ? await getPagedMeetings(newMeetings.data.next_page_token) : addPlatform(meetings, platform);
+        return newMeetings.data.next_page_token ? await getPagedMeetings(newMeetings.data.next_page_token) : addFields(meetings, platform);
     }
 }
 
@@ -60,6 +62,24 @@ function getEndpoint(platform) {
    return `${endpointBase}/${platform}/meetings`;
 }
 
+function addFields(meetings, platform) {
+    addPlatform(meetings, platform)
+    addDates(meetings)
+}
+
+function removeNull(meetings) {
+    return meetings.filter(meeting => meeting )
+}
+
 function addPlatform(meetings, platform) {
     meetings.forEach(meeting => {if (meeting) meeting.platform = platform})
+}
+
+function addDates(meetings) {
+    meetings.forEach(meeting => {
+        if (meeting) {
+            meeting.start_time = new Date(meeting.start_time)
+            meeting.end_time = add(new Date(meeting.start_time), {minutes:meeting.duration})
+        }
+    })
 }
