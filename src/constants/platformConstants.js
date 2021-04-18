@@ -1,10 +1,12 @@
 const platforms = [
     {
+        id : 1,
         name: 'Zoom',
         value: 'zoom',
         color: '#2681F2'
     },
     {
+        id : 2,
         name : 'WebEx',
         value : 'webex',
         color : '#009EDC'
@@ -35,4 +37,8 @@ export function get_values() {
 
 export function get_authenticated_platforms() {
     return localStorage.getItem('authenticatedPlatforms') ? JSON.parse(localStorage.getItem('authenticatedPlatforms')) : []
+}
+
+export function get_value_by_id(id) {
+    return platforms.filter(platform => platform.id === id)[0].value
 }

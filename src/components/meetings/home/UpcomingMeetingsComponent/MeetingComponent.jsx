@@ -13,6 +13,7 @@ import {
 } from "@ant-design/icons";
 import {platform_color, platform_name} from "../../../../constants/platformConstants";
 import Text from "antd/lib/typography/Text";
+import {MeetingDrawerComponent} from "../../common/MeetingDrawerComponent";
 
 
 class MeetingComponent extends React.Component {
@@ -52,6 +53,8 @@ class MeetingComponent extends React.Component {
 
     render() {
         const {meeting} = this.props;
+        const {visible} = this.state
+
         return (
             <div>
                 <List.Item
@@ -65,82 +68,13 @@ class MeetingComponent extends React.Component {
                         <List.Item.Meta
                             avatar={this.avatar(meeting.platform)}
                             title={meeting.title}
+                            description={meeting.description}
                         />
                         {meeting.start_time.toLocaleTimeString([], {hour12:true, hour:'2-digit', minute:'2-digit'})} - {meeting.end_time.toLocaleTimeString([], {hour12:true, hour:'2-digit', minute:'2-digit'})}
                     </Skeleton>
                 </List.Item>
-               <Drawer
-                    width="45%"
-                    placement="right"
-                    closable={true}
-                    onClose={this.onClose}
-                    visible={this.state.visible}
-                >
-                   <Row>
-                       <Col span={6}>Topic:</Col>
-                       <Col span={18}>{meeting.title}</Col>
-                   </Row>
-                   <Row>
-                       <Col span={6}>Description:</Col>
-                       <Col span={18}>{meeting.description}</Col>
-                   </Row>
-                    <Divider/>
-                   <Row>
-                       <Col span={6}>Platform:</Col>
-                       <Col span={18}>{meeting.platform}</Col>
-                   </Row>
-                   <Row>
-                       <Col span={6}>Meeting ID:</Col>
-                       <Col span={18}>{meeting.id}</Col>
-                   </Row>
-                   <Divider/>
-                   <Row>
-                       <Col span={6}>Time:</Col>
-                       <Col span={18}>{meeting.start_time.toLocaleTimeString([], {hour12:true, hour:'2-digit', minute:'2-digit'})} - {meeting.end_time.toLocaleTimeString([], {hour12:true, hour:'2-digit', minute:'2-digit'})}</Col>
-                   </Row>
-                   <Row>
-                       <Col span={6}/>
-                       <Col span={18}>
-                           <Space>
-                               <Text>Add to</Text>
-                               <Tag icon={<GoogleOutlined />} color='#4285F4'>Google</Tag>
-                               <Tag icon={<CalendarOutlined/>}>Other</Tag>
-                           </Space>
-                       </Col>
-                   </Row>
-                   <Divider/>
-                   <Row>
-                       <Col span={6}>Participants:</Col>
-                       <Col span={18}>
-                           <Avatar.Group maxCount={10} size="large">
-                               <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                               <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
-                               <Tooltip title="Ant User" placement="top">
-                                   <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} />
-                               </Tooltip>
-                               <Avatar style={{ backgroundColor: '#1890ff' }} icon={<AntDesignOutlined />} />
-                           </Avatar.Group>
-                       </Col>
-                   </Row>
-                   <Row>
-                   <Col span={6}/>
-                   <Col span={18}>
-                       <Space>
-                           <Button>View All</Button>
-                       </Space>
-                   </Col>
-                   </Row>
-                   <Divider/>
-                   <Row>
-                       <Space>
-                           <Button type="primary" ghost>Start</Button>
-                           <Popconfirm title="Are You Sure？" okText="Yes" okType="danger" cancelText="No" icon={<ExclamationCircleTwoTone twoToneColor="#f5222d"/>}>
-                               <Button type="danger" ghost>Delete</Button>
-                           </Popconfirm>
-                       </Space>
-                   </Row>
-            </Drawer>
-        </div>
+                <MeetingDrawerComponent visible={visible} meeting={meeting} onClose={() => this.onClose()}/>
+            </div>
 
         )
     }

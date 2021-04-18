@@ -1,57 +1,21 @@
-import { restService } from "./rest.service";
-import jwtDecode from "jwt-decode";
-import { history } from '../helpers';
+import {restService} from "./rest.service";
 
 export const userService = {
-    login,
-    logout,
-    register,
-    refresh
+    userInvites,
+    userDetails
 }
 
-let endpointBase = "auth"
+const endpointBase = "users/me"
 
-function login(username, password) {
-    const endpoint = `${endpointBase}`
-    const data = {
-        credentials : {
-            Username: username,
-            Password : password
-        }
+export function userInvites (sent) {
+    const endpoint = `${endpointBase}/invites`
+    const params = {
+        type : sent ? 'sent' : 'received'
     }
-    return restService.post(endpoint, false, data).then(res => {
-        setToken(res)
-    })
+    return restService.get(endpoint, true, params)
+
 }
 
-function logout() {
-    const endpoint = `${endpointBase}`
-    localStorage.removeItem('auth-token');
-    localStorage.removeItem('authenticatedPlatforms')
-    history.push("auth")
-    return restService.delete(endpoint, true)
-}
-
-
-function register(user) {
-    const data = {
-        Firstname : user.firstname,
-        Lastname : user.lastname,
-        Username : user.username,
-        Password : user.password
-    }
-    return restService.post("users", false, data)
-}
-
-function refresh() {
-    let endpoint = `${endpointBase}/refresh`
-    return restService.post(endpoint, true).then(
-        (res)=> { setToken(res)}
-    ).catch(()=> { return Promise.reject("Session expired. Please login again.")})
-}
-
-function setToken(res) {
-    localStorage.setItem('auth-token', JSON.stringify(res.data.token));
-    const expiresAt = jwtDecode(res.data.token).exp;
-    localStorage.setItem('expiresAt', JSON.stringify(expiresAt))
+export function userDetails() {
+    return restService.get(endpointBase, true)
 }

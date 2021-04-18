@@ -1,6 +1,7 @@
 import {restService} from "./rest.service";
-import {oauthConstants} from "../constants";
 import {add} from "date-fns";
+import {userService} from "./user.service";
+import {get_value_by_id} from "../constants/platformConstants";
 
 export const meetingService = {
     createMeeting,
@@ -48,12 +49,46 @@ async function getPlatformMeetings(platform) {
     }
 }
 
+async function handleInvites() {
+    let invites = [];
+    let sentInvites =  await userService.userInvites(true)
+    let receivedInvites = await userService.userInvites(false)
+    invites = invites.concat(sentInvites).concat(receivedInvites)
+}
+
+async function addParticipants(meetings) {
+    let sentInvites =  await userService.userInvites(true)
+    meetings.forEach(
+        (meeting) => {
+            meeting.participants = [];
+            let meetingInvites = sentInvites.filter(invite => invite.meeting.id === meeting.id)
+            if (meetingInvites.length > 0) meeting.isHost = true;
+            meetingInvites.forEach(
+                invite => {
+                    meeting.participants.push(invite.invitee)
+                })
+        }
+    )
+    return meetings
+}
+
+async function getReceivedInvites() {
+    let meetings = [];
+    let receivedInvites = await userService.userInvites(false)
+    receivedInvites.forEach(
+        invite => {
+            invite.meeting.isHost = false;
+            invite.meeting.hostId = invite.inviter_id
+            invite.meeting.platform = get_value_by_id(meeting_platform)
+            meetings.push(invite.meeting)
+        }
+    )
+    return meetings;
+}
+
 
 function getMeeting(id, platform) {
     const endpoint = `${getEndpoint(platform)}/${id}`;
-    const params = {
-        ID : id
-    }
     return restService.get(endpoint,true)
 }
 

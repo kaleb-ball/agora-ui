@@ -1,5 +1,5 @@
 import {alertConstants, userConstants} from '../constants';
-import {oauthService, userService} from '../services';
+import {oauthService, authService} from '../services';
 import { alertActions } from './';
 import { history } from '../helpers';
 
@@ -13,7 +13,7 @@ export const userActions = {
 function login(username, password) {
     return dispatch => {
         dispatch(request({username}));
-        userService.login(username, password).then(
+        authService.login(username, password).then(
             user => {
                 dispatch(success(user));
                 oauthService.isAuthorized().then(
@@ -41,7 +41,7 @@ function register(user) {
     return dispatch => {
         dispatch(request(user));
 
-        userService.register(user)
+        authService.register(user)
             .then(
                 user => {
                     dispatch(success());
@@ -63,7 +63,7 @@ function register(user) {
 function logout() {
     return dispatch => {
         dispatch(logout())
-        userService.logout()
+        authService.logout()
     }
     function logout() {return {type : userConstants.LOGOUT}}
 }
