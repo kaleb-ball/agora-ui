@@ -1,6 +1,7 @@
 import {meetingService} from "../services";
 import {alertActions} from "./alert.actions";
 import {meetingConstants} from "../constants";
+import {inviteAction} from "./invite.actions";
 
 export const meetingActions = {
     createMeeting,
@@ -9,13 +10,19 @@ export const meetingActions = {
     startMeeting
 }
 
-function createMeeting(data, platform) {
+function createMeeting(data, platform, invites = []) {
     return dispatch => {
         dispatch(request());
         meetingService.createMeeting(data, platform, false).then(
-            () => {
+            (meeting) => {
                 dispatch(success());
                 dispatch(alertActions.success("Successfully Created a Meeting"))
+                if (invites) {
+                    invites.forEach(invite => {
+                        invite.meeting_id = meeting.data.id
+                        dispatch(inviteAction.createInvite(invite))
+                    })
+                }
             },
             (error)=>{
                 dispatch(failure())

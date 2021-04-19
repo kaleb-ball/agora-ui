@@ -2,6 +2,7 @@ import {alertConstants, userConstants} from '../constants';
 import {oauthService, authService} from '../services';
 import { alertActions } from './';
 import { history } from '../helpers';
+import {userService} from "../services/user.service";
 
 
 export const userActions = {
@@ -16,6 +17,7 @@ function login(username, password) {
         authService.login(username, password).then(
             user => {
                 dispatch(success(user));
+                userService.userDetails().then(res => localStorage.setItem('user', JSON.stringify(res.data)))
                 oauthService.isAuthorized().then(
                     res => {
                         if (res) {

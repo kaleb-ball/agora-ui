@@ -28,6 +28,7 @@ function logout() {
     const endpoint = `${endpointBase}`
     localStorage.removeItem('auth-token');
     localStorage.removeItem('authenticatedPlatforms')
+    localStorage.removeItem('user')
     history.push("auth")
     return restService.delete(endpoint, true)
 }

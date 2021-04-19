@@ -11,3 +11,7 @@ export const userConstants = {
     LOGOUT: 'USERS_LOGOUT',
 
 }
+
+export function get_user_id() {
+    return localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : ''
+}

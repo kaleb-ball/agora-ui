@@ -79,7 +79,7 @@ async function getReceivedInvites() {
         invite => {
             invite.meeting.isHost = false;
             invite.meeting.hostId = invite.inviter_id
-            invite.meeting.platform = get_value_by_id(meeting_platform)
+            invite.meeting.platform = get_value_by_id(invite.meeting_platform)
             meetings.push(invite.meeting)
         }
     )

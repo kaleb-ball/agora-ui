@@ -1,11 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import {Button, Col, DatePicker, Form, Input, InputNumber, Modal, Radio, Row, TimePicker} from 'antd'
+import {Button, Col, DatePicker, Form, Input, InputNumber, Mentions, Modal, Radio, Row, TimePicker} from 'antd'
 import {meetingActions} from "../../../../actions";
 import { isPast, isToday } from 'date-fns';
 import {SelectPlatformComponent} from "../../../platform/SelectPlatformComponent";
-import {get_authenticated_platforms} from "../../../../constants/platformConstants";
+import {get_authenticated_platforms, get_id_by_value} from "../../../../constants/platformConstants";
+import {Option} from "antd/es/mentions";
+import {ParticipantList} from "../../common/ParticipantList";
+import {get_user_id} from "../../../../constants";
 
 class CreateMeetingComponent extends React.Component {
     constructor(props) {
@@ -21,6 +24,7 @@ class CreateMeetingComponent extends React.Component {
             time : '',
             length : '',
             unit : '',
+            participants : [],
             authenticatedPlatforms : get_authenticated_platforms()
         }
 
@@ -29,6 +33,7 @@ class CreateMeetingComponent extends React.Component {
         this.handleCancel = this.handleCancel.bind(this)
         this.handleDataChange = this.handleDataChange.bind(this)
         this.show = this.show.bind(this)
+        this.setParticipants = this.setParticipants.bind(this)
         this.createMeetingFormRef = React.createRef()
 
     }
@@ -50,7 +55,7 @@ class CreateMeetingComponent extends React.Component {
                 start_time : new Date(date + ' ' + time).toISOString(),
                 duration : length + unit
             }
-            this.props.createMeeting(data, platform)
+            this.props.createMeeting(data, platform, this.createInvites())
             this.handleCancel();
             setTimeout(()=> {
                 this.props.getMeetings(this.state.authenticatedPlatforms)
@@ -61,6 +66,22 @@ class CreateMeetingComponent extends React.Component {
 
     }
 
+    createInvites() {
+        let invites = [];
+        const {participants, platform} = this.state
+        if (participants.length > 0) {
+            participants.forEach(
+                participant => {
+                    let invite = {}
+                    invite.meeting_platform_id = get_id_by_value(platform)
+                    invite.inviter_id = get_user_id()
+                    invite.invitee_username = participant
+                    invites.push(invite)
+            })
+        }
+        return invites
+    }
+
     handleCancel() {
         this.setState({
             visible : false,
@@ -69,7 +90,8 @@ class CreateMeetingComponent extends React.Component {
             date : '',
             time : '',
             length : '',
-            unit : ''
+            unit : '',
+            participants : [],
         })
         this.createMeetingFormRef.current.resetFields();
     }
@@ -92,6 +114,12 @@ class CreateMeetingComponent extends React.Component {
             return !isPast(new Date(date + ' ' + time));
         }
         return false;
+    }
+
+    setParticipants(participants) {
+        this.setState({
+            participants : participants
+        })
     }
 
     render() {
@@ -177,9 +205,23 @@ class CreateMeetingComponent extends React.Component {
                                     <Radio.Group name="unit" onChange={(e)=>this.handleChange(e)}>
                                         <Radio.Button value="m">Minutes</Radio.Button>
                                         <Radio.Button value="h">Hours</Radio.Button>
-                                        <Radio.Button value="d">Days</Radio.Button>
                                     </Radio.Group>
                                 </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className="gutter-row">
+                                <Form.Item
+                                    name="participants"
+                                    label="Participants"
+                                >
+                                    <ParticipantList setParticipants={(participants) => this.setParticipants(participants)}/>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className="gutter-row">
+
                             </Col>
                         </Row>
                     </Form>
