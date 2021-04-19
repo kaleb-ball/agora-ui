@@ -2,13 +2,15 @@ import {restService} from "./rest.service";
 
 export const userService = {
     userInvites,
-    userDetails
+    userDetails,
+    getAllUsers
 }
 
-const endpointBase = "users/me"
+const endpointBase = "users"
+const user = "me"
 
 export function userInvites (sent) {
-    const endpoint = `${endpointBase}/invites`
+    const endpoint = `${endpointBase}/${user}/invites`
     const params = {
         type : sent ? 'sent' : 'received'
     }
@@ -17,5 +19,10 @@ export function userInvites (sent) {
 }
 
 export function userDetails() {
+    const endpoint = `${endpointBase}/${user}`
+    return restService.get(endpointBase, true)
+}
+
+export function getAllUsers() {
     return restService.get(endpointBase, true)
 }

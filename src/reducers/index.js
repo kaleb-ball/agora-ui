@@ -4,7 +4,7 @@ import {registration} from "./register.reducer";
 import {authorization, checkAuthorization} from "./oauth.reducer";
 import { alert } from "./alert.reducer";
 import {createMeeting, getMeeting, getMeetings} from "./meetings.reducer";
-import {createInvite} from "../actions/invite.actions";
+import {createInvite, deleteInvite} from "../actions/invite.actions";
 
 const rootReducer = combineReducers({
     authentication,
@@ -15,6 +15,7 @@ const rootReducer = combineReducers({
     createMeeting,
     getMeeting,
     getMeetings,
-    createInvite
+    createInvite,
+    deleteInvite
 });
 export default rootReducer;

@@ -12,6 +12,7 @@ import {
     UserOutlined
 } from "@ant-design/icons";
 import Text from "antd/lib/typography/Text";
+import {ParticipantList} from "./ParticipantList";
 
 
 class MeetingDrawerComponent extends React.Component {
@@ -19,30 +20,25 @@ class MeetingDrawerComponent extends React.Component {
         super(props);
 
         this.startMeeting = this.startMeeting.bind(this)
-/*        this.showDrawer = this.showDrawer.bind(this)
-        this.onClose = this.onClose.bind(this)*/
     }
 
     startMeeting(id, platform) {
         if (id && platform) this.props.startMeeting(id, platform);
     }
 
-/*
-    showDrawer() {
-        this.setState({
-            visible : true
-        })
+    getParticipants(meeting) {
+        if (meeting.isHost) {
+            let participants = [];
+            meeting.participants.forEach(participant => participants.push(participant.username))
+            return <ParticipantList meeting={meeting}  participants={participants} />
+        } else {
+            return "Only the host can view participants"
+        }
     }
-
-    onClose() {
-        this.setState({
-            visible : false
-            }
-        })*/
-
 
     render() {
         const {meeting, visible} = this.props;
+        const participants = this.getParticipants(meeting)
         return (
             <div>
                 <Drawer
@@ -87,24 +83,7 @@ class MeetingDrawerComponent extends React.Component {
                     <Divider/>
                     <Row>
                         <Col span={6}>Participants:</Col>
-                        <Col span={18}>
-                            <Avatar.Group maxCount={10} size="large">
-                                <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                                <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
-                                <Tooltip title="Ant User" placement="top">
-                                    <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} />
-                                </Tooltip>
-                                <Avatar style={{ backgroundColor: '#1890ff' }} icon={<AntDesignOutlined />} />
-                            </Avatar.Group>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={6}/>
-                        <Col span={18}>
-                            <Space>
-                                <Button>View All</Button>
-                            </Space>
-                        </Col>
+                        <Col span={18}>{participants}</Col>
                     </Row>
                     <Divider/>
                     <Row>

@@ -4,13 +4,16 @@ import {connect} from "react-redux";
 import React from "react";
 import './ParticipantList.css'
 import {Option} from "antd/es/mentions";
+import {get_id_by_value} from "../../../constants/platformConstants";
+import {get_user_id} from "../../../constants";
+import {inviteAction} from "../../../actions/invite.actions";
 
 class ParticipantList extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            tags: [],
+            tags: this.props.participants ? this.props.participants : [],
             inputVisible: false,
             inputValue: '',
             editInputIndex: -1,
@@ -27,7 +30,11 @@ class ParticipantList extends React.Component {
     handleClose(removedTag) {
         const tags = this.state.tags.filter(tag => tag !== removedTag);
         this.setState({tags});
-        this.props.setParticipants(tags)
+        if (this.props.meeting) {
+            this.props.delete(this.props.meeting.participants.filter(participant => participant.username === removedTag)[0].inviteId)
+        } else {
+            this.props.setParticipants(tags)
+        }
     };
 
     showInput() {
@@ -37,7 +44,6 @@ class ParticipantList extends React.Component {
 
 
     handleSelect(option) {
-        console.log(option)
         const inputValue = option.value
         let {tags} = this.state;
         if (inputValue && tags.indexOf(inputValue) === -1) {
@@ -48,7 +54,17 @@ class ParticipantList extends React.Component {
             inputVisible: false,
             inputValue: '',
         });
-        this.props.setParticipants(tags)
+        if (this.props.meeting){
+            let invite = {}
+            invite.meeting_id = this.props.meeting.id
+            invite.meeting_platform_id = get_id_by_value(this.props.meeting.platform)
+            invite.inviter_id = get_user_id()
+            invite.invitee_username = inputValue
+            console.log(invite)
+            this.props.create(invite)
+        } else {
+            this.props.setParticipants(tags)
+        }
     }
 
     saveInputRef(input) {
@@ -106,6 +122,8 @@ function mapState(state) {
 }
 
 const actionCreators = {
+    create : inviteAction.createInvite,
+    delete : inviteAction.deleteInvite
 };
 
 const connectedComponent = connect(mapState, actionCreators)(ParticipantList);

@@ -80,7 +80,7 @@ class MeetingsPage extends React.Component {
     filter(meetings) {
         const {platform, startDate, endDate, date, search} = this.state
         if (!meetings) return meetings
-        if (platform && platform !== 'all') meetings = meetings.filter(meeting => meeting.platform === platform)
+        if (platform && platform !== 'all') meetings = meetings ? meetings.filter(meeting => meeting.platform === platform) : []
         if (date) meetings = filterMeetingsByDate(meetings, new Date(date))
         if (startDate && endDate) meetings = filterMeetingsByDateRange(meetings, removeTime(startDate), removeTime(endDate))
         if (search) meetings = meetings.filter(meeting => meeting.title.includes(search) || meeting.description.includes(search))

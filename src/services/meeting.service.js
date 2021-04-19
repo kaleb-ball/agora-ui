@@ -26,7 +26,11 @@ async function getAllMeetings(platforms) {
         let platformMeetings = await getPlatformMeetings(platformsMap[platform])
         meetings = meetings.concat(platformMeetings)
     }
+    meetings = await addSentInvites(meetings)
+    let receivedInvitesMeetings = await addReceivedInvites()
+    meetings = meetings.concat(receivedInvitesMeetings)
     meetings = removeNull(meetings);
+
     return meetings;
 }
 
@@ -49,41 +53,41 @@ async function getPlatformMeetings(platform) {
     }
 }
 
-async function handleInvites() {
-    let invites = [];
-    let sentInvites =  await userService.userInvites(true)
-    let receivedInvites = await userService.userInvites(false)
-    invites = invites.concat(sentInvites).concat(receivedInvites)
-}
 
-async function addParticipants(meetings) {
-    let sentInvites =  await userService.userInvites(true)
+async function addSentInvites(meetings) {
+    let sentInvites =  (await userService.userInvites(true)).data
     meetings.forEach(
         (meeting) => {
             meeting.participants = [];
-            let meetingInvites = sentInvites.filter(invite => invite.meeting.id === meeting.id)
-            if (meetingInvites.length > 0) meeting.isHost = true;
-            meetingInvites.forEach(
-                invite => {
-                    meeting.participants.push(invite.invitee)
-                })
+            meeting.isHost = true;
+            let meetingInvites = sentInvites ? sentInvites.filter(invite => invite.meeting.id === meeting.id) : []
+            if (meetingInvites.length > 0) {
+                meetingInvites.forEach(
+                    invite => {
+                        invite.invitee.inviteId = invite.id
+                        meeting.participants.push(invite.invitee)
+                    })
+            }
         }
     )
     return meetings
 }
 
-async function getReceivedInvites() {
+async function addReceivedInvites() {
     let meetings = [];
-    let receivedInvites = await userService.userInvites(false)
-    receivedInvites.forEach(
-        invite => {
-            invite.meeting.isHost = false;
-            invite.meeting.hostId = invite.inviter_id
-            invite.meeting.platform = get_value_by_id(invite.meeting_platform)
-            meetings.push(invite.meeting)
-        }
-    )
-    return meetings;
+    let receivedInvites = (await userService.userInvites(false)).data
+    if (receivedInvites) {
+        receivedInvites.forEach(
+            invite => {
+                invite.meeting.isHost = false;
+                invite.meeting.hostId = invite.inviter_id
+                invite.meeting.platform = get_value_by_id(invite.meeting_platform)
+                meetings.push(invite.meeting)
+            }
+        )
+        return meetings;
+    }
+
 }
 
 

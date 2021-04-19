@@ -7,7 +7,9 @@ export const meetingActions = {
     createMeeting,
     createInstantMeeting,
     getMeetings,
-    startMeeting
+    startMeeting,
+    addParticipant,
+    deleteParticipant
 }
 
 function createMeeting(data, platform, invites = []) {
@@ -97,4 +99,18 @@ function openStartUrl(body) {
         const newWindow = window.open(body.data.start_url, "_blank", "noopener,noreferrer")
         if (newWindow) newWindow.opener = null
     }
+}
+
+function addParticipant(invite) {
+    return dispatch => {
+        dispatch(add(invite))
+    }
+    function add(invite) {return {type : meetingConstants.ADD_PARTICIPANT, invite}}
+}
+
+function deleteParticipant(id) {
+    return dispatch => {
+        dispatch(_delete(id))
+    }
+    function _delete(id) {return {type : meetingConstants.DELETE_PARTICIPANT, id}}
 }

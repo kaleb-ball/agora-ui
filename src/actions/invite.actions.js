@@ -1,6 +1,7 @@
 import {inviteConstants} from "../constants/inviteConstants";
 import {inviteService} from "../services/invite.service";
 import {alertActions} from "./alert.actions";
+import {meetingActions} from "./meeting.actions";
 
 export const inviteAction = {
     createInvite,
@@ -14,6 +15,7 @@ export function createInvite(invite) {
         inviteService.createInvite(invite).then(
             () => {
                 dispatch(success());
+                dispatch(meetingActions.addParticipant(invite))
             }
         ).catch(
             (err) => {
@@ -28,8 +30,24 @@ export function createInvite(invite) {
 
 }
 
-export function deleteInvite() {
-
+export function deleteInvite(id) {
+    return dispatch => {
+        dispatch(request())
+        inviteService.deleteInvite(id).then(
+            () => {
+                dispatch(success())
+                dispatch(meetingActions.deleteParticipant(id))
+            }
+        ).catch(
+            (err) => {
+                dispatch(failure())
+                dispatch(alertActions.error("Something went wrong deleting the invite"))
+            }
+        )
+    }
+    function request() { return {type : inviteConstants.DELETE_REQUEST}}
+    function success() { return {type : inviteConstants.DELETE_SUCCESS}}
+    function failure() { return {type : inviteConstants.DELETE_FAILURE}}
 }
 
 export function getUserInvites() {

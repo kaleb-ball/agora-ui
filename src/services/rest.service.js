@@ -14,7 +14,7 @@ function get(endpoint, authenticated, params = {}) {
     let headers = addHeaders(authenticated, false)
     const config = {
         headers : {...headers},
-        params : {}
+        params : params
     };
     return axios.get(endpoint, config)
 }
