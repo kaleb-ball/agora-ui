@@ -1,4 +1,4 @@
-import {alertConstants, userConstants} from '../constants';
+import {alertConstants, get_username, userConstants} from '../constants';
 import {oauthService, authService} from '../services';
 import { alertActions } from './';
 import { history } from '../helpers';
@@ -8,7 +8,8 @@ import {userService} from "../services/user.service";
 export const userActions = {
     login,
     logout,
-    register
+    register,
+    getAllUsers
 };
 
 function login(username, password) {
@@ -68,4 +69,26 @@ function logout() {
         authService.logout()
     }
     function logout() {return {type : userConstants.LOGOUT}}
+}
+
+
+function getAllUsers() {
+    return dispatch => {
+        dispatch(request())
+        userService.getUsers().then(
+            (res) => {
+                let users = res.data
+                users = users.filter(user => user.username !== get_username())
+                dispatch(success(users))
+            }
+        ).catch(
+            (err) => {
+                dispatch(failure())
+                dispatch(alertActions.error('Something went wrong getting users'))
+            }
+        )
+    }
+    function request() { return { type: userConstants.GET_USERS_REQUEST} }
+    function success(users) { return { type: userConstants.GET_USERS_SUCCESS, users } }
+    function failure() { return { type: userConstants.GET_USERS_FAILURE } }
 }

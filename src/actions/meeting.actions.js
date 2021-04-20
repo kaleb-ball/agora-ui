@@ -2,6 +2,7 @@ import {meetingService} from "../services";
 import {alertActions} from "./alert.actions";
 import {meetingConstants} from "../constants";
 import {inviteAction} from "./invite.actions";
+import {inviteService} from "../services/invite.service";
 
 export const meetingActions = {
     createMeeting,
@@ -101,9 +102,14 @@ function openStartUrl(body) {
     }
 }
 
-function addParticipant(invite) {
+function addParticipant(id) {
     return dispatch => {
-        dispatch(add(invite))
+        inviteService.getInvite(id).then(
+            (res) => {
+                let invite = res.data
+                dispatch(add(invite))
+            }
+        )
     }
     function add(invite) {return {type : meetingConstants.ADD_PARTICIPANT, invite}}
 }

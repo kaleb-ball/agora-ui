@@ -1,5 +1,4 @@
 import {meetingConstants} from "../constants";
-import {act} from "@testing-library/react";
 
 export function createMeeting(state = {}, action) {
     switch (action.type) {
@@ -15,7 +14,6 @@ export function createMeeting(state = {}, action) {
 }
 
 export function getMeetings(state = {requestingMeetings : false, meetings : []}, action) {
-    let meetings;
     switch(action.type) {
         case meetingConstants.GET_MEETINGS_REQUEST :
             return {requestingMeetings : true};
@@ -27,13 +25,17 @@ export function getMeetings(state = {requestingMeetings : false, meetings : []},
         case meetingConstants.GET_MEETINGS_FAILURE :
             return {requestingMeetings: false}
         case meetingConstants.ADD_PARTICIPANT :
-            meetings = state.meetings.forEach(meeting => {
-                if (action.invite.meeting_id === meeting.id) meeting.participants.push(action.invite)
+            state.meetings.forEach(meeting => {
+                if (action.invite.meeting.id === meeting.id) {
+                    let invitee = action.invite.invitee
+                    invitee.inviteId = action.invite.id
+                    meeting.participants.push(invitee)
+                }
             })
-            return {meetings : meetings}
+            return {meetings : state.meetings}
         case meetingConstants.DELETE_PARTICIPANT :
-            meetings = state.meetings.forEach(meeting => meeting.participants.filter(participant => participant.invite.inviteId !== action.id))
-            return {meetings : meetings}
+            state.meetings.forEach(meeting => meeting.participants = meeting.participants.filter(participant => participant.inviteId !== action.id))
+            return {meetings : state.meetings}
         default :
             return state;
     }

@@ -3,7 +3,7 @@ import {restService} from "./rest.service";
 export const userService = {
     userInvites,
     userDetails,
-    getAllUsers
+    getUsers
 }
 
 const endpointBase = "users"
@@ -20,9 +20,9 @@ export function userInvites (sent) {
 
 export function userDetails() {
     const endpoint = `${endpointBase}/${user}`
-    return restService.get(endpointBase, true)
+    return restService.get(endpoint, true)
 }
 
-export function getAllUsers() {
-    return restService.get(endpointBase, true)
+export function getUsers() {
+    return restService.get(`${endpointBase}`, true)
 }

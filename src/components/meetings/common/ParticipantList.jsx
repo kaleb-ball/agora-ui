@@ -7,6 +7,8 @@ import {Option} from "antd/es/mentions";
 import {get_id_by_value} from "../../../constants/platformConstants";
 import {get_user_id} from "../../../constants";
 import {inviteAction} from "../../../actions/invite.actions";
+import {getAllUsers} from "../../../reducers/user.reducer";
+import {userActions} from "../../../actions";
 
 class ParticipantList extends React.Component {
     constructor(props) {
@@ -24,6 +26,8 @@ class ParticipantList extends React.Component {
         this.showInput = this.showInput.bind(this)
         this.handleSelect = this.handleSelect.bind(this)
         this.saveInputRef = this.saveInputRef.bind(this)
+
+        this.props.getUsers()
     }
 
 
@@ -31,6 +35,7 @@ class ParticipantList extends React.Component {
         const tags = this.state.tags.filter(tag => tag !== removedTag);
         this.setState({tags});
         if (this.props.meeting) {
+            console.log(this.props.meeting.participants.filter(participant => participant.username === removedTag)[0].inviteId)
             this.props.delete(this.props.meeting.participants.filter(participant => participant.username === removedTag)[0].inviteId)
         } else {
             this.props.setParticipants(tags)
@@ -73,6 +78,7 @@ class ParticipantList extends React.Component {
 
     render() {
         const {tags, inputVisible} = this.state;
+        const {users} = this.props
         return (
             <>
                 {tags.map((tag, index) => {
@@ -103,8 +109,7 @@ class ParticipantList extends React.Component {
                         className="tag-input"
                         onSelect={this.handleSelect}
                     >
-                        <Option value="test">Test</Option>
-                        <Option value="test2">Test 2</Option>
+                        {users.map(user => (<Option value={user.username}>{user.username}</Option>))}
                     </Mentions>
                 )}
                 {!inputVisible && (
@@ -118,12 +123,15 @@ class ParticipantList extends React.Component {
 }
 
 function mapState(state) {
-    return {}
+    return {
+        users : state.getAllUsers.users
+    }
 }
 
 const actionCreators = {
     create : inviteAction.createInvite,
-    delete : inviteAction.deleteInvite
+    delete : inviteAction.deleteInvite,
+    getUsers : userActions.getAllUsers
 };
 
 const connectedComponent = connect(mapState, actionCreators)(ParticipantList);

@@ -13,9 +13,9 @@ export function createInvite(invite) {
     return dispatch => {
         dispatch(request());
         inviteService.createInvite(invite).then(
-            () => {
+            (res) => {
                 dispatch(success());
-                dispatch(meetingActions.addParticipant(invite))
+                dispatch(meetingActions.addParticipant(res.data.id))
             }
         ).catch(
             (err) => {
