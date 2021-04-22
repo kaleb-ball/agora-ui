@@ -5,27 +5,21 @@ import {meetingActions, userActions} from "../../../actions";
 import '../home/UpcomingMeetingsComponent/DayComponent/DayComponent.css'
 import {
     CalendarOutlined,
-    ExclamationCircleTwoTone,
     GoogleOutlined,
 } from "@ant-design/icons";
 import Text from "antd/lib/typography/Text";
 import {ParticipantList} from "./ParticipantList";
 import {JoinButton} from "./JoinButton";
 import {format} from 'date-fns'
+import {DeleteButton} from "./DeleteButton";
 
 
 class MeetingDrawerComponent extends React.Component {
     constructor(props) {
         super(props);
 
-        this.startMeeting = this.startMeeting.bind(this)
-
         this.props.getUsers()
 
-    }
-
-    startMeeting(id, platform) {
-        if (id && platform) this.props.startMeeting(id, platform);
     }
 
     getParticipants(meeting) {
@@ -120,9 +114,7 @@ class MeetingDrawerComponent extends React.Component {
                     <Row>
                         <Space>
                             <JoinButton meeting={meeting}/>
-                            <Popconfirm title="Are You Sure？" okText="Yes" okType="danger" cancelText="No" icon={<ExclamationCircleTwoTone twoToneColor="#f5222d"/>}>
-                                <Button type="danger" ghost>Delete</Button>
-                            </Popconfirm>
+                            <DeleteButton onDelete={() => this.props.onClose()} meeting={meeting}/>
                         </Space>
                     </Row>
                 </Drawer>
@@ -138,7 +130,7 @@ function mapState(state) {
 }
 
 const actionCreators = {
-    startMeeting : meetingActions.startMeeting,
+    deleteMeeting: meetingActions.deleteMeeting,
     getUsers : userActions.getAllUsers
 }
 

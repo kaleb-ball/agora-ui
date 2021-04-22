@@ -6,7 +6,8 @@ import {get_value_by_id} from "../constants/platformConstants";
 export const meetingService = {
     createMeeting,
     getAllMeetings,
-    getMeeting
+    getMeeting,
+    deleteMeeting
 }
 
 const endpointBase = 'users/me/platforms'
@@ -17,6 +18,11 @@ function createMeeting(data, platform, instant) {
         type : instant ? 1 : 2
     }
     return restService.post(endpoint, true, data, params);
+}
+
+function deleteMeeting(id, platform) {
+    const endpoint = `${getEndpoint(platform)}/${id}`
+    return restService.delete(endpoint, true)
 }
 
 async function getAllMeetings(platforms) {

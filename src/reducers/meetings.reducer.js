@@ -24,6 +24,10 @@ export function getMeetings(state = {requestingMeetings : false, meetings : []},
             };
         case meetingConstants.GET_MEETINGS_FAILURE :
             return {requestingMeetings: false}
+        case meetingConstants.DELETE_MEETING:
+            return {
+                meetings: state.meetings.filter(meeting=> meeting.id !== action.id)
+            }
         case meetingConstants.ADD_PARTICIPANT :
             state.meetings.forEach(meeting => {
                 if (action.invite.meeting.id === meeting.id) {
