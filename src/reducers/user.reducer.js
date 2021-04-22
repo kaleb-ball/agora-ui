@@ -3,7 +3,9 @@ import {userConstants} from "../constants";
 export function getAllUsers(state={ users : [] }, action) {
     switch (action.type) {
         case userConstants.GET_USERS_REQUEST : {
-            return {}
+            return {
+                users : []
+            }
         }
         case userConstants.GET_USERS_SUCCESS : {
             return {
@@ -11,7 +13,9 @@ export function getAllUsers(state={ users : [] }, action) {
             }
         }
         case userConstants.GET_USERS_FAILURE :
-            return {}
+            return {
+                users : []
+            }
         default :
             return state
     }

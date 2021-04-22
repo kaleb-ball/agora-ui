@@ -16,14 +16,20 @@ export function createMeeting(state = {}, action) {
 export function getMeetings(state = {requestingMeetings : false, meetings : []}, action) {
     switch(action.type) {
         case meetingConstants.GET_MEETINGS_REQUEST :
-            return {requestingMeetings : true};
+            return {
+                requestingMeetings : true,
+                meetings : []
+            };
         case meetingConstants.GET_MEETINGS_SUCCESS :
             return {
                 requestingMeetings: false,
                 meetings : action.meetings
             };
         case meetingConstants.GET_MEETINGS_FAILURE :
-            return {requestingMeetings: false}
+            return {
+                requestingMeetings: false,
+                meetings: []
+            }
         case meetingConstants.DELETE_MEETING:
             return {
                 meetings: state.meetings.filter(meeting=> meeting.id !== action.id)

@@ -107,6 +107,7 @@ class ParticipantList extends React.Component {
                         ref={this.saveInputRef}
                         className="tag-input"
                         onSelect={this.handleSelect}
+                        autoSize={true}
                     >
                         {users.map(user => (<Option value={user.username}>{user.username}</Option>))}
                     </Mentions>

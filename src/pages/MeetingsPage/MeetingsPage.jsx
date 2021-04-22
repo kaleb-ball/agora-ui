@@ -1,13 +1,15 @@
-import {Col, DatePicker, Divider, Mentions, Radio, Row, Space} from "antd";
+import {Button, Col, DatePicker, Divider, Form, Mentions, Radio, Row, Space} from "antd";
 import {connect} from "react-redux";
 import * as React from "react";
-import {meetingActions} from "../../actions";
+import {meetingActions, userActions} from "../../actions";
 import Search from "antd/es/input/Search";
 import {SelectPlatformComponent} from "../../components/platform/SelectPlatformComponent";
 import { isFuture, isPast } from 'date-fns'
 import {filterMeetingsByDate, filterMeetingsByDateRange, removeTime} from "../../helpers/meetings-util";
 import {get_authenticated_platforms} from "../../constants/platformConstants";
 import {SearchMeetingsList} from "../../components/meetings/search/SearchMeeetingsList";
+import {Option} from "antd/es/mentions";
+import {ParticipantList} from "../../components/meetings/common/ParticipantList";
 
 const { RangePicker } = DatePicker
 
@@ -23,7 +25,9 @@ class MeetingsPage extends React.Component {
             endDate: '',
             dateType : '',
             timePeriod : '',
-            search : ''
+            search : '',
+            hostType : '',
+            participants : []
         }
 
         this.props.getMeetings(this.state.authenticatedPlatforms)
@@ -31,6 +35,15 @@ class MeetingsPage extends React.Component {
         this.handleChange = this.handleChange.bind(this)
         this.handleDataChange = this.handleDataChange.bind(this)
         this.disabledDate = this.disabledDate.bind(this)
+        this.setParticipants = this.setParticipants.bind(this)
+
+    }
+
+
+    setParticipants(participants) {
+        this.setState({
+            participants : participants
+        })
     }
 
     datePicker() {
@@ -70,12 +83,35 @@ class MeetingsPage extends React.Component {
     }
 
     filter(meetings) {
-        const {platform, startDate, endDate, date, search} = this.state
+        const {platform, startDate, endDate, date, search, hostType, timePeriod, participants} = this.state
         if (!meetings) return meetings
         if (platform && platform !== 'all') meetings = meetings ? meetings.filter(meeting => meeting.platform === platform) : []
         if (date) meetings = filterMeetingsByDate(meetings, new Date(date))
         if (startDate && endDate) meetings = filterMeetingsByDateRange(meetings, removeTime(startDate), removeTime(endDate))
         if (search) meetings = meetings.filter(meeting => meeting.title.includes(search) || meeting.description.includes(search))
+        if (hostType) {
+            if (hostType === 'host') meetings = meetings.filter(meeting => meeting.isHost)
+            else if (hostType === 'participant')meetings = meetings.filter(meeting => !meeting.isHost)
+        }
+        if (timePeriod) {
+            if (timePeriod === 'upcoming') {
+                meetings = meetings.filter(meeting => isFuture(meeting.start_time))
+            } else if (timePeriod === 'previous') {
+                meetings = meetings.filter(meeting => isPast(meeting.start_time))
+            }
+        }
+        if (participants.length > 0) {
+            meetings = meetings.filter(meeting=>{
+                let found = 0
+                 participants.forEach(user=> {
+                    if (meeting.participants.filter(participant => participant.username === user).length > 0) {
+                        found++;
+                    }
+                })
+                return found === participants.length
+            })
+        }
+
         return meetings
     }
 
@@ -83,7 +119,6 @@ class MeetingsPage extends React.Component {
         const datePicker = this.datePicker()
         let { meetings, requesting } = this.props
         meetings = this.filter(meetings)
-        console.log(meetings)
         return(
             <div>
                 <Row type="flex" justify="center" style={{paddingTop: '100px'}}>
@@ -110,12 +145,12 @@ class MeetingsPage extends React.Component {
                 </Row>
                 <Row type="flex" justify="center" style={{paddingTop: '25px'}}>
                     <Space direction="horizontal" size="large">
-                        <Radio.Group name="host">
+                        <Radio.Group name="hostType" onChange={this.handleChange}>
                             <Radio.Button value="host">Host</Radio.Button>
                             <Radio.Button value="participant">Participant</Radio.Button>
                             <Radio.Button value="all">All</Radio.Button>
                         </Radio.Group>
-                        <Mentions placeholder="Search Participants"/>
+                        <ParticipantList setParticipants={(participants) => this.setParticipants(participants)}/>
                     </Space>
                 </Row>
                 <Row type="flex" justify="center" style={{paddingTop: '25px'}}>
@@ -137,12 +172,12 @@ class MeetingsPage extends React.Component {
 function mapState(state) {
     return {
         requesting : state.getMeetings.requestingMeetings,
-        meetings : state.getMeetings.meetings
+        meetings : state.getMeetings.meetings,
     }
 }
 
 const actionCreators = {
-    getMeetings : meetingActions.getMeetings
+    getMeetings : meetingActions.getMeetings,
 }
 
 const connectedPage = connect(mapState, actionCreators)(MeetingsPage);

@@ -6,6 +6,7 @@ import {inviteService} from "../services/invite.service";
 
 export const meetingActions = {
     createMeeting,
+    deleteMeeting,
     createInstantMeeting,
     getMeetings,
     startMeeting,
@@ -36,6 +37,22 @@ function createMeeting(data, platform, invites = []) {
     function request() { return {type: meetingConstants.CREATE_REQUEST} }
     function success() { return {type: meetingConstants.CREATE_SUCCESS} }
     function failure() { return {type: meetingConstants.CREATE_FAILURE} }
+}
+
+function deleteMeeting(id, platform) {
+    return dispatch => {
+        meetingService.deleteMeeting(id, platform).then(
+            () => {
+                dispatch(success(id))
+            }
+        ).catch(
+            () => {
+                dispatch(alertActions.error("There was a problem deleting the meeting"))
+            }
+        )
+    }
+
+    function success(id) {return {type: meetingConstants.DELETE_MEETING, id}}
 }
 
 function createInstantMeeting(data, platform) {
