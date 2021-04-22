@@ -13,6 +13,7 @@ import {
 } from "@ant-design/icons";
 import Text from "antd/lib/typography/Text";
 import {ParticipantList} from "./ParticipantList";
+import {JoinButton} from "./JoinButton";
 
 
 class MeetingDrawerComponent extends React.Component {
@@ -88,7 +89,7 @@ class MeetingDrawerComponent extends React.Component {
                     <Divider/>
                     <Row>
                         <Space>
-                            <Button type="primary" ghost>Start</Button>
+                            <JoinButton meeting={meeting}/>
                             <Popconfirm title="Are You Sure？" okText="Yes" okType="danger" cancelText="No" icon={<ExclamationCircleTwoTone twoToneColor="#f5222d"/>}>
                                 <Button type="danger" ghost>Delete</Button>
                             </Popconfirm>

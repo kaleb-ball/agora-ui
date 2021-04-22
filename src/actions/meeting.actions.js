@@ -10,7 +10,8 @@ export const meetingActions = {
     getMeetings,
     startMeeting,
     addParticipant,
-    deleteParticipant
+    deleteParticipant,
+    joinMeeting
 }
 
 function createMeeting(data, platform, invites = []) {
@@ -55,6 +56,7 @@ function createInstantMeeting(data, platform) {
     function failure() { return {type: meetingConstants.CREATE_FAILURE} }
 }
 
+
 function getMeetings(platforms= {}) {
     return dispatch => {
         dispatch(request());
@@ -72,6 +74,14 @@ function getMeetings(platforms= {}) {
     function request() { return {type: meetingConstants.GET_MEETINGS_REQUEST} }
     function success(meetings) { return { type: meetingConstants.GET_MEETINGS_SUCCESS, meetings} }
     function failure() { return {type: meetingConstants.GET_MEETINGS_FAILURE} }
+}
+
+function joinMeeting(meeting) {
+    return dispatch => {
+        if (meeting) {
+            openUrl(meeting.join_url)
+        }
+    }
 }
 
 function startMeeting(id, platform) {
@@ -97,9 +107,13 @@ function startMeeting(id, platform) {
 
 function openStartUrl(body) {
     if(body.data.start_url) {
-        const newWindow = window.open(body.data.start_url, "_blank", "noopener,noreferrer")
-        if (newWindow) newWindow.opener = null
+        openUrl(body.data.start_url)
     }
+}
+
+function openUrl(url) {
+    const newWindow = window.open(url, "_blank", "noopener,noreferrer")
+    if (newWindow) newWindow.opener = null
 }
 
 function addParticipant(id) {

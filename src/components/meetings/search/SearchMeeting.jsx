@@ -15,6 +15,7 @@ import {platform_color, platform_name} from "../../../constants/platformConstant
 import Text from "antd/lib/typography/Text";
 import {format} from 'date-fns'
 import {MeetingDrawerComponent} from "../common/MeetingDrawerComponent";
+import {JoinButton} from "../common/JoinButton";
 
 
 class SearchMeetingComponent extends React.Component {
@@ -25,14 +26,9 @@ class SearchMeetingComponent extends React.Component {
             visible : false
         }
 
-        this.startMeeting = this.startMeeting.bind(this)
         this.avatar = this.avatar.bind(this)
         this.showDrawer = this.showDrawer.bind(this)
         this.onClose = this.onClose.bind(this)
-    }
-
-    startMeeting(id, platform) {
-        if (id && platform) this.props.startMeeting(id, platform);
     }
 
     avatar(platform) {
@@ -59,7 +55,7 @@ class SearchMeetingComponent extends React.Component {
             <div>
                 <List.Item
                     actions={[
-                        <Button onClick={() => this.startMeeting(meeting.id, meeting.platform)} type="primary" ghost>Start</Button>,
+                        <JoinButton meeting={meeting}/>,
                         <Button icon={<MoreOutlined />} onClick={this.showDrawer}/>
 
                     ]}
@@ -84,9 +80,7 @@ function mapState(state) {
     return {}
 }
 
-const actionCreators = {
-    startMeeting : meetingActions.startMeeting
-}
+const actionCreators = {}
 
 const connectedComponent = connect(mapState, actionCreators)( SearchMeetingComponent);
 export { connectedComponent as SearchMeetingComponent };
