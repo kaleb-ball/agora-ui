@@ -58,18 +58,18 @@ async function addSentInvites(meetings) {
     let sentInvites =  (await userService.userInvites(true)).data
     meetings.forEach(
         (meeting) => {
-            meeting.participants = [];
-            meeting.isHost = true;
-            let meetingInvites = sentInvites ? sentInvites.filter(invite => invite.meeting.id === meeting.id) : []
-            if (meetingInvites.length > 0) {
-                meetingInvites.forEach(
-                    invite => {
-                        invite.invitee.inviteId = invite.id
-                        meeting.participants.push(invite.invitee)
-                    })
-            }
-        }
-    )
+            if (meeting) {
+                meeting.participants = [];
+                meeting.isHost = true;
+                let meetingInvites = sentInvites ? sentInvites.filter(invite => invite.meeting.id === meeting.id) : []
+                if (meetingInvites.length > 0) {
+                    meetingInvites.forEach(
+                        invite => {
+                            invite.invitee.inviteId = invite.id
+                            meeting.participants.push(invite.invitee)
+                        })
+                }
+            }})
     return meetings
 }
 
@@ -85,9 +85,9 @@ async function addReceivedInvites() {
                 meetings.push(invite.meeting)
             }
         )
-        return meetings;
     }
-
+    addDates(meetings)
+    return meetings;
 }
 
 
