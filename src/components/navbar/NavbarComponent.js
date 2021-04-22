@@ -14,7 +14,6 @@ class NavbarComponent extends React.Component {
                 <Menu theme="light" mode="horizontal" style={{ lineHeight: '64px' }}>
                     <Menu.Item key="1"><a href="/">Home</a></Menu.Item>
                     <Menu.Item key="2"><a href="/meetings">Meetings</a></Menu.Item>
-                    <Menu.Item key="3"><a href="/">Account</a></Menu.Item>
                 </Menu>
             )
         } else {
