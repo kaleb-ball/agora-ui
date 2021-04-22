@@ -12,7 +12,7 @@ import {AuthPage} from "./pages/AuthPage";
 import {PrivateRoute, BaseRouteWrapper} from "./components";
 import {RedirectPage} from "./pages/OAuthPage";
 import {MeetingsPage} from "./pages/MeetingsPage/MeetingsPage";
-import {Content, Header} from "antd/es/layout/layout";
+import {Content} from "antd/es/layout/layout";
 
 class App extends React.Component {
 

@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import {Button, Col, DatePicker, Form, Input, InputNumber, Mentions, Modal, Radio, Row, TimePicker} from 'antd'
+import {Button, Col, DatePicker, Form, Input, InputNumber, Modal, Radio, Row, TimePicker} from 'antd'
 import {meetingActions} from "../../../../actions";
 import { isPast, isToday } from 'date-fns';
 import {SelectPlatformComponent} from "../../../platform/SelectPlatformComponent";
 import {get_authenticated_platforms, get_id_by_value} from "../../../../constants/platformConstants";
-import {Option} from "antd/es/mentions";
 import {ParticipantList} from "../../common/ParticipantList";
 import {get_user_id} from "../../../../constants";
 

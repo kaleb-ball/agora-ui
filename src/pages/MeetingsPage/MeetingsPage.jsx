@@ -1,23 +1,15 @@
-import {Button, Card, Col, Collapse, DatePicker, Divider, Mentions, Radio, Row, Space} from "antd";
-import {oauthActions} from "../../actions/oauth.actions";
+import {Col, DatePicker, Divider, Mentions, Radio, Row, Space} from "antd";
 import {connect} from "react-redux";
 import * as React from "react";
 import {meetingActions} from "../../actions";
 import Search from "antd/es/input/Search";
 import {SelectPlatformComponent} from "../../components/platform/SelectPlatformComponent";
-import { isFuture, isPast, isBefore, isAfter } from 'date-fns'
+import { isFuture, isPast } from 'date-fns'
 import {filterMeetingsByDate, filterMeetingsByDateRange, removeTime} from "../../helpers/meetings-util";
-import CollapsePanel from "antd/es/collapse/CollapsePanel";
 import {get_authenticated_platforms} from "../../constants/platformConstants";
 import {SearchMeetingsList} from "../../components/meetings/search/SearchMeeetingsList";
 
 const { RangePicker } = DatePicker
-
-class Panel extends React.Component {
-    render() {
-        return null;
-    }
-}
 
 class MeetingsPage extends React.Component {
 

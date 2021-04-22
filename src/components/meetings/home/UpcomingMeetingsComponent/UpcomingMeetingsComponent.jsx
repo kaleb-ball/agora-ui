@@ -5,7 +5,7 @@ import {Button, Card} from 'antd'
 import { Tabs } from 'antd';
 import {DayComponent} from "./DayComponent/DayComponent";
 import {meetingActions} from "../../../../actions";
-import { add, addDays, isPast } from 'date-fns'
+import { addDays } from 'date-fns'
 import {ReloadOutlined} from "@ant-design/icons";
 import {get_authenticated_platforms} from "../../../../constants/platformConstants";
 import {filterMeetingsByDate, filterTodayMeetings} from "../../../../helpers/meetings-util";

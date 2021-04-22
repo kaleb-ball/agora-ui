@@ -1,18 +1,10 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Button, Col, Divider, Drawer, List, Popconfirm, Popover, Row, Skeleton, Space, Tag, Tooltip} from "antd";
+import {Button, List, Skeleton} from "antd";
 import Avatar from "antd/es/avatar/avatar";
-import {meetingActions} from "../../../../actions";
 import './DayComponent/DayComponent.css'
-import {
-    AntDesignOutlined,
-    CalendarOutlined,
-    ExclamationCircleTwoTone, GoogleOutlined,
-    MoreOutlined,
-    UserOutlined
-} from "@ant-design/icons";
+import {MoreOutlined} from "@ant-design/icons";
 import {platform_color, platform_name} from "../../../../constants/platformConstants";
-import Text from "antd/lib/typography/Text";
 import {MeetingDrawerComponent} from "../../common/MeetingDrawerComponent";
 import {JoinButton} from "../../common/JoinButton";
 

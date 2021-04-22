@@ -1,15 +1,12 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Button, Col, Divider, Drawer, Popconfirm, Row, Space, Tag, Tooltip} from "antd";
-import Avatar from "antd/es/avatar/avatar";
+import {Button, Col, Divider, Drawer, Popconfirm, Row, Space, Tag} from "antd";
 import {meetingActions} from "../../../actions";
 import '../home/UpcomingMeetingsComponent/DayComponent/DayComponent.css'
 import {
-    AntDesignOutlined,
     CalendarOutlined,
     ExclamationCircleTwoTone,
     GoogleOutlined,
-    UserOutlined
 } from "@ant-design/icons";
 import Text from "antd/lib/typography/Text";
 import {ParticipantList} from "./ParticipantList";
