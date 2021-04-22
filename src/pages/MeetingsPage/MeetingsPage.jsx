@@ -1,14 +1,13 @@
-import {Button, Col, DatePicker, Divider, Form, Mentions, Radio, Row, Space} from "antd";
+import { Col, DatePicker, Divider, Radio, Row, Space} from "antd";
 import {connect} from "react-redux";
 import * as React from "react";
-import {meetingActions, userActions} from "../../actions";
+import {meetingActions} from "../../actions";
 import Search from "antd/es/input/Search";
 import {SelectPlatformComponent} from "../../components/platform/SelectPlatformComponent";
 import { isFuture, isPast } from 'date-fns'
 import {filterMeetingsByDate, filterMeetingsByDateRange, removeTime} from "../../helpers/meetings-util";
 import {get_authenticated_platforms} from "../../constants/platformConstants";
 import {SearchMeetingsList} from "../../components/meetings/search/SearchMeeetingsList";
-import {Option} from "antd/es/mentions";
 import {ParticipantList} from "../../components/meetings/common/ParticipantList";
 
 const { RangePicker } = DatePicker

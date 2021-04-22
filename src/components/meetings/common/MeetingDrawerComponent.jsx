@@ -1,17 +1,16 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Button, Col, Divider, Drawer, Popconfirm, Row, Space, Tag} from "antd";
+import { Col, Divider, Drawer, Row, Space, Tag} from "antd";
 import {meetingActions, userActions} from "../../../actions";
 import '../home/UpcomingMeetingsComponent/DayComponent/DayComponent.css'
 import {
     CalendarOutlined,
-    GoogleOutlined,
 } from "@ant-design/icons";
-import Text from "antd/lib/typography/Text";
 import {ParticipantList} from "./ParticipantList";
 import {JoinButton} from "./JoinButton";
 import {format} from 'date-fns'
 import {DeleteButton} from "./DeleteButton";
+import {createICS} from "../../../helpers/create-ics";
 
 
 class MeetingDrawerComponent extends React.Component {
@@ -19,7 +18,11 @@ class MeetingDrawerComponent extends React.Component {
         super(props);
 
         this.props.getUsers()
+        this.createICS = this.createICS.bind(this)
+    }
 
+    createICS(meeting) {
+        createICS(meeting)
     }
 
     getParticipants(meeting) {
@@ -101,9 +104,7 @@ class MeetingDrawerComponent extends React.Component {
                         <Col span={6}/>
                         <Col span={18}>
                             <Space>
-                                <Text>Add to</Text>
-                                <Tag icon={<GoogleOutlined />} color='#4285F4'>Google</Tag>
-                                <Tag icon={<CalendarOutlined/>}>Other</Tag>
+                                <Tag onClick={()=>{this.createICS(meeting)}} icon={<CalendarOutlined/>}>Add to Calendar</Tag>
                             </Space>
                         </Col>
                     </Row>
