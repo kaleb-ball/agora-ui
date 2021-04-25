@@ -23,4 +23,4 @@ aws s3 sync build/ "s3://$S3_BUCKET" --acl public-read --delete
 
 aws cloudfront create-invalidation \
   --distribution-id $CLOUDFRONT_DIST_ID \
-  --paths /*
+  --paths '/*'
