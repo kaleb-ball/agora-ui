@@ -1,7 +1,7 @@
 #!/bin/bash
 
 AWS_S3_REGION="us-east-1"
-PRODUCTION_BRANCH="develop"
+PRODUCTION_BRANCH="feature/travis"
 
 NODE_ENV=''
 CLOUDFRONT_DIST_ID=''
