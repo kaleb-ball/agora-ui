@@ -3,11 +3,11 @@ import {PlusOutlined} from '@ant-design/icons';
 import {connect} from "react-redux";
 import React from "react";
 import './ParticipantList.css'
-import {Option} from "antd/es/mentions";
 import {get_id_by_value} from "../../../constants/platformConstants";
 import {get_user_id} from "../../../constants";
 import {inviteAction} from "../../../actions/invite.actions";
 import {userActions} from "../../../actions";
+import {Option} from "antd/es/mentions";
 
 class ParticipantList extends React.Component {
     constructor(props) {
