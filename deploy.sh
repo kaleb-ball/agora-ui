@@ -14,7 +14,7 @@ else
   exit
 fi
 
-S3_BUCKET="agora-ui-$NODE_ENV"
+S3_BUCKET="agora-ui.com"
 echo "Deploying to the $S3_BUCKET bucket"
 
 pip install awscli --upgrade --user
