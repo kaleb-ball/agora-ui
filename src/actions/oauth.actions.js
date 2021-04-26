@@ -6,10 +6,14 @@ import {history} from "../helpers";
 export const oauthActions = {
     getAuthorization,
     getAccessToken,
-    checkAuthorization,
-    revokeAccess
+    checkAuthorization
 }
 
+/**
+ * Redirect to OAuth provider for authentication
+ *
+ * @param serviceName - oauth platform
+ */
 function getAuthorization(serviceName) {
     return dispatch => {
         dispatch(request())
@@ -29,6 +33,12 @@ function getAuthorization(serviceName) {
     function failure() { return {type: oauthConstants.AUTHORIZATION_FAILURE} }
 }
 
+/**
+ *
+ * @param serviceName - oauth platform
+ * @param state - nonce used to verify integrity of provider
+ * @param code - code returned by provider
+ */
 function getAccessToken(serviceName, state, code) {
     return dispatch => {
         dispatch(request())
@@ -56,6 +66,9 @@ function getAccessToken(serviceName, state, code) {
     function failure() { return {type: oauthConstants.ACCESS_FAILURE} }
 }
 
+/**
+ * Adds a user's authenticated platforms to global state
+ */
 function checkAuthorization() {
     return dispatch => {
         oauthService.authenticatedPlatforms().then(
@@ -68,9 +81,5 @@ function checkAuthorization() {
             }
         )
     }
-
     function success(platforms) { return {type: oauthConstants.CHECK_AUTHORIZATION, platforms} }
-}
-function revokeAccess(serviceName) {
-
 }

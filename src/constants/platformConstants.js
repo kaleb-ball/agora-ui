@@ -1,3 +1,6 @@
+/**
+ * Array which needs to be updated with platform values from the API. All fields are required.
+ */
 const platforms = [
     {
         id : 1,

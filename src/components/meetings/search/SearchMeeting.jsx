@@ -9,7 +9,12 @@ import {format} from 'date-fns'
 import {MeetingDrawerComponent} from "../common/MeetingDrawerComponent";
 import {JoinButton} from "../common/JoinButton";
 
-
+/**
+ * Individual meeting on search page
+ *
+ * Props:
+ * meeting - individual meeting data to display
+ */
 class SearchMeetingComponent extends React.Component {
     constructor(props) {
         super(props);

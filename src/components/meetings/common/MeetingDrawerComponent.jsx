@@ -12,7 +12,14 @@ import {format} from 'date-fns'
 import {DeleteButton} from "./DeleteButton";
 import {createICS} from "../../../helpers/create-ics";
 
-
+/**
+ * A drawer which displays more information about a given meeting
+ *
+ * Props:
+ * users - a list of the application's users; retrieved from the global state
+ * getUsers {function} - userActions function which retrieves the applications user base
+ * onClose {function} - a function called in the parent component which closes the drawer
+ */
 class MeetingDrawerComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -131,7 +138,6 @@ function mapState(state) {
 }
 
 const actionCreators = {
-    deleteMeeting: meetingActions.deleteMeeting,
     getUsers : userActions.getAllUsers
 }
 

@@ -12,6 +12,14 @@ import {filterMeetingsByDate, filterTodayMeetings} from "../../../../helpers/mee
 
 const { TabPane } = Tabs;
 
+/**
+ * A widget which displays today's and tomorrow's meetings
+ *
+ * Props:
+ * getMeetings {function} - meetingAction function which retrieves all meetings for a user
+ * meetings - the meetings in the global state
+ * loading - whether or not the meetings have been retrieved
+ */
 class UpcomingMeetingComponent extends React.Component {
 
     constructor(props) {

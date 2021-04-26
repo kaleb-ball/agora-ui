@@ -5,18 +5,18 @@ import {meetingActions} from "../../../actions";
 import './SearchMeetingsList.css'
 import {SearchMeetingComponent} from "./SearchMeeting";
 
-
+/**
+ * List of meetings to display on search page
+ *
+ * Props:
+ * meetings - list of meetings to display
+ * loading {boolean} - whether or not the meeting have loaded yet
+ */
 class SearchMeetingsList extends React.Component {
     constructor(props) {
         super(props);
 
-        this.startMeeting = this.startMeeting.bind(this)
     }
-
-    startMeeting(id) {
-        if (id) this.props.startMeeting(id);
-    }
-
 
     render() {
         const {meetings, loading} = this.props;
@@ -45,7 +45,6 @@ function mapState(state) {
 }
 
 const actionCreators = {
-    startMeeting : meetingActions.startMeeting
 }
 
 const connectedComponent = connect(mapState, actionCreators)( SearchMeetingsList);

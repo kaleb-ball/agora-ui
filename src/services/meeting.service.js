@@ -12,6 +12,13 @@ export const meetingService = {
 
 const endpointBase = 'users/me/platforms'
 
+/**
+ * Sends a request to the API to create a meeting. Can be either an instant meeting or a scheduled meeting.
+ *
+ * @param data - object containing meeting information
+ * @param platform - meeting platform
+ * @param instant {boolean} - instant meeting
+ */
 function createMeeting(data, platform, instant) {
     const endpoint = getEndpoint(platform)
     const params = {
@@ -20,11 +27,35 @@ function createMeeting(data, platform, instant) {
     return restService.post(endpoint, true, data, params);
 }
 
+/**
+ * Sends a request to the API to delete a meeting.
+ *
+ * @param id - meeting id
+ * @param platform - meeting platform
+ */
 function deleteMeeting(id, platform) {
     const endpoint = `${getEndpoint(platform)}/${id}`
     return restService.delete(endpoint, true)
 }
 
+/**
+ * Gets information about a single meeting from the API.
+ *
+ * @param id - meeting id
+ * @param platform - meeting platform
+ */
+function getMeeting(id, platform) {
+    const endpoint = `${getEndpoint(platform)}/${id}`;
+    return restService.get(endpoint,true)
+}
+
+/**
+ * Gets all meetings associated with a user. It queries the API to get all meetings associated with each platform, then
+ * it retrieves any sent invites and appends those participants to their respective meetings, and lastly it retrieves any
+ * received invitations. All these meetings are returned as a single array.
+ *
+ * @param platforms - an array of platforms to be queried.
+ */
 async function getAllMeetings(platforms) {
     let meetings = [];
     const platformsMap = platforms.map(x => x.name)
@@ -40,7 +71,11 @@ async function getAllMeetings(platforms) {
     return meetings;
 }
 
-
+/**
+ * Returns meetings associated with each platform. Supports paged API systems.
+ *
+ * @param platform - meeting platform
+ */
 async function getPlatformMeetings(platform) {
     let meetings = [];
     await getPagedMeetings(null);
@@ -96,13 +131,6 @@ async function addReceivedInvites() {
     return meetings;
 }
 
-
-function getMeeting(id, platform) {
-    const endpoint = `${getEndpoint(platform)}/${id}`;
-    return restService.get(endpoint,true)
-}
-
-
 function getEndpoint(platform) {
    return `${endpointBase}/${platform}/meetings`;
 }
@@ -119,6 +147,7 @@ function removeNull(meetings) {
 function addPlatform(meetings, platform) {
     meetings.forEach(meeting => {if (meeting) meeting.platform = platform})
 }
+
 
 function addDates(meetings) {
     meetings.forEach(meeting => {

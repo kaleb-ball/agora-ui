@@ -5,7 +5,15 @@ import { Select} from 'antd'
 import { isPast } from 'date-fns';
 import {get_authenticated_platforms, get_values} from "../../constants/platformConstants";
 
+/**
+ * A dropdown menu which displays the available platforms a user can select.
+ *
+ * Props:
+ * showAll {boolean} - whether or not a user can select all platforms in the dropdown.
+ * onSelect {function} - function called in parent component when a new value is selected from the dropdown.
+ */
 class SelectPlatformComponent extends React.Component {
+
     constructor(props) {
         super(props);
 

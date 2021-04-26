@@ -3,8 +3,14 @@ import {connect} from "react-redux";
 import {Button} from "antd";
 import {meetingActions} from "../../../actions";
 
-
-
+/**
+ * Button which starts the meeting for the host, but only lets invitees join the meeting
+ *
+ * Props:
+ * meeting - meeting to be started/joined; must contain isHost, id, and platform values.
+ * startMeeting {function} - meetingAction function called to start a meeting
+ * joinMeeting {function} - meetingAction function called to join a meeting.
+ */
 class JoinButton extends React.Component {
     constructor(props) {
         super(props);

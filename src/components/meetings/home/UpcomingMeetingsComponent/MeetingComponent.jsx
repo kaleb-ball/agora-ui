@@ -8,7 +8,12 @@ import {platform_color, platform_name} from "../../../../constants/platformConst
 import {MeetingDrawerComponent} from "../../common/MeetingDrawerComponent";
 import {JoinButton} from "../../common/JoinButton";
 
-
+/**
+ * An individual meeting
+ *
+ * Props:
+ * meeting - the meeting information
+ */
 class MeetingComponent extends React.Component {
     constructor(props) {
         super(props);

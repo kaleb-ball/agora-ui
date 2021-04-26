@@ -9,6 +9,18 @@ import {inviteAction} from "../../../actions/invite.actions";
 import {userActions} from "../../../actions";
 import {Option} from "antd/es/mentions";
 
+/**
+ * A component which allows a host to add or delete participants on a meeting. Can be used in the meeting creation process
+ * or to edit the meeting's participants once it has been created.
+ *
+ * Props:
+ * meeting - if the meeting is created, it should be passed in so its participants can be updated
+ * setParticipants {function} - called in the parent component which passes the array of participants' usernames
+ * createInvite {function} - an inviteAction which creates an invite; can only be called if the meeting has been created
+ * deleteInvite {function} - an inviteAction which deletes an invite; can only be called if the meeting has been created
+ * users - a list of the application's users; retrieved from the global state
+ * getUsers {function} - userActions function which retrieves the applications userbase
+ */
 class ParticipantList extends React.Component {
     constructor(props) {
         super(props);

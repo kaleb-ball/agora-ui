@@ -11,6 +11,12 @@ export const authService = {
 
 let endpointBase = "auth"
 
+/**
+ * Logs user in the API. On success, it sets an authentication token in browser storage.
+ *
+ * @param username
+ * @param password
+ */
 function login(username, password) {
     const endpoint = `${endpointBase}`
     const data = {
@@ -24,6 +30,10 @@ function login(username, password) {
     })
 }
 
+/**
+ * Invalidates user session in API. Deletes all information about user's session in browser storage.
+ *
+ */
 function logout() {
     const endpoint = `${endpointBase}`
     localStorage.removeItem('auth-token');
@@ -34,6 +44,11 @@ function logout() {
 }
 
 
+/**
+ * Registers user in API.
+ *
+ * @param user - object representing new user
+ */
 function register(user) {
     const data = {
         Firstname : user.firstname,
@@ -44,6 +59,10 @@ function register(user) {
     return restService.post("users", false, data)
 }
 
+
+/**
+ * Refreshes user token in browser storage. If the refresh token is expired, the user is logged out.
+ */
 function refresh() {
     let endpoint = `${endpointBase}/refresh`
     return restService.post(endpoint, true).then(
