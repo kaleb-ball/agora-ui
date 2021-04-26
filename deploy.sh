@@ -1,7 +1,7 @@
 #!/bin/bash
 
 AWS_S3_REGION="us-east-1"
-PRODUCTION_BRANCH="develop"
+PRODUCTION_BRANCH="feature/travis"
 
 NODE_ENV=''
 CLOUDFRONT_DIST_ID=''
@@ -14,13 +14,13 @@ else
   exit
 fi
 
-S3_BUCKET="agora-ui-$NODE_ENV"
+S3_BUCKET="agora-ui.com"
 echo "Deploying to the $S3_BUCKET bucket"
 
 pip install awscli --upgrade --user
 
-aws s3 sync public/ "s3://$S3_BUCKET" --acl public-read --delete
+aws s3 sync build/ "s3://$S3_BUCKET" --acl public-read --delete
 
 aws cloudfront create-invalidation \
   --distribution-id $CLOUDFRONT_DIST_ID \
-  --paths /*
+  --paths '/*'
