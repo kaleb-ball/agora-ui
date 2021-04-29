@@ -103,7 +103,7 @@ class MeetingsPage extends React.Component {
             meetings = meetings.filter(meeting=>{
                 let found = 0
                  participants.forEach(user=> {
-                    if (meeting.participants.filter(participant => participant.username === user).length > 0) {
+                    if (meeting.participants && meeting.participants.filter(participant => participant.username === user).length > 0) {
                         found++;
                     }
                 })
