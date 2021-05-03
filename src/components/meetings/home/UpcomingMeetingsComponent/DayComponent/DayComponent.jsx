@@ -14,10 +14,6 @@ import {MeetingComponent} from "../MeetingComponent";
  * loading - whether or not the meetings have been retrieved yet
  */
 class UpcomingMeetingComponent extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const {date, meetings, loading} = this.props;
         return (

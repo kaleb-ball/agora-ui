@@ -159,7 +159,7 @@ class MeetingsPage extends React.Component {
                 </Row>
                 <Divider />
                 <Row type="flex" justify="center" style={{paddingTop: '25px'}}>
-                    <Col>
+                    <Col span={12}>
                         <SearchMeetingsList loading={requesting} meetings={meetings}/>
                     </Col>
                 </Row>

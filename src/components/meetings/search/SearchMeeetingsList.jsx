@@ -1,7 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
 import {Card, Divider, List} from "antd";
-import {meetingActions} from "../../../actions";
 import './SearchMeetingsList.css'
 import {SearchMeetingComponent} from "./SearchMeeting";
 
@@ -13,10 +12,6 @@ import {SearchMeetingComponent} from "./SearchMeeting";
  * loading {boolean} - whether or not the meeting have loaded yet
  */
 class SearchMeetingsList extends React.Component {
-    constructor(props) {
-        super(props);
-
-    }
 
     render() {
         const {meetings, loading} = this.props;
