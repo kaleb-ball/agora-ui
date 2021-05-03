@@ -1,1 +1,1 @@
-export * from '../../common/DayComponent/DayComponent'
+export * from './DayComponent/DayComponent'

@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import { userActions } from '../../actions';
 import {Button, Form, Input} from 'antd'
 
-
+/**
+ * Login form component
+ */
 class LoginComponent extends React.Component {
 
     constructor(props) {

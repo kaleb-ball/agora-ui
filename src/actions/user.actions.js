@@ -1,21 +1,24 @@
-import {alertConstants, userConstants} from '../constants';
-import {oauthService, userService} from '../services';
+import {alertConstants, get_username, userConstants} from '../constants';
+import {oauthService, authService} from '../services';
 import { alertActions } from './';
 import { history } from '../helpers';
+import {userService} from "../services/user.service";
 
 
 export const userActions = {
     login,
     logout,
-    register
+    register,
+    getAllUsers
 };
 
 function login(username, password) {
     return dispatch => {
         dispatch(request({username}));
-        userService.login(username, password).then(
+        authService.login(username, password).then(
             user => {
                 dispatch(success(user));
+                userService.userDetails().then(res => localStorage.setItem('user', JSON.stringify(res.data)))
                 oauthService.isAuthorized().then(
                     res => {
                         if (res) {
@@ -41,7 +44,7 @@ function register(user) {
     return dispatch => {
         dispatch(request(user));
 
-        userService.register(user)
+        authService.register(user)
             .then(
                 user => {
                     dispatch(success());
@@ -61,7 +64,31 @@ function register(user) {
 }
 
 function logout() {
-    userService.logout();
-    history.push("/auth")
-    return { type : userConstants.LOGOUT }
+    return dispatch => {
+        dispatch(logout())
+        authService.logout()
+    }
+    function logout() {return {type : userConstants.LOGOUT}}
+}
+
+
+function getAllUsers() {
+    return dispatch => {
+        dispatch(request())
+        userService.getUsers().then(
+            (res) => {
+                let users = res.data
+                users = users.filter(user => user.username !== get_username())
+                dispatch(success(users))
+            }
+        ).catch(
+            (err) => {
+                dispatch(failure())
+                dispatch(alertActions.error('Something went wrong getting users'))
+            }
+        )
+    }
+    function request() { return { type: userConstants.GET_USERS_REQUEST} }
+    function success(users) { return { type: userConstants.GET_USERS_SUCCESS, users } }
+    function failure() { return { type: userConstants.GET_USERS_FAILURE } }
 }

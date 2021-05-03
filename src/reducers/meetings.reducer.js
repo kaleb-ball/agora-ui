@@ -16,14 +16,36 @@ export function createMeeting(state = {}, action) {
 export function getMeetings(state = {requestingMeetings : false, meetings : []}, action) {
     switch(action.type) {
         case meetingConstants.GET_MEETINGS_REQUEST :
-            return {requestingMeetings : true};
+            return {
+                requestingMeetings : true,
+                meetings : []
+            };
         case meetingConstants.GET_MEETINGS_SUCCESS :
             return {
                 requestingMeetings: false,
                 meetings : action.meetings
             };
         case meetingConstants.GET_MEETINGS_FAILURE :
-            return {requestingMeetings: false}
+            return {
+                requestingMeetings: false,
+                meetings: []
+            }
+        case meetingConstants.DELETE_MEETING:
+            return {
+                meetings: state.meetings.filter(meeting=> meeting.id !== action.id)
+            }
+        case meetingConstants.ADD_PARTICIPANT :
+            state.meetings.forEach(meeting => {
+                if (action.invite.meeting.id === meeting.id) {
+                    let invitee = action.invite.invitee
+                    invitee.inviteId = action.invite.id
+                    meeting.participants.push(invitee)
+                }
+            })
+            return {meetings : state.meetings}
+        case meetingConstants.DELETE_PARTICIPANT :
+            state.meetings.forEach(meeting => meeting.participants = meeting.participants ? meeting.participants.filter(participant => participant.inviteId !== action.id) : null)
+            return {meetings : state.meetings}
         default :
             return state;
     }

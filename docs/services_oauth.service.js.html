@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: services/oauth.service.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: services/oauth.service.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { restService } from "./rest.service";
+
+export const oauthService = {
+    getUrl,
+    getAccessToken,
+    isAuthorized,
+    authenticatedPlatforms
+}
+
+const endpointBase = "platforms"
+
+/**
+ * Returns redirect url for a given platform
+ *
+ * @param platform - Video conferencing platform value
+ */
+function getUrl(platform) {
+    const endpoint = `${endpointBase}`
+    return restService.get(endpoint, true).then(
+        (res)=> {
+            return res.data.filter(x => x.name === platform)[0].redirect_url.toString() + "&amp;state=" + getState();
+        }, (err) => {
+            return err
+        })
+}
+
+/**
+ * Sends access token to API to complete OAuth flow
+ *
+ * @param platform - video conferencing platform
+ * @param code - code returned from platform to continue OAuth flow in API
+ */
+function getAccessToken(platform , code) {
+    const endpoint = `${endpointBase}/${platform}/auth`
+    const params = {
+        code : code
+    }
+    return restService.post(endpoint, true, {}, params)
+
+}
+
+/**
+ * Returns whether or not a user is authorized to one or more meeting platforms
+ */
+async function isAuthorized() {
+    const platforms = await authenticatedPlatforms()
+    return platforms.length >= 1;
+}
+
+/**
+ * Returns an array of platforms a user is authenticated to
+ */
+async function authenticatedPlatforms() {
+    let platforms = [];
+    const endpoint = `users/me/${endpointBase}`
+    await restService.get(endpoint, true).then(
+        (res) => {
+            platforms = res.data ? res.data : []
+    })
+    localStorage.setItem('authenticatedPlatforms', JSON.stringify(platforms))
+    return platforms;
+}
+
+function getState() {
+    return generateNonce(64)
+}
+
+function generateNonce(length) {
+    localStorage.removeItem("nonce")
+    let nonce = "";
+    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for(let i = 0; i &lt; length; i++) {
+        nonce += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    localStorage.setItem("nonce", nonce)
+    return nonce;
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Exception.html">Exception</a></li><li><a href="NavbarComponent.html">NavbarComponent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_delete">_delete</a></li><li><a href="global.html#addParticipant">addParticipant</a></li><li><a href="global.html#authenticatedPlatforms">authenticatedPlatforms</a></li><li><a href="global.html#checkAuthorization">checkAuthorization</a></li><li><a href="global.html#clear">clear</a></li><li><a href="global.html#createICS">createICS</a></li><li><a href="global.html#createInstantMeeting">createInstantMeeting</a></li><li><a href="global.html#createInvite">createInvite</a></li><li><a href="global.html#createMeeting">createMeeting</a></li><li><a href="global.html#deleteInvite">deleteInvite</a></li><li><a href="global.html#deleteMeeting">deleteMeeting</a></li><li><a href="global.html#deleteParticipant">deleteParticipant</a></li><li><a href="global.html#error">error</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getAccessToken">getAccessToken</a></li><li><a href="global.html#getAllMeetings">getAllMeetings</a></li><li><a href="global.html#getAuthorization">getAuthorization</a></li><li><a href="global.html#getInvite">getInvite</a></li><li><a href="global.html#getMeeting">getMeeting</a></li><li><a href="global.html#getMeetings">getMeetings</a></li><li><a href="global.html#getPlatformMeetings">getPlatformMeetings</a></li><li><a href="global.html#getUrl">getUrl</a></li><li><a href="global.html#isAuthorized">isAuthorized</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#platforms">platforms</a></li><li><a href="global.html#post">post</a></li><li><a href="global.html#put">put</a></li><li><a href="global.html#refresh">refresh</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#startMeeting">startMeeting</a></li><li><a href="global.html#success">success</a></li><li><a href="global.html#userDetails">userDetails</a></li><li><a href="global.html#userInvites">userInvites</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sun May 02 2021 19:27:47 GMT-0500 (Central Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
