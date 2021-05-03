@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: services/meeting.service.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: services/meeting.service.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {restService} from "./rest.service";
+import {add} from "date-fns";
+import {userService} from "./user.service";
+import {get_value_by_id} from "../constants/platformConstants";
+
+export const meetingService = {
+    createMeeting,
+    getAllMeetings,
+    getMeeting,
+    deleteMeeting
+}
+
+const endpointBase = 'users/me/platforms'
+
+/**
+ * Sends a request to the API to create a meeting. Can be either an instant meeting or a scheduled meeting.
+ *
+ * @param data - object containing meeting information
+ * @param platform - meeting platform
+ * @param instant {boolean} - instant meeting
+ */
+function createMeeting(data, platform, instant) {
+    const endpoint = getEndpoint(platform)
+    const params = {
+        type : instant ? 1 : 2
+    }
+    return restService.post(endpoint, true, data, params);
+}
+
+/**
+ * Sends a request to the API to delete a meeting.
+ *
+ * @param id - meeting id
+ * @param platform - meeting platform
+ */
+function deleteMeeting(id, platform) {
+    const endpoint = `${getEndpoint(platform)}/${id}`
+    return restService.delete(endpoint, true)
+}
+
+/**
+ * Gets information about a single meeting from the API.
+ *
+ * @param id - meeting id
+ * @param platform - meeting platform
+ */
+function getMeeting(id, platform) {
+    const endpoint = `${getEndpoint(platform)}/${id}`;
+    return restService.get(endpoint,true)
+}
+
+/**
+ * Gets all meetings associated with a user. It queries the API to get all meetings associated with each platform, then
+ * it retrieves any sent invites and appends those participants to their respective meetings, and lastly it retrieves any
+ * received invitations. All these meetings are returned as a single array.
+ *
+ * @param platforms - an array of platforms to be queried.
+ */
+async function getAllMeetings(platforms) {
+    let meetings = [];
+    const platformsMap = platforms.map(x => x.name)
+    for (const platform of platformsMap.keys()) {
+        let platformMeetings = await getPlatformMeetings(platformsMap[platform])
+        meetings = meetings.concat(platformMeetings)
+    }
+    meetings = await addSentInvites(meetings)
+    let receivedInvitesMeetings = await addReceivedInvites()
+    meetings = meetings.concat(receivedInvitesMeetings)
+    meetings = removeNull(meetings);
+
+    return meetings;
+}
+
+/**
+ * Returns meetings associated with each platform. Supports paged API systems.
+ *
+ * @param platform - meeting platform
+ */
+async function getPlatformMeetings(platform) {
+    let meetings = [];
+    await getPagedMeetings(null);
+    return meetings;
+
+    async function getPagedMeetings(page) {
+        let newMeetings
+        const endpoint = getEndpoint(platform)
+        const params = {
+            page_size : 50,
+            next_page : page ? page : ''
+        }
+        await restService.get(endpoint, true, params).then((res)=> {newMeetings = res;});
+        meetings = meetings.concat(newMeetings.data.meetings)
+        return newMeetings.data.next_page_token ? await getPagedMeetings(newMeetings.data.next_page_token) : addFields(meetings, platform);
+    }
+}
+
+
+async function addSentInvites(meetings) {
+    let sentInvites =  (await userService.userInvites(true)).data
+    meetings.forEach(
+        (meeting) => {
+            if (meeting) {
+                meeting.participants = [];
+                meeting.isHost = true;
+                let meetingInvites = sentInvites ? sentInvites.filter(invite => invite.meeting.id === meeting.id) : []
+                if (meetingInvites.length > 0) {
+                    meetingInvites.forEach(
+                        invite => {
+                            invite.invitee.inviteId = invite.id
+                            meeting.participants.push(invite.invitee)
+                        })
+                }
+            }})
+    return meetings
+}
+
+async function addReceivedInvites() {
+    let meetings = [];
+    let receivedInvites = (await userService.userInvites(false)).data
+    if (receivedInvites) {
+        receivedInvites.forEach(
+            invite => {
+                invite.meeting.isHost = false;
+                invite.meeting.hostId = invite.inviter_id
+                invite.meeting.platform = get_value_by_id(invite.meeting_platform)
+                meetings.push(invite.meeting)
+            }
+        )
+    }
+    addDates(meetings)
+    return meetings;
+}
+
+function getEndpoint(platform) {
+   return `${endpointBase}/${platform}/meetings`;
+}
+
+function addFields(meetings, platform) {
+    addPlatform(meetings, platform)
+    addDates(meetings)
+}
+
+function removeNull(meetings) {
+    return meetings.filter(meeting => meeting )
+}
+
+function addPlatform(meetings, platform) {
+    meetings.forEach(meeting => {if (meeting) meeting.platform = platform})
+}
+
+
+function addDates(meetings) {
+    meetings.forEach(meeting => {
+        if (meeting) {
+            meeting.start_time = new Date(meeting.start_time)
+            meeting.end_time = add(new Date(meeting.start_time), {minutes:meeting.duration})
+        }
+    })
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Exception.html">Exception</a></li><li><a href="NavbarComponent.html">NavbarComponent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_delete">_delete</a></li><li><a href="global.html#addParticipant">addParticipant</a></li><li><a href="global.html#authenticatedPlatforms">authenticatedPlatforms</a></li><li><a href="global.html#checkAuthorization">checkAuthorization</a></li><li><a href="global.html#clear">clear</a></li><li><a href="global.html#createICS">createICS</a></li><li><a href="global.html#createInstantMeeting">createInstantMeeting</a></li><li><a href="global.html#createInvite">createInvite</a></li><li><a href="global.html#createMeeting">createMeeting</a></li><li><a href="global.html#deleteInvite">deleteInvite</a></li><li><a href="global.html#deleteMeeting">deleteMeeting</a></li><li><a href="global.html#deleteParticipant">deleteParticipant</a></li><li><a href="global.html#error">error</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getAccessToken">getAccessToken</a></li><li><a href="global.html#getAllMeetings">getAllMeetings</a></li><li><a href="global.html#getAuthorization">getAuthorization</a></li><li><a href="global.html#getInvite">getInvite</a></li><li><a href="global.html#getMeeting">getMeeting</a></li><li><a href="global.html#getMeetings">getMeetings</a></li><li><a href="global.html#getPlatformMeetings">getPlatformMeetings</a></li><li><a href="global.html#getUrl">getUrl</a></li><li><a href="global.html#isAuthorized">isAuthorized</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#platforms">platforms</a></li><li><a href="global.html#post">post</a></li><li><a href="global.html#put">put</a></li><li><a href="global.html#refresh">refresh</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#startMeeting">startMeeting</a></li><li><a href="global.html#success">success</a></li><li><a href="global.html#userDetails">userDetails</a></li><li><a href="global.html#userInvites">userInvites</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sun May 02 2021 19:27:47 GMT-0500 (Central Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

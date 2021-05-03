@@ -44,7 +44,7 @@ export function getMeetings(state = {requestingMeetings : false, meetings : []},
             })
             return {meetings : state.meetings}
         case meetingConstants.DELETE_PARTICIPANT :
-            state.meetings.forEach(meeting => meeting.participants = meeting.participants.filter(participant => participant.inviteId !== action.id))
+            state.meetings.forEach(meeting => meeting.participants = meeting.participants ? meeting.participants.filter(participant => participant.inviteId !== action.id) : null)
             return {meetings : state.meetings}
         default :
             return state;

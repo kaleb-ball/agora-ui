@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: actions/oauth.actions.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: actions/oauth.actions.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {oauthService} from "../services";
+import {oauthConstants} from "../constants";
+import {alertActions} from "./alert.actions";
+import {history} from "../helpers";
+
+export const oauthActions = {
+    getAuthorization,
+    getAccessToken,
+    checkAuthorization
+}
+
+/**
+ * Redirect to OAuth provider for authentication
+ *
+ * @param serviceName - oauth platform
+ */
+function getAuthorization(serviceName) {
+    return dispatch => {
+        dispatch(request())
+        oauthService.getUrl(serviceName).then(
+            url => {
+                dispatch(success())
+                window.location.href = url;
+                dispatch(success())
+            },
+            error => {
+                dispatch(failure(error.toString()))
+                dispatch(alertActions.error("Authorization with platform not available"))
+            })
+    }
+    function request() { return {type: oauthConstants.AUTHORIZATION_REQUEST} }
+    function success() { return {type: oauthConstants.AUTHORIZATION_SUCCESS} }
+    function failure() { return {type: oauthConstants.AUTHORIZATION_FAILURE} }
+}
+
+/**
+ *
+ * @param serviceName - oauth platform
+ * @param state - nonce used to verify integrity of provider
+ * @param code - code returned by provider
+ */
+function getAccessToken(serviceName, state, code) {
+    return dispatch => {
+        dispatch(request())
+        if (state === localStorage.getItem("nonce")) {
+            oauthService.getAccessToken(serviceName, code).then(
+                res => {
+                    dispatch(success())
+                    dispatch(alertActions.success("Successfully Linked Account"))
+                    history.push("/oauth")
+                })
+                .catch(
+                    error =>{
+                        dispatch(failure())
+                        dispatch(alertActions.error(error.response.data.error.toString()))
+                        history.push("/login")
+            })
+        } else {
+            dispatch(failure());
+            dispatch(alertActions.error("Something went wrong. Please try again."))
+            history.push("/login")
+        }
+    }
+    function request() { return {type: oauthConstants.ACCESS_REQUEST} }
+    function success() { return {type: oauthConstants.ACCESS_SUCCESS} }
+    function failure() { return {type: oauthConstants.ACCESS_FAILURE} }
+}
+
+/**
+ * Adds a user's authenticated platforms to global state
+ */
+function checkAuthorization() {
+    return dispatch => {
+        oauthService.authenticatedPlatforms().then(
+            (platforms) => {
+                dispatch(success(platforms))
+            }
+        ).catch(
+            (err) => {
+                dispatch(alertActions.error("Something went wrong"))
+            }
+        )
+    }
+    function success(platforms) { return {type: oauthConstants.CHECK_AUTHORIZATION, platforms} }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Exception.html">Exception</a></li><li><a href="NavbarComponent.html">NavbarComponent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_delete">_delete</a></li><li><a href="global.html#addParticipant">addParticipant</a></li><li><a href="global.html#authenticatedPlatforms">authenticatedPlatforms</a></li><li><a href="global.html#checkAuthorization">checkAuthorization</a></li><li><a href="global.html#clear">clear</a></li><li><a href="global.html#createICS">createICS</a></li><li><a href="global.html#createInstantMeeting">createInstantMeeting</a></li><li><a href="global.html#createInvite">createInvite</a></li><li><a href="global.html#createMeeting">createMeeting</a></li><li><a href="global.html#deleteInvite">deleteInvite</a></li><li><a href="global.html#deleteMeeting">deleteMeeting</a></li><li><a href="global.html#deleteParticipant">deleteParticipant</a></li><li><a href="global.html#error">error</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getAccessToken">getAccessToken</a></li><li><a href="global.html#getAllMeetings">getAllMeetings</a></li><li><a href="global.html#getAuthorization">getAuthorization</a></li><li><a href="global.html#getInvite">getInvite</a></li><li><a href="global.html#getMeeting">getMeeting</a></li><li><a href="global.html#getMeetings">getMeetings</a></li><li><a href="global.html#getPlatformMeetings">getPlatformMeetings</a></li><li><a href="global.html#getUrl">getUrl</a></li><li><a href="global.html#isAuthorized">isAuthorized</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#platforms">platforms</a></li><li><a href="global.html#post">post</a></li><li><a href="global.html#put">put</a></li><li><a href="global.html#refresh">refresh</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#startMeeting">startMeeting</a></li><li><a href="global.html#success">success</a></li><li><a href="global.html#userDetails">userDetails</a></li><li><a href="global.html#userInvites">userInvites</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sun May 02 2021 19:27:47 GMT-0500 (Central Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

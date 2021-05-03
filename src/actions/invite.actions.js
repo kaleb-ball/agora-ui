@@ -5,10 +5,13 @@ import {meetingActions} from "./meeting.actions";
 
 export const inviteAction = {
     createInvite,
-    deleteInvite,
-    getUserInvites
+    deleteInvite
 }
 
+/**
+ * Creates invite in API and then dispatches meetingAction to change the global state
+ * @param invite - invitation object
+ */
 export function createInvite(invite) {
     return dispatch => {
         dispatch(request());
@@ -29,7 +32,10 @@ export function createInvite(invite) {
     function failure() { return {type : inviteConstants.CREATE_FAILURE}}
 
 }
-
+/**
+ * Deletes invite in API and then dispatches meetingAction to change the global state
+ * @param id - invitation id
+ */
 export function deleteInvite(id) {
     return dispatch => {
         dispatch(request())
@@ -48,8 +54,4 @@ export function deleteInvite(id) {
     function request() { return {type : inviteConstants.DELETE_REQUEST}}
     function success() { return {type : inviteConstants.DELETE_SUCCESS}}
     function failure() { return {type : inviteConstants.DELETE_FAILURE}}
-}
-
-export function getUserInvites() {
-
 }

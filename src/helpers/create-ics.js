@@ -1,6 +1,10 @@
 import {createEvent} from "ics";
 import {getYear, getDate, getMonth, getMinutes, getHours, differenceInMinutes} from 'date-fns'
 
+/**
+ * Creates an ics event (iCal Meeting) and downloads it
+ * @param meeting - fully formed meeting object
+ */
 export function createICS(meeting) {
     const {error, value} = createEvent({
         title: meeting.title,

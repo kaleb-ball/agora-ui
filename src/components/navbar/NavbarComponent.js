@@ -5,6 +5,12 @@ import {Header} from "antd/es/layout/layout";
 import {LogoutButton} from "./LogoutButton";
 import {connect} from "react-redux";
 
+/**
+ * Global navbar which changes view based on whether or not the user is logged in
+ *
+ * Props:
+ * loggedIn {boolean} - passed in from authentication reducer state
+ */
 class NavbarComponent extends React.Component {
 
     menu() {

@@ -9,6 +9,11 @@ export const userService = {
 const endpointBase = "users"
 const user = "me"
 
+
+/**
+ * Return all a user's sent or received invites
+ * @param sent {boolean} - search for sent invites
+ */
 export function userInvites (sent) {
     const endpoint = `${endpointBase}/${user}/invites`
     const params = {
@@ -18,6 +23,9 @@ export function userInvites (sent) {
 
 }
 
+/**
+ * Retrieves information about a user. Only details about the logged in user can currently be retrieved.
+ */
 export function userDetails() {
     const endpoint = `${endpointBase}/${user}`
     return restService.get(endpoint, true)

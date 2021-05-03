@@ -4,8 +4,13 @@ import {Button, Popconfirm} from "antd";
 import {meetingActions} from "../../../actions";
 import {ExclamationCircleTwoTone} from "@ant-design/icons";
 
-
-
+/**
+ * Button which allows the host of a meeting to delete a meeting.
+ *
+ * Props:
+ * meeting - meeting to be deleted. Must contain isHost, id, and platform values.
+ * onDelete {function} - meetingActions function which deletes a meeting
+ */
 class DeleteButton extends React.Component {
     constructor(props) {
         super(props);

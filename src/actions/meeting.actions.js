@@ -6,15 +6,22 @@ import {inviteService} from "../services/invite.service";
 
 export const meetingActions = {
     createMeeting,
-    deleteMeeting,
     createInstantMeeting,
-    getMeetings,
     startMeeting,
+    joinMeeting,
+    deleteMeeting,
+    getMeetings,
     addParticipant,
     deleteParticipant,
-    joinMeeting
 }
 
+/**
+ * Creates a meeting using meetingService
+ *
+ * @param data - meeting object
+ * @param platform - meeting platform
+ * @param invites - optional array of invites
+ */
 function createMeeting(data, platform, invites = []) {
     return dispatch => {
         dispatch(request());
@@ -39,6 +46,12 @@ function createMeeting(data, platform, invites = []) {
     function failure() { return {type: meetingConstants.CREATE_FAILURE} }
 }
 
+/**
+ * Deletes meeting using meetingService
+ *
+ * @param id - meeting id
+ * @param platform - meeting platform
+ */
 function deleteMeeting(id, platform) {
     return dispatch => {
         meetingService.deleteMeeting(id, platform).then(
@@ -55,6 +68,12 @@ function deleteMeeting(id, platform) {
     function success(id) {return {type: meetingConstants.DELETE_MEETING, id}}
 }
 
+/**
+ *  * Creates an instant meeting using meetingService
+ *
+ * @param data - meeting object
+ * @param platform - meeting platform
+ */
 function createInstantMeeting(data, platform) {
     return dispatch => {
         dispatch(request());
@@ -73,7 +92,11 @@ function createInstantMeeting(data, platform) {
     function failure() { return {type: meetingConstants.CREATE_FAILURE} }
 }
 
-
+/**
+ * Gets all meetings for a user and then updates the global state
+ *
+ * @param platforms - array of platforms to get meetings from
+ */
 function getMeetings(platforms= {}) {
     return dispatch => {
         dispatch(request());
@@ -101,6 +124,12 @@ function joinMeeting(meeting) {
     }
 }
 
+/**
+ * Retrieves start_url for meeting and then starts the meeting for the host.
+ *
+ * @param id - meeting id
+ * @param platform - meeting platform
+ */
 function startMeeting(id, platform) {
     return dispatch => {
         dispatch(request());
@@ -133,6 +162,11 @@ function openUrl(url) {
     if (newWindow) newWindow.opener = null
 }
 
+/**
+ * Adds participant to meeting in the global state from the invite id.
+ *
+ * @param id - invite id
+ */
 function addParticipant(id) {
     return dispatch => {
         inviteService.getInvite(id).then(
@@ -145,6 +179,11 @@ function addParticipant(id) {
     function add(invite) {return {type : meetingConstants.ADD_PARTICIPANT, invite}}
 }
 
+/**
+ * Removes participant from meeting in the global state based on invite id
+ *
+ * @param id - invite id
+ */
 function deleteParticipant(id) {
     return dispatch => {
         dispatch(_delete(id))

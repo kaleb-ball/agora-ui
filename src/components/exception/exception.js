@@ -3,6 +3,14 @@ import {Button} from 'antd';
 import "./exception.css"
 import {history} from "../../helpers";
 
+/**
+ * Generic exception page
+ *
+ * Props:
+ * backText {string} - text to be displayed in back button
+ * title {string} - title of the page
+ * desc {string} - description to be displayed on page
+ */
 class Exception extends React.PureComponent {
 
     constructor(props) {

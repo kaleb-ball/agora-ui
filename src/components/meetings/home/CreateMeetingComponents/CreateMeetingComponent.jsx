@@ -9,6 +9,12 @@ import {get_authenticated_platforms, get_id_by_value} from "../../../../constant
 import {ParticipantList} from "../../common/ParticipantList";
 import {get_user_id} from "../../../../constants";
 
+/**
+ * Form which creates a scheduled meeting.
+ *
+ * createMeetings {function} - meetingAction function which creates the new meeting
+ * getMeetings  {function} - meetingAction function which updates the global state with the new meeting
+ */
 class CreateMeetingComponent extends React.Component {
     constructor(props) {
         super(props);

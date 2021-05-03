@@ -103,7 +103,7 @@ class MeetingsPage extends React.Component {
             meetings = meetings.filter(meeting=>{
                 let found = 0
                  participants.forEach(user=> {
-                    if (meeting.participants.filter(participant => participant.username === user).length > 0) {
+                    if (meeting.participants && meeting.participants.filter(participant => participant.username === user).length > 0) {
                         found++;
                     }
                 })
@@ -159,7 +159,7 @@ class MeetingsPage extends React.Component {
                 </Row>
                 <Divider />
                 <Row type="flex" justify="center" style={{paddingTop: '25px'}}>
-                    <Col>
+                    <Col span={12}>
                         <SearchMeetingsList loading={requesting} meetings={meetings}/>
                     </Col>
                 </Row>
