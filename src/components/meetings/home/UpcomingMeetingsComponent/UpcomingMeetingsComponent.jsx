@@ -3,14 +3,23 @@ import { connect } from 'react-redux';
 
 import {Button, Card} from 'antd'
 import { Tabs } from 'antd';
-import {DayComponent} from "../../common/DayComponent/DayComponent";
+import {DayComponent} from "./DayComponent/DayComponent";
 import {meetingActions} from "../../../../actions";
-import { add, addDays, isPast } from 'date-fns'
+import { addDays } from 'date-fns'
 import {ReloadOutlined} from "@ant-design/icons";
 import {get_authenticated_platforms} from "../../../../constants/platformConstants";
+import {filterMeetingsByDate, filterTodayMeetings} from "../../../../helpers/meetings-util";
 
 const { TabPane } = Tabs;
 
+/**
+ * A widget which displays today's and tomorrow's meetings
+ *
+ * Props:
+ * getMeetings {function} - meetingAction function which retrieves all meetings for a user
+ * meetings - the meetings in the global state
+ * loading - whether or not the meetings have been retrieved
+ */
 class UpcomingMeetingComponent extends React.Component {
 
     constructor(props) {
@@ -36,30 +45,6 @@ class UpcomingMeetingComponent extends React.Component {
         this.setState({ key : key });
     }
 
-    addDatesToMeetings(meetings) {
-         meetings.forEach(meeting => {
-            meeting.start_time = new Date(meeting.start_time)
-            meeting.end_time = add(new Date(meeting.start_time), {minutes:meeting.duration})
-        })
-    }
-
-    filterMeetingsByDate(meetings, date) {
-        return meetings.filter(
-            (meeting) => {
-                return meeting.start_time.getMonth() === date.getMonth() &&
-                    meeting.start_time.getDate() === date.getDate() &&
-                    meeting.start_time.getFullYear() === date.getFullYear();
-            })
-    }
-
-    filterTodayMeetings(meetings) {
-        return this.filterMeetingsByDate(meetings, new Date()).filter(
-            (meeting) => {
-                return !isPast(meeting.end_time)
-            }
-        )
-    }
-
     reload() {
         this.props.getMeetings(this.state.authenticatedPlatforms);
     }
@@ -69,7 +54,6 @@ class UpcomingMeetingComponent extends React.Component {
         let loading = this.props.requesting;
         if (meetings && meetings.length > 0) {
             meetings = meetings.filter(x=>x!== null)
-            this.addDatesToMeetings(meetings)
             meetings.sort((a,b)=>a.start_time.getTime()-b.start_time.getTime());
         }
         return (
@@ -79,13 +63,13 @@ class UpcomingMeetingComponent extends React.Component {
                     <TabPane tab="Today" key="1">
                         <DayComponent date={new Date()}
                                       loading={loading}
-                                      meetings={meetings !== undefined ? this.filterTodayMeetings(meetings) : []}
+                                      meetings={meetings !== undefined ? filterTodayMeetings(meetings) : []}
                         />
                     </TabPane>
                     <TabPane tab="Tomorrow" key="2">
                         <DayComponent date={addDays(new Date(),1)}
                                       loading={loading}
-                                      meetings={meetings !== undefined ? this.filterMeetingsByDate(meetings, addDays(new Date(), 1)) : []}
+                                      meetings={meetings !== undefined ? filterMeetingsByDate(meetings, addDays(new Date(), 1)) : []}
                         />
                     </TabPane>
                 </Tabs>

@@ -4,7 +4,12 @@ import { connect } from 'react-redux';
 import { userActions } from '../../actions';
 import {Button} from 'antd'
 
-
+/**
+ * A button which is displayed if the user is logged in.
+ *
+ * Props:
+ * logout {function} - userActions function which is called when the logout button is pushed.
+ */
 class LogoutButton extends React.Component {
 
     logout() {

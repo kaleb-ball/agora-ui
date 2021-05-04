@@ -6,13 +6,18 @@
     "@ant-design/icons": "^4.5.0",
     "@craco/craco": "^6.1.1",
     "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.3",
-    "@testing-library/user-event": "^12.6.2",
+    "@testing-library/react": "^11.2.6",
+    "@testing-library/user-event": "^13.1.5",
     "antd": "^4.12.3",
     "axios": "^0.21.1",
+    "better-docs": "^2.3.2",
     "craco-antd": "^1.19.0",
     "craco-less": "^1.17.1",
     "date-fns": "^2.19.0",
+    "file-system": "^2.2.2",
+    "ics": "^2.27.0",
+    "jsdoc": "^3.6.6",
+    "jwt-decode": "^3.1.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.2",
@@ -27,6 +32,7 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
+    "docs": "jsdoc -c jsdoc.conf.json",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -46,5 +52,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "jest-dom": "^4.0.0",
+    "nock": "^13.0.11"
   }
 }

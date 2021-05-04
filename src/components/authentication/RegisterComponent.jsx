@@ -3,6 +3,12 @@ import {connect} from "react-redux";
 import {userActions} from "../../actions";
 import {Button, Form, Input} from "antd";
 
+/**
+ * Registration form component.
+ *
+ * Props:
+ * register {function} - userAction function which registers the user
+ */
 class RegisterComponent extends React.Component {
 
     constructor(props) {

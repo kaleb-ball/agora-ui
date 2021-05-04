@@ -5,6 +5,12 @@ import {Button, Form, Input, Modal} from 'antd'
 import {meetingActions} from "../../../../actions";
 import {SelectPlatformComponent} from "../../../platform/SelectPlatformComponent";
 
+/**
+ * Creates an instant meeting with optional title and description fields.
+ *
+ * Props:
+ * createInstantMeeting {function} - meetingAction which creates an instant meeting and sends the user to it
+ */
 class CreateInstantMeetingComponent extends React.Component {
     constructor(props) {
         super(props);

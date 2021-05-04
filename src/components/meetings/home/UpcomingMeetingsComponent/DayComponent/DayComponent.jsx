@@ -1,24 +1,19 @@
 import React from "react";
 import {connect} from "react-redux";
 import {Card, Divider, List} from "antd";
-import { dateHelper } from "../../../../helpers"
-import {meetingActions} from "../../../../actions";
+import { dateHelper } from "../../../../../helpers"
 import './DayComponent.css'
 import {MeetingComponent} from "../MeetingComponent";
 
-
+/**
+ * A component which lists a day and shows all the meetings for that day
+ *
+ * Props:
+ * date - the date to display
+ * meetings - a list of meetings to filter
+ * loading - whether or not the meetings have been retrieved yet
+ */
 class UpcomingMeetingComponent extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.startMeeting = this.startMeeting.bind(this)
-    }
-
-    startMeeting(id) {
-        if (id) this.props.startMeeting(id);
-    }
-
-
     render() {
         const {date, meetings, loading} = this.props;
         return (
@@ -45,7 +40,6 @@ function mapState(state) {
 }
 
 const actionCreators = {
-    startMeeting : meetingActions.startMeeting
 }
 
 const connectedComponent = connect(mapState, actionCreators)( UpcomingMeetingComponent);

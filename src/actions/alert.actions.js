@@ -9,6 +9,10 @@ export const alertActions = {
     clear
 };
 
+/**
+ * Displays a "success" toast message
+ * @param content - string to be displayed in the toast message
+ */
 function success(content) {
     let config = {
         message : content,
@@ -18,6 +22,10 @@ function success(content) {
     return { type: alertConstants.SUCCESS, message };
 }
 
+/**
+ * Displays a "failure" toast message
+ * @param content - string to be displayed in the toast message
+ */
 function error(content) {
     let config = {
         message : content,
@@ -27,6 +35,9 @@ function error(content) {
     return { type: alertConstants.ERROR, message };
 }
 
+/**
+ * Removes all toast messages
+ */
 function clear() {
     return { type: alertConstants.CLEAR };
 }

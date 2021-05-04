@@ -1,0 +1,9 @@
+sudo: required
+language: node_js
+node_js:
+  - 15
+script:
+  - echo "skipping tests"
+after_success:
+  - chmod +x deploy.sh
+  - "./deploy.sh"

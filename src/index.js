@@ -8,7 +8,7 @@ import {authHeader, history, store} from "./helpers";
 import axios from "axios";
 import {API_ROOT } from './helpers/api-root-config'
 import { differenceInMinutes } from 'date-fns'
-import {userService} from "./services";
+import {authService} from "./services";
 import {fromUnixTime} from 'date-fns'
 import {alertActions} from "./actions";
 
@@ -32,11 +32,11 @@ axios.interceptors.response.use(function (response) {
 axios.interceptors.request.use(async (config) => {
     let expireAt = localStorage.getItem('expiresAt') ? fromUnixTime(JSON.parse(localStorage.getItem('expiresAt'))) : null
     if (expireAt && differenceInMinutes(expireAt, Date.now()) < 1 && config.headers.Authorization && !config.url.startsWith("auth")) {
-          await userService.refresh().then(
+          await authService.refresh().then(
             (res) => { config.headers.Authorization = authHeader().Authorization}
         ).catch(
             (error) => {
-                userService.logout();
+                authService.logout();
                 alertActions.error(error)
                 return Promise.reject();
         })

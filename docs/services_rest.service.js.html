@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: services/rest.service.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: services/rest.service.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {authHeader} from "../helpers";
+import axios from "axios";
+
+export const restService = {
+    get,
+    post,
+    put,
+    delete : _delete
+};
+
+let config
+
+/**
+ * This is a generic method for sending a GET request to the API using the axios library.
+ * All GET requests should use this method.
+ *
+ * @param endpoint - the request endpoint (not including the host or API version)
+ * @param authenticated - whether or not the authorization token should be added to the request
+ * @param params - an optional field for any url query parameters
+ */
+function get(endpoint, authenticated, params = {}) {
+    let headers = addHeaders(authenticated, false)
+    const config = {
+        headers : {...headers},
+        params : params
+    };
+    return axios.get(endpoint, config)
+}
+
+/**
+ * This is a generic method for sending a POST request to the API using the axios library.
+ * All POST requests should use this method.
+ *
+ * @param endpoint - the request endpoint (not including the host or API version)
+ * @param authenticated - whether or not the authorization token should be added to the request
+ * @param payload - an optional field which contains the POST request JSON payload
+ * @param params - an optional field for any url query parameters
+ */
+function post(endpoint, authenticated, payload = {}, params = {}) {
+    config = {
+        headers : addHeaders(authenticated, true),
+        params : params
+    }
+    return axios.post(endpoint, JSON.stringify(payload), config)
+}
+
+/**
+ * This is a generic method for sending a PUT request to the API using the axios library.
+ * All PUT requests should use this method.
+ *
+ * @param endpoint - the request endpoint (not including the host or API version)
+ * @param authenticated - whether or not the authorization token should be added to the request
+ * @param payload - an optional field which contains the POST request JSON payload
+ * @param params - an optional field for any url query parameters
+ */
+function put(endpoint, authenticated, payload = {} , params = {}) {
+    config = {
+        headers : addHeaders(authenticated, true),
+        params : params
+    }
+    return axios.put(endpoint, payload, config)
+}
+
+/**
+ * This is a generic method for sending a DELETE request to the API using the axios library.
+ * All DELETE requests should use this method.
+ *
+ * @param endpoint - the request endpoint (not including the host or API version)
+ * @param authenticated - whether or not the authorization token should be added to the request
+ * @param params - an optional field for any url query parameters
+ */
+function _delete(endpoint, authenticated, params = {}) {
+    config = {
+        headers : addHeaders(authenticated, false),
+        params : params
+    };
+    return axios.delete(endpoint, config)
+}
+
+function addHeaders(authenticated, json) {
+    let headers = ''
+    if (json &amp;&amp; authenticated) {
+        headers = {...authHeader(), 'Content-Type': 'application/json'}
+    } else if (authenticated) {
+        headers = {...authHeader()}
+    } else if (json) {
+        headers = {'Content-Type': 'application/json'}
+    }
+    return headers;
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Exception.html">Exception</a></li><li><a href="NavbarComponent.html">NavbarComponent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_delete">_delete</a></li><li><a href="global.html#addParticipant">addParticipant</a></li><li><a href="global.html#authenticatedPlatforms">authenticatedPlatforms</a></li><li><a href="global.html#checkAuthorization">checkAuthorization</a></li><li><a href="global.html#clear">clear</a></li><li><a href="global.html#createICS">createICS</a></li><li><a href="global.html#createInstantMeeting">createInstantMeeting</a></li><li><a href="global.html#createInvite">createInvite</a></li><li><a href="global.html#createMeeting">createMeeting</a></li><li><a href="global.html#deleteInvite">deleteInvite</a></li><li><a href="global.html#deleteMeeting">deleteMeeting</a></li><li><a href="global.html#deleteParticipant">deleteParticipant</a></li><li><a href="global.html#error">error</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getAccessToken">getAccessToken</a></li><li><a href="global.html#getAllMeetings">getAllMeetings</a></li><li><a href="global.html#getAuthorization">getAuthorization</a></li><li><a href="global.html#getInvite">getInvite</a></li><li><a href="global.html#getMeeting">getMeeting</a></li><li><a href="global.html#getMeetings">getMeetings</a></li><li><a href="global.html#getPlatformMeetings">getPlatformMeetings</a></li><li><a href="global.html#getUrl">getUrl</a></li><li><a href="global.html#isAuthorized">isAuthorized</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#platforms">platforms</a></li><li><a href="global.html#post">post</a></li><li><a href="global.html#put">put</a></li><li><a href="global.html#refresh">refresh</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#startMeeting">startMeeting</a></li><li><a href="global.html#success">success</a></li><li><a href="global.html#userDetails">userDetails</a></li><li><a href="global.html#userInvites">userInvites</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sun May 02 2021 19:27:47 GMT-0500 (Central Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
