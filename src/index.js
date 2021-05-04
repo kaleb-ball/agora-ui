@@ -4,7 +4,7 @@ import './index.css';
 import { App }  from './App'
 import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
-import {history, store} from "./helpers";
+import {authHeader, history, store} from "./helpers";
 import axios from "axios";
 import {API_ROOT } from './helpers/api-root-config'
 import { differenceInMinutes } from 'date-fns'
